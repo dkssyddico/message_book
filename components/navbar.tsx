@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <nav className='flex w-full items-center justify-between  p-4 px-8'>
+    <header className='fixed top-0 z-10 flex w-full items-center justify-between bg-white  p-4 px-8'>
       <h1 className='text-lg font-bold'>Message Book</h1>
       <div className='flex items-center space-x-4'>
         <div>
@@ -31,6 +31,6 @@ export default function Navbar() {
           로그인
         </button>
       </div>
-    </nav>
+    </header>
   );
 }
