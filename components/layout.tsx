@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
+import Navbar from './navbar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ export default function Layout({ children, title }: LayoutProps) {
       <Head>
         <title>{title}</title>
       </Head>
-      <nav>nav</nav>
+      <Navbar />
       <main className='min-h-screen'>{children}</main>
       <footer>footer</footer>
     </>
