@@ -13,7 +13,7 @@ export default function Layout({ children, title }: LayoutProps) {
         <title>{title}</title>
       </Head>
       <nav>nav</nav>
-      <main>{children}</main>
+      <main className='min-h-screen'>{children}</main>
       <footer>footer</footer>
     </>
   );
