@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Layout from '../../components/layout';
 import Input from '../../components/UI/input';
 
@@ -13,7 +14,17 @@ interface QuestionData {
   required: boolean;
 }
 
+interface RegisterMBForm {
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  description: string;
+  firstQuestion: string;
+}
+
 const NewBook: NextPage = () => {
+  const { register, handleSubmit, watch } = useForm<RegisterMBForm>();
+
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -85,12 +96,18 @@ const NewBook: NextPage = () => {
     setRequired(false);
   };
 
+  const startDate = watch('startDate');
+  const endDate = watch('endDate');
+
   return (
     <Layout title='New Book'>
       <div className='flex flex-col items-center p-8'>
         <h2 className='mb-8 text-2xl font-bold'>새로운 메세지북 제작하기!</h2>
         <div className='w-1/2'>
-          <form className='flex w-full flex-col items-start space-y-4'>
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className='flex w-full flex-col items-start space-y-4'
+          >
             <div className='relative flex h-72 w-full items-center justify-center bg-gray-100'>
               {file ? (
                 <Image
@@ -124,18 +141,23 @@ const NewBook: NextPage = () => {
             <label className='font-semibold' htmlFor='title'>
               메세지북 제목
             </label>
-            <Input id='title' type='text' placeholder='메세지북 제목을 입력해주세요.' />
+            <Input
+              id='title'
+              register={register('title')}
+              type='text'
+              placeholder='메세지북 제목을 입력해주세요.'
+            />
             <div className='w-full '>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
               <div className='flex w-full flex-col items-center justify-between space-x-2 md:flex-row'>
                 <label className='font-semibold' htmlFor='start'>
                   시작일
                 </label>
-                <Input id='start' type='date' />
+                <Input id='start' register={register('startDate')} type='date' />
                 <label className='font-semibold' htmlFor='end'>
                   종료일
                 </label>
-                <Input id='end' type='date' />
+                <Input register={register('endDate')} id='end' type='date' />
               </div>
             </div>
             <label className='font-semibold' htmlFor='description'>
@@ -196,6 +218,7 @@ const NewBook: NextPage = () => {
               필수 질문
             </label>
             <Input
+              register={register('firstQuestion')}
               id='mandatoryQ'
               placeholder='메세지북에 필요한 질문을 입력해주세요! (ex: 선수에게 응원메세지를 남겨주세요!)'
               type='text'
@@ -278,6 +301,9 @@ const NewBook: NextPage = () => {
                 추가하기
               </button>
             </div>
+            <button className='w-full rounded-lg bg-orange-400 py-3 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500'>
+              새로운 메세지북 등록하기
+            </button>
           </form>
         </div>
       </div>
