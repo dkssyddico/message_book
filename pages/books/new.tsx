@@ -99,6 +99,8 @@ const NewBook: NextPage = () => {
   const startDate = watch('startDate');
   const endDate = watch('endDate');
 
+  const onValid = () => {};
+
   return (
     <Layout title='New Book'>
       <div className='flex flex-col items-center p-8'>
