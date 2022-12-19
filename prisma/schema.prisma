@@ -6,11 +6,60 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  avatar    String
+  social    String
+  email     String
+  twitter   String?
+  instagram String?
+  books     Book[]
+  answers   Answer[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Book {
-  id    Int    @id @default(autoincrement())
-  title String @unique
+  id        String     @id @default(uuid())
+  title     String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  start     DateTime
+  end       DateTime
+  questions Question[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+model Question {
+  id       String   @id @default(uuid())
+  content  String
+  required Boolean
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId   String
+  answers  Answer[]
+
+  @@index([bookId])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  content    String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([questionId])
+  @@index([userId])
 }

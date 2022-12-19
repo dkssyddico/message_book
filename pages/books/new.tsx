@@ -2,8 +2,8 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Layout from '../../components/layout';
-import Input from '../../components/UI/input';
+import Layout from '@components/layout';
+import Input from '@components/UI/input';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
