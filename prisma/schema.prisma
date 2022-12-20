@@ -28,13 +28,14 @@ model User {
 model Book {
   id        String     @id @default(uuid())
   title     String     @unique
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
   start     DateTime
   end       DateTime
   questions Question[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
