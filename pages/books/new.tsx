@@ -5,30 +5,31 @@ import { useForm } from 'react-hook-form';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
 
 interface QuestionData {
-  id: number;
   content: string;
   required: boolean;
 }
 
-interface RegisterMBForm {
+interface BookForm {
   title: string;
-  startDate: Date;
-  endDate: Date;
   description: string;
   firstQuestion: string;
 }
 
 // TODO: useMutation 만들기
 const NewBook: NextPage = () => {
-  const { register, handleSubmit, watch } = useForm<RegisterMBForm>();
+  const { register, handleSubmit } = useForm<BookForm>();
 
+  // TODO: should warn when no image file exists
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  console.log(file);
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -42,6 +43,7 @@ const NewBook: NextPage = () => {
     }
   };
 
+  // TODO: should register at least 1 hashtags
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [hashtag, setHashtag] = useState('');
 
@@ -55,7 +57,6 @@ const NewBook: NextPage = () => {
     setHashtag(e.currentTarget.value);
   };
 
-  // 해시태그 중복없는지 살펴야함
   const handleAddHashtag = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (hashtag === '') return;
@@ -67,8 +68,6 @@ const NewBook: NextPage = () => {
 
   const [question, setQuestion] = useState('');
   const [questions, setQuestions] = useState<QuestionData[]>([]);
-
-  let questionID = 2;
 
   const [required, setRequired] = useState(false);
 
@@ -93,38 +92,43 @@ const NewBook: NextPage = () => {
     if (question === '') return;
     if (questions.filter((q) => q.content === question).length > 0) return;
     if (questions.length > MAX_QUESTIONS) return;
-    setQuestions((prev) => [...prev, { id: questionID++, content: question, required }]);
+    setQuestions((prev) => [...prev, { content: question, required }]);
     setQuestion('');
     setRequired(false);
   };
 
-  const startDate = watch('startDate');
-  const endDate = watch('endDate');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-  const onValid = async ({
-    title,
-    startDate,
-    endDate,
-    description,
-    firstQuestion,
-  }: RegisterMBForm) => {
-    axios.post(
-      '/api/books',
-      {
-        title,
-        start: new Date(startDate),
-        end: new Date(endDate),
-        description,
-        questions: [
-          {
-            first: true,
-            content: firstQuestion,
-            required: true,
-          },
-        ],
-      },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
+  const onValid = async ({ title, description, firstQuestion }: BookForm) => {
+    if (file) {
+      // TODO: make imageUpload function in utils folder
+      let formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+      const res = await axios.post(process.env.NEXT_PUBLIC_CLOUDINARY_URL!, formData);
+
+      console.log(res);
+    }
+    //   axios.post(
+    //     '/api/books',
+    //     {
+    //       thumbnail: 'no-thumbnail',
+    //       title,
+    //       startDate,
+    //       endDate,
+    //       description,
+    //       questions: [
+    //         {
+    //           content: firstQuestion,
+    //           required: true,
+    //         },
+    //         ...questions,
+    //       ],
+    //       hashtags: [...hashtags],
+    //     },
+    //     { headers: { 'Content-Type': 'application/json' } }
+    //   );
   };
 
   return (
@@ -174,17 +178,37 @@ const NewBook: NextPage = () => {
               type='text'
               placeholder='메세지북 제목을 입력해주세요.'
             />
-            <div className='w-full '>
+            <div className='w-full'>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
-              <div className='flex w-full flex-col items-center justify-between space-x-2 md:flex-row'>
-                <label className='font-semibold' htmlFor='start'>
-                  시작일
-                </label>
-                <Input id='start' register={register('startDate')} type='date' />
-                <label className='font-semibold' htmlFor='end'>
-                  종료일
-                </label>
-                <Input register={register('endDate')} id='end' type='date' />
+              <div className='flex flex-col gap-4'>
+                <div className='space-y-2'>
+                  <label className='mb-10'>메세지북 시작일</label>
+                  <DatePicker
+                    showPopperArrow={false}
+                    dateFormat='yyyy년 MM월 dd일'
+                    selected={startDate}
+                    onChange={(date: Date) => setStartDate(date)}
+                    startDate={startDate}
+                    selectsStart
+                    minDate={new Date()}
+                    endDate={endDate}
+                    className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
+                  />
+                </div>
+                <div className='space-y-2'>
+                  <label>메세지북 종료일</label>
+                  <DatePicker
+                    showPopperArrow={false}
+                    dateFormat='yyyy년 MM월 dd일'
+                    selected={endDate}
+                    onChange={(date: Date) => setEndDate(date)}
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={new Date()}
+                    selectsEnd
+                    className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
+                  />
+                </div>
               </div>
             </div>
             <label className='font-semibold' htmlFor='description'>
@@ -257,10 +281,10 @@ const NewBook: NextPage = () => {
               </label>
               {questions.length > 0 && (
                 <div className='flex flex-wrap items-center gap-4'>
-                  {questions.map((question) => (
+                  {questions.map((question, index) => (
                     <div
                       className='flex items-center space-x-2 rounded-full bg-gray-100 py-2 px-4'
-                      key={question.id}
+                      key={index}
                     >
                       {question.required && (
                         <span>

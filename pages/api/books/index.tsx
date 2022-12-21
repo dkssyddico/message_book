@@ -13,21 +13,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     console.log(req.body);
 
     const {
-      body: { title, start, end, description, questions },
+      body: { title, startDate, endDate, description, questions },
     } = req;
 
     const book = await client.book.create({
       data: {
         title,
-        start,
-        end,
+        startDate,
+        endDate,
         description,
         questions: {
           createMany: {
-            data: questions.map((q: Q) => ({
-              content: q.content,
-              required: q.required,
-              first: true,
+            data: questions.map((question: Q) => ({
+              content: question.content,
+              required: question.required,
             })),
           },
         },

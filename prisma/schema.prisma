@@ -30,12 +30,12 @@ model Book {
   id          String     @id @default(uuid())
   thumbnail   String?
   title       String     @unique
+  description String
   user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String?
-  start       DateTime
-  end         DateTime
+  startDate   DateTime
+  endDate     DateTime
   questions   Question[]
-  description String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
