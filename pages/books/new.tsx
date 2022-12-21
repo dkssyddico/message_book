@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
+import axios from 'axios';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
@@ -100,7 +101,31 @@ const NewBook: NextPage = () => {
   const startDate = watch('startDate');
   const endDate = watch('endDate');
 
-  const onValid = () => {};
+  const onValid = async ({
+    title,
+    startDate,
+    endDate,
+    description,
+    firstQuestion,
+  }: RegisterMBForm) => {
+    axios.post(
+      '/api/books',
+      {
+        title,
+        start: new Date(startDate),
+        end: new Date(endDate),
+        description,
+        questions: [
+          {
+            first: true,
+            content: firstQuestion,
+            required: true,
+          },
+        ],
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  };
 
   return (
     <Layout title='New Book'>
@@ -135,7 +160,6 @@ const NewBook: NextPage = () => {
                 type='file'
                 accept='image/*'
                 name='file'
-                required
                 className='hidden'
                 ref={thumbnailInputRef}
                 onChange={handleThumbnailChange}
@@ -167,6 +191,7 @@ const NewBook: NextPage = () => {
               상세 설명
             </label>
             <textarea
+              {...register('description')}
               className='w-full rounded-lg border-2 border-gray-300'
               placeholder='메세지북에 대한 상세설명을 입력해주세요.'
             />

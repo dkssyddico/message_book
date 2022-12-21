@@ -25,23 +25,25 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+// TODO: User 데이터 꼭 받는 것으로 바꾸기
 model Book {
-  id        String     @id @default(uuid())
-  title     String     @unique
-  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String?
-  start     DateTime
-  end       DateTime
-  questions Question[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String     @id @default(uuid())
+  thumbnail   String?
+  title       String     @unique
+  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+  start       DateTime
+  end         DateTime
+  questions   Question[]
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([userId])
 }
 
 model Question {
-  id       String   @id @default(uuid())
+  id       Int      @id @default(autoincrement())
   content  String
   required Boolean
   book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
@@ -57,7 +59,7 @@ model Answer {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String
+  questionId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
