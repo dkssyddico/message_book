@@ -7,6 +7,7 @@ import Input from '@components/UI/input';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import imageUpload from '@libs/client/imageUpload';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
@@ -29,7 +30,6 @@ const NewBook: NextPage = () => {
   // TODO: should warn when no image file exists
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  console.log(file);
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -101,34 +101,19 @@ const NewBook: NextPage = () => {
   const [endDate, setEndDate] = useState(new Date());
 
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
-    if (file) {
-      // TODO: make imageUpload function in utils folder
-      let formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-      const res = await axios.post(process.env.NEXT_PUBLIC_CLOUDINARY_URL!, formData);
-
-      console.log(res);
-    }
-    //   axios.post(
-    //     '/api/books',
-    //     {
-    //       thumbnail: 'no-thumbnail',
-    //       title,
-    //       startDate,
-    //       endDate,
-    //       description,
-    //       questions: [
-    //         {
-    //           content: firstQuestion,
-    //           required: true,
-    //         },
-    //         ...questions,
-    //       ],
-    //       hashtags: [...hashtags],
-    //     },
-    //     { headers: { 'Content-Type': 'application/json' } }
-    //   );
+    axios.post(
+      '/api/books',
+      {
+        thumbnail: file ? imageUpload(file) : 'no-thumbnail',
+        title,
+        startDate,
+        endDate,
+        description,
+        questions: [{ content: firstQuestion, required: true }, ...questions],
+        hashtags: [...hashtags],
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
   };
 
   return (
