@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -13,7 +14,7 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @unique
   avatar    String
   social    String
   email     String
@@ -28,7 +29,7 @@ model User {
 // TODO: User 데이터 꼭 받는 것으로 바꾸기
 model Book {
   id          String     @id @default(uuid())
-  thumbnail   String?
+  thumbnail   String
   title       String     @unique
   description String
   user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -38,6 +39,7 @@ model Book {
   questions   Question[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  hashtags    Hashtag[]
 
   @@index([userId])
 }
@@ -65,4 +67,10 @@ model Answer {
 
   @@index([questionId])
   @@index([userId])
+}
+
+model Hashtag {
+  id    String @id @default(uuid())
+  name  String @unique
+  books Book[]
 }

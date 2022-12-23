@@ -1,38 +1,53 @@
-import withHandler from '@libs/client/withHandler';
+import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-interface Q {
+interface Question {
   content: string;
   required: boolean;
-  first: boolean;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === 'POST') {
-    console.log(req.body);
-
     const {
-      body: { title, startDate, endDate, description, questions },
+      body: { thumbnail, title, startDate, endDate, description, questions, hashtags },
     } = req;
 
-    const book = await client.book.create({
-      data: {
+    const titleExists = await client.book.findUnique({
+      where: {
         title,
-        startDate,
-        endDate,
-        description,
-        questions: {
-          createMany: {
-            data: questions.map((question: Q) => ({
-              content: question.content,
-              required: question.required,
+      },
+    });
+
+    if (!titleExists) {
+      // TODO: should include User data
+      const book = await client.book.create({
+        data: {
+          thumbnail,
+          title,
+          startDate,
+          endDate,
+          description,
+          questions: {
+            createMany: {
+              data: questions.map((question: Question) => ({
+                content: question.content,
+                required: question.required,
+              })),
+            },
+          },
+          hashtags: {
+            connectOrCreate: hashtags.map((tag: string) => ({
+              create: { name: tag },
+              where: { name: tag },
             })),
           },
         },
-      },
-    });
-    console.log(book);
+      });
+      return res.json({ success: true, book });
+    } else {
+      return res.json({ success: false, message: 'Title already exists' });
+    }
   }
 }
 

@@ -101,10 +101,13 @@ const NewBook: NextPage = () => {
   const [endDate, setEndDate] = useState(new Date());
 
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
-    axios.post(
+    // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
+    const {
+      data: { success, message },
+    } = await axios.post(
       '/api/books',
       {
-        thumbnail: file ? imageUpload(file) : 'no-thumbnail',
+        thumbnail: file ? await imageUpload(file) : 'no-thumbnail',
         title,
         startDate,
         endDate,
