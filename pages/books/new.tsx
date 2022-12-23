@@ -1,13 +1,14 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Layout from '@components/layout';
-import Input from '@components/UI/input';
-import axios from 'axios';
+import { Book } from '@prisma/client';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Layout from '@components/layout';
+import Input from '@components/UI/input';
 import imageUpload from '@libs/client/imageUpload';
+import useMutation from '@libs/client/useMutation';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
@@ -21,6 +22,11 @@ interface BookForm {
   title: string;
   description: string;
   firstQuestion: string;
+}
+
+interface UploadBookMutation {
+  success: boolean;
+  book: Book;
 }
 
 // TODO: useMutation 만들기
@@ -54,7 +60,7 @@ const NewBook: NextPage = () => {
   };
 
   const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHashtag(e.currentTarget.value);
+    setHashtag(e.currentTarget.value.trim());
   };
 
   const handleAddHashtag = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,7 +95,7 @@ const NewBook: NextPage = () => {
 
   const handleAddQuestion = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (question === '') return;
+    if (question.trim() === '') return;
     if (questions.filter((q) => q.content === question).length > 0) return;
     if (questions.length > MAX_QUESTIONS) return;
     setQuestions((prev) => [...prev, { content: question, required }]);
@@ -100,23 +106,19 @@ const NewBook: NextPage = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
+  const [upload, { loading }] = useMutation<UploadBookMutation>('/api/books');
+
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
-    const {
-      data: { success, message },
-    } = await axios.post(
-      '/api/books',
-      {
-        thumbnail: file ? await imageUpload(file) : 'no-thumbnail',
-        title,
-        startDate,
-        endDate,
-        description,
-        questions: [{ content: firstQuestion, required: true }, ...questions],
-        hashtags: [...hashtags],
-      },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
+    upload({
+      thumbnail: file ? await imageUpload(file) : 'no-thumbnail',
+      title,
+      startDate,
+      endDate,
+      description,
+      questions: [{ content: firstQuestion, required: true }, ...questions],
+      hashtags: [...hashtags],
+    });
   };
 
   return (
@@ -254,12 +256,12 @@ const NewBook: NextPage = () => {
                 추가하기
               </button>
             </div>
-            <label className='font-semibold' htmlFor='mandatoryQ'>
+            <label className='font-semibold' htmlFor='firstQuestion'>
               필수 질문
             </label>
             <Input
               register={register('firstQuestion')}
-              id='mandatoryQ'
+              id='firstQuestion'
               placeholder='메세지북에 필요한 질문을 입력해주세요! (ex: 선수에게 응원메세지를 남겨주세요!)'
               type='text'
             />
@@ -342,7 +344,7 @@ const NewBook: NextPage = () => {
               </button>
             </div>
             <button className='w-full rounded-lg bg-orange-400 py-3 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500'>
-              새로운 메세지북 등록하기
+              {loading ? '메세지북 등록 중 ⏳' : '새로운 메세지북 등록하기 📘'}
             </button>
           </form>
         </div>
