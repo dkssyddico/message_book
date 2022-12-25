@@ -3,12 +3,14 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Book } from '@prisma/client';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
 import imageUpload from '@libs/client/imageUpload';
 import useMutation from '@libs/client/useMutation';
+import Date from '@components/form/Date';
+import { useRecoilValue } from 'recoil';
+import { startDateState, endDateState } from 'state/date';
 
 const MAX_HASHTAGS = 5;
 const MAX_QUESTIONS = 5;
@@ -103,13 +105,14 @@ const NewBook: NextPage = () => {
     setRequired(false);
   };
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const startDate = useRecoilValue(startDateState);
+  const endDate = useRecoilValue(endDateState);
 
   const [upload, { loading }] = useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
+    // TODO: 마치는 날이 시작일 보다 빠른지 워닝.
     upload({
       thumbnail: file ? await imageUpload(file) : 'no-thumbnail',
       title,
@@ -170,36 +173,7 @@ const NewBook: NextPage = () => {
             />
             <div className='w-full'>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
-              <div className='flex flex-col gap-4'>
-                <div className='space-y-2'>
-                  <label className='mb-10'>메세지북 시작일</label>
-                  <DatePicker
-                    showPopperArrow={false}
-                    dateFormat='yyyy년 MM월 dd일'
-                    selected={startDate}
-                    onChange={(date: Date) => setStartDate(date)}
-                    startDate={startDate}
-                    selectsStart
-                    minDate={new Date()}
-                    endDate={endDate}
-                    className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
-                  />
-                </div>
-                <div className='space-y-2'>
-                  <label>메세지북 종료일</label>
-                  <DatePicker
-                    showPopperArrow={false}
-                    dateFormat='yyyy년 MM월 dd일'
-                    selected={endDate}
-                    onChange={(date: Date) => setEndDate(date)}
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={new Date()}
-                    selectsEnd
-                    className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
-                  />
-                </div>
-              </div>
+              <Date />
             </div>
             <label className='font-semibold' htmlFor='description'>
               상세 설명
