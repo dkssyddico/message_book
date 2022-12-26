@@ -1,3 +1,4 @@
+import { Question } from '@libs/client/types';
 import { atom, selector } from 'recoil';
 
 // TODO: Should make several form states: date, questions, hashtags...
@@ -31,5 +32,10 @@ export const endDateSelector = selector<Date>({
 
 export const hashtagsState = atom<Hashtag[]>({
   key: 'hashtagsState',
+  default: [],
+});
+
+export const questionsState = atom<Question[]>({
+  key: 'questionsState',
   default: [],
 });
