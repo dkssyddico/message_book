@@ -1,6 +1,7 @@
 import DatePicker from 'react-datepicker';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { endDateSelector, endDateState, startDateState, TodayState } from 'state/date';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Date() {
   const today = useRecoilValue(TodayState);
