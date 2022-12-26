@@ -8,5 +8,5 @@ export default async function imageUpload(file: File) {
     data: { url },
   } = await axios.post(process.env.NEXT_PUBLIC_CLOUDINARY_URL!, formData);
 
-  return url ? url : 'no-thumbnail';
+  return url;
 }
