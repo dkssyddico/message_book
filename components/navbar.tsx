@@ -2,11 +2,10 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <header className='fixed top-0 z-10 flex w-full items-center justify-between bg-white  p-4 px-8'>
-    <Link href="'/">
-      <h1 className='text-lg font-bold'>Message Book</h1>
-    </Link>
-
+    <header className='fixed top-0 z-10 flex w-full items-center justify-between bg-white p-4 px-8'>
+      <Link href='/'>
+        <h1 className='text-lg font-bold'>Message Book</h1>
+      </Link>
       <div className='flex items-center space-x-4'>
         <div>
           <Link href='/books/new'>

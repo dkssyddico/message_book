@@ -1,17 +1,16 @@
 import DatePicker from 'react-datepicker';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { endDateSelector, endDateState, startDateState, TodayState } from 'state/form';
+import { endDateState, startDateState, TodayState } from 'state/form';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function Date() {
+export default function DateContainer() {
   const today = useRecoilValue(TodayState);
   const [startDate, setStartDate] = useRecoilState(startDateState);
   const [endDate, setEndDate] = useRecoilState(endDateState);
-  const [_, setChangeEndDate] = useRecoilState(endDateSelector);
 
   const dateChange = (date: Date) => {
     setStartDate(date);
-    setChangeEndDate(date);
+    setEndDate(date);
   };
 
   return (

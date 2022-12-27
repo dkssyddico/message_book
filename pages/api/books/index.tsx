@@ -8,6 +8,11 @@ interface Question {
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+  if (req.method === 'GET') {
+    const books = await client.book.findMany();
+    return res.status(200).send({ success: true, books });
+  }
+
   if (req.method === 'POST') {
     const {
       body: { thumbnail, title, startDate, endDate, description, questions, hashtags },
@@ -44,11 +49,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           },
         },
       });
-      return res.json({ success: true, book });
+      return res.status(201).send({ success: true, book });
     } else {
-      return res.json({ success: false, message: 'Title already exists' });
+      return res.status(400).send({ success: false, message: 'Title already exists' });
     }
   }
 }
 
-export default withHandler({ methods: ['POST'], handler });
+export default withHandler({ methods: ['GET', 'POST'], handler });

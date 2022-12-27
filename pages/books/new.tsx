@@ -5,17 +5,20 @@ import { Book } from '@prisma/client';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
 import useMutation from '@libs/client/useMutation';
-import DateContainer from '@components/form/DateContainer';
+
 import {
   startDateState,
   endDateState,
   hashtagsState,
   questionsState,
-  thumbnailURLState,
+  thumbnailState,
 } from 'state/form';
-import HashtagContainer from '@components/form/HashtagContainer';
-import QuestionsContainer from '@components/form/QuestionsContainer';
+
 import ThumbnailContainer from '@components/form/thumbnailContainer';
+import imageUpload from '@libs/client/imageUpload';
+import HashtagContainer from '@components/form/hashtagContainer';
+import QuestionsContainer from '@components/form/questionsContainer';
+import DateContainer from '@components/form/dateContainer';
 
 interface BookForm {
   title: string;
@@ -28,26 +31,24 @@ interface UploadBookMutation {
   book: Book;
 }
 
-// TODO: useMutation 만들기
 const NewBook: NextPage = () => {
   const { register, handleSubmit } = useForm<BookForm>();
 
   const startDate = useRecoilValue(startDateState);
   const endDate = useRecoilValue(endDateState);
 
+  const thumbnail = useRecoilValue(thumbnailState);
+
   // TODO: should register at least 1 hashtags
   const hashtags = useRecoilValue(hashtagsState);
   const questions = useRecoilValue(questionsState);
-
-  const thumbnail = useRecoilValue(thumbnailURLState);
 
   const [upload, { loading }] = useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
-    // TODO: 마치는 날이 시작일 보다 빠른지 워닝.
     upload({
-      thumbnail,
+      thumbnail: thumbnail ? await imageUpload(thumbnail) : 'no-thumbnail',
       title,
       startDate,
       endDate,
@@ -99,8 +100,34 @@ const NewBook: NextPage = () => {
               type='text'
             />
             <QuestionsContainer />
-            <button className='w-full rounded-lg bg-orange-400 py-3 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500'>
-              {loading ? '메세지북 등록 중 ⏳' : '새로운 메세지북 등록하기 📘'}
+            <button className='flex w-full justify-center rounded-lg bg-orange-400 py-3 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500'>
+              {loading ? (
+                <span className='flex items-center'>
+                  <svg
+                    className='-ml-1 mr-3 h-5 w-5 animate-spin text-white'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                  >
+                    <circle
+                      className='opacity-25'
+                      cx='12'
+                      cy='12'
+                      r='10'
+                      stroke='currentColor'
+                      stroke-width='4'
+                    ></circle>
+                    <path
+                      className='opacity-75'
+                      fill='currentColor'
+                      d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                    ></path>
+                  </svg>
+                  메세지북 등록 중...
+                </span>
+              ) : (
+                <span className='flex items-center'>새로운 메세지북 등록하기</span>
+              )}
             </button>
           </form>
         </div>
