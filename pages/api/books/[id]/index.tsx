@@ -12,6 +12,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       where: {
         id: id + '',
       },
+      include: {
+        hashtags: true,
+      },
     });
 
     const questions = await client.question.findMany({
