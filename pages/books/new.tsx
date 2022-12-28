@@ -5,7 +5,6 @@ import { Book } from '@prisma/client';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
 import useMutation from '@libs/client/useMutation';
-
 import {
   startDateState,
   endDateState,
@@ -13,7 +12,6 @@ import {
   questionsState,
   thumbnailState,
 } from 'state/form';
-
 import ThumbnailContainer from '@components/form/thumbnailContainer';
 import imageUpload from '@libs/client/imageUpload';
 import HashtagContainer from '@components/form/hashtagContainer';
