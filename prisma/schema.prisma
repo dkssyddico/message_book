@@ -74,3 +74,5 @@ model Hashtag {
   name  String @unique
   books Book[]
 }
+
+// TODO: make comment model 
