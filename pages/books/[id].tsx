@@ -8,6 +8,7 @@ import UserInfo from '@components/bookDetail/userInfo';
 import LikeAndShare from '@components/bookDetail/likeAndShare';
 import DateRange from '@components/bookDetail/dateRange';
 import Comments from '@components/bookDetail/comments';
+import Loading from '@components/loading';
 
 interface BookWithHashtags extends Book {
   hashtags: Hashtag[];
@@ -27,10 +28,10 @@ const BookDetail: NextPage = () => {
   );
 
   // TODO: should make loading page
-  if (isLoading) return <div className='h-96 w-96'>loading</div>;
+  if (isLoading) return <Loading />;
 
   return (
-    <Layout title={isLoading ? 'Message Book' : data?.book?.title!}>
+    <Layout title={data?.book?.title!}>
       <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
         <section className='flex min-h-[400px] flex-col items-center justify-center gap-8 md:w-3/4 lg:flex-row'>
           <div className='basis-1/2'>
