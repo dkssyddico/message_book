@@ -7,7 +7,7 @@ import Image from 'next/image';
 import UserInfo from '@components/bookDetail/userInfo';
 import LikeAndShare from '@components/bookDetail/likeAndShare';
 import DateRange from '@components/bookDetail/dateRange';
-import Comments from '@components/bookDetail/comments';
+import Comments from '@components/bookDetail/comments/comments';
 import Loading from '@components/loading';
 
 interface BookWithHashtags extends Book {
