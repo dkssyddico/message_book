@@ -7,7 +7,7 @@ import Image from 'next/image';
 import UserInfo from '@components/bookDetail/userInfo';
 import LikeAndShare from '@components/bookDetail/likeAndShare';
 import DateRange from '@components/bookDetail/dateRange';
-import Comments from '@components/bookDetail/comments/comments';
+import CommentsContainer from '@components/bookDetail/comments/commentsContainer';
 import Loading from '@components/loading';
 
 interface BookWithHashtags extends Book {
@@ -98,7 +98,7 @@ const BookDetail: NextPage = () => {
             </button>
           </form>
         </section>
-        <Comments />
+        <CommentsContainer />
       </section>
     </Layout>
   );
