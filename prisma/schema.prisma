@@ -13,8 +13,8 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String   @unique
+  id        String    @id @default(uuid())
+  name      String    @unique
   avatar    String
   social    String
   email     String
@@ -22,8 +22,10 @@ model User {
   instagram String?
   books     Book[]
   answers   Answer[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  comments  Comment[]
+  replys    Reply[]
 }
 
 // TODO: User 데이터 꼭 받는 것으로 바꾸기
@@ -40,6 +42,8 @@ model Book {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   hashtags    Hashtag[]
+  comments    Comment[]
+  replys      Reply[]
 
   @@index([userId])
 }
@@ -58,8 +62,8 @@ model Question {
 model Answer {
   id         String   @id @default(uuid())
   content    String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String?
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
   createdAt  DateTime @default(now())
@@ -75,4 +79,36 @@ model Hashtag {
   books Book[]
 }
 
-// TODO: make comment model 
+model Comment {
+  id        String   @id @default(uuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  content   String
+  reply     Reply[]
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([bookId])
+}
+
+model Reply {
+  id        String   @id @default(uuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  content   String
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([commentId])
+  @@index([bookId])
+}
+
+// TODO: Should make comment like model (different with message book like)
