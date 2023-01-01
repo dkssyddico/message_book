@@ -9,6 +9,7 @@ import LikeAndShare from '@components/bookDetail/likeAndShare';
 import DateRange from '@components/bookDetail/dateRange';
 import CommentsContainer from '@components/bookDetail/comments/commentsContainer';
 import Loading from '@components/loading';
+import { imageLoader } from '@libs/client/imageLoader';
 
 interface BookWithHashtags extends Book {
   hashtags: Hashtag[];
@@ -36,14 +37,18 @@ const BookDetail: NextPage = () => {
         <section className='flex min-h-[400px] flex-col items-center justify-center gap-8 md:w-3/4 lg:flex-row'>
           <div className='basis-1/2'>
             {/* TODO: Loading 중일 때 이미지 처리. */}
-            <Image
-              className='h-[400px] w-full'
-              src={data?.book.thumbnail!}
-              alt='thumbnail'
-              width={240}
-              height={160}
-              priority
-            />
+            {isLoading ? (
+              <div className='h-[400px] w-full bg-gray-400'></div>
+            ) : (
+              <Image
+                className='h-[400px] w-full'
+                src={isLoading ? imageLoader : data?.book.thumbnail!}
+                alt='thumbnail'
+                width={240}
+                height={160}
+                priority={true}
+              />
+            )}
           </div>
           <div className='grid min-h-[400px] w-full basis-1/2 grid-flow-row gap-2 rounded-lg border-2 p-4'>
             <LikeAndShare />
