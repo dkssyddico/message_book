@@ -5,12 +5,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === 'GET') {
     const {
-      query: { id },
+      query: { bookId },
     } = req;
 
     const book = await client.book.findUnique({
       where: {
-        id: id + '',
+        id: bookId + '',
       },
       include: {
         hashtags: true,

@@ -4,7 +4,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === 'GET') {
+    const {
+      query: { bookId },
+    } = req;
+
     const comments = await client.comment.findMany({
+      where: {
+        bookId: bookId + '',
+      },
       orderBy: {
         createdAt: 'asc',
       },

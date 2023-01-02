@@ -1,7 +1,5 @@
-import { formatAgo } from '@libs/client/time';
 import { Comment } from '@prisma/client';
 import CommentCard from './commentCard';
-import ReplyCard from './replyCard';
 
 interface CommentsListProps {
   comments: Comment[] | null;
@@ -9,12 +7,12 @@ interface CommentsListProps {
 
 export default function CommentsList({ comments }: CommentsListProps) {
   return (
-    <ul className='space-y-2'>
+    <ul className='space-y-4'>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
           <CommentCard
             key={comment.id}
-            id={comment.id}
+            commentId={comment.id}
             time={comment.createdAt}
             content={comment.content}
           />
