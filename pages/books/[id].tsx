@@ -3,19 +3,15 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Layout from '@components/layout';
-import Image from 'next/image';
-import UserInfo from '@components/bookDetail/userInfo';
-import LikeAndShare from '@components/bookDetail/likeAndShare';
-import DateRange from '@components/bookDetail/dateRange';
-import CommentsContainer from '@components/bookDetail/comments/commentsContainer';
+import CommentsContainer from '@components/book/comments/commentsContainer';
 import Loading from '@components/loading';
-import { imageLoader } from '@libs/client/imageLoader';
+import Detail from '@components/book/detail';
 
 export interface CommentWithReply extends Comment {
   replies: Reply[];
   _count: {
     replies: number;
-  }
+  };
 }
 
 interface BookWithDetails extends Book {
@@ -42,38 +38,14 @@ const BookDetail: NextPage = () => {
   return (
     <Layout title={data?.book?.title!}>
       <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
-        <section className='flex min-h-[400px] flex-col items-center justify-center gap-8 md:w-3/4 lg:flex-row'>
-          <div className='basis-1/2'>
-            {/* TODO: Loading 중일 때 이미지 처리. */}
-            {isLoading ? (
-              <div className='h-[400px] w-full bg-gray-400'></div>
-            ) : (
-              <Image
-                className='h-[400px] w-full'
-                src={isLoading ? imageLoader : data?.book.thumbnail!}
-                alt='thumbnail'
-                width={240}
-                height={160}
-                priority={true}
-              />
-            )}
-          </div>
-          <div className='grid min-h-[400px] w-full basis-1/2 grid-flow-row gap-2 rounded-lg border-2 p-4'>
-            <LikeAndShare />
-            <div className='flex items-center'>
-              <h2 className='text-xl font-bold'>{data?.book.title} 0/150</h2>
-            </div>
-            <DateRange startDate={data?.book?.startDate!} endDate={data?.book?.endDate!} />
-            <div>
-              <p className='flex items-center'>
-                {data?.book?.description} Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Ratione illo aspernatur quasi architecto impedit qui doloremque eum aut eligendi.
-                Unde!
-              </p>
-            </div>
-            <UserInfo />
-          </div>
-        </section>
+        <Detail
+          thumbnail={data?.book?.thumbnail}
+          title={data?.book?.title}
+          startDate={data?.book?.startDate}
+          endDate={data?.book?.endDate}
+          description={data?.book?.description}
+          hashtags={data?.book?.hashtags}
+        />
         <section className='w-full overflow-hidden md:w-3/4'>
           <div className='flex h-10 items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-yellow-400 font-semibold'>
             <span>질문 목록</span>

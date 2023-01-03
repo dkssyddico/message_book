@@ -1,6 +1,6 @@
 interface DateRangeProps {
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 export default function DateRange({ startDate, endDate }: DateRangeProps) {

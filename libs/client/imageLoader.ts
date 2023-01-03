@@ -1,1 +1,1 @@
-export const imageLoader = '/loader.jpg';
+export const LoadingImage = '/loader.jpg';
