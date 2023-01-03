@@ -14,7 +14,7 @@ interface DetailProps {
   hashtags: Hashtag[] | undefined;
 }
 
-export default function Detail({
+export default function DetailContainer({
   thumbnail,
   title,
   startDate,
