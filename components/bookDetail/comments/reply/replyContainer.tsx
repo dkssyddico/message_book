@@ -7,26 +7,13 @@ import ReplyList from './replyList';
 
 interface ReplyContainerProps {
   commentId: string;
-}
-
-export interface CommentsResponse {
-  success: boolean;
   replies: Reply[];
 }
 
-export default function ReplyContainer({ commentId }: ReplyContainerProps) {
-  const router = useRouter();
-  const {
-    query: { id: bookId },
-  } = router;
-
-  const { data, isLoading } = useSWR<CommentsResponse>(
-    `/api/books/${bookId}/comments/${commentId}/replies`
-  );
-
+export default function ReplyContainer({ commentId, replies }: ReplyContainerProps) {
   return (
     <div className='space-y-4 pl-10'>
-      <ReplyList replies={isLoading ? null : data?.replies!} />
+      <ReplyList replies={replies} />
       <ReplyForm commentId={commentId} />
     </div>
   );

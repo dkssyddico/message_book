@@ -26,8 +26,14 @@ export default function CommentForm({ bookId }: CommentFormProps) {
     if (content === '') return;
     submitComment({ content, bookId });
     mutate(
-      `/api/books/${bookId}/comments`,
-      (prev: any) => ({ ...prev, comments: [...prev.comments, { content, bookId }] }),
+      `/api/books/${bookId}`,
+      (prev: any) => ({
+        ...prev,
+        book: {
+          ...prev.book,
+          comments: [...prev.book.comments, { content, bookId }],
+        },
+      }),
       false
     );
     reset();

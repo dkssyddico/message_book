@@ -1,5 +1,7 @@
 import useMutation from '@libs/client/useMutation';
+import { Book } from '@prisma/client';
 import { useRouter } from 'next/router';
+import { BookDetailResponse, CommentWithReply } from 'pages/books/[id]';
 import { useForm } from 'react-hook-form';
 import { mutate } from 'swr';
 
@@ -31,8 +33,17 @@ export default function ReplyForm({ commentId }: ReplyFormProps) {
     if (content === '') return;
     submitReply({ content, bookId });
     mutate(
-      `/api/books/${bookId}/comments/${commentId}/replies`,
-      (prev: any) => ({ ...prev, replies: [...prev.replies, { content, commentId, bookId }] }),
+      `/api/books/${bookId}`,
+      (prev: any) => {
+        const comments = prev.book.comments.map(
+          (comment: CommentWithReply) =>
+            comment.id === commentId && {
+              ...comment,
+              replies: [...comment.replies, { content, commentId, bookId }],
+            }
+        );
+        return { ...prev, book: { ...prev.book, comments } };
+      },
       false
     );
     reset();

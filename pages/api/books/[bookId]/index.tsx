@@ -13,9 +13,29 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         id: bookId + '',
       },
       include: {
+        questions: true,
         hashtags: true,
+        comments: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+          include: {
+            _count: {
+              select: {
+                replies: true,
+              },
+            },
+            replies: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
+          },
+        },
       },
     });
+
+    console.log(book);
 
     const questions = await client.question.findMany({
       where: {

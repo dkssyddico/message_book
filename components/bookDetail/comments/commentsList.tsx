@@ -1,8 +1,8 @@
-import { Comment } from '@prisma/client';
+import { CommentWithReply } from 'pages/books/[id]';
 import CommentCard from './commentCard';
 
 interface CommentsListProps {
-  comments: Comment[] | null;
+  comments: CommentWithReply[] | undefined;
 }
 
 export default function CommentsList({ comments }: CommentsListProps) {
@@ -15,6 +15,8 @@ export default function CommentsList({ comments }: CommentsListProps) {
             commentId={comment.id}
             time={comment.createdAt}
             content={comment.content}
+            replies={comment.replies}
+            replyCount={comment._count.replies}
           />
         ))
       ) : (

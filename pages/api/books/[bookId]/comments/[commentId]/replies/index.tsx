@@ -3,25 +3,6 @@ import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
-  if (req.method === 'GET') {
-    const {
-      query: { bookId, commentId },
-    } = req;
-
-    const replies = await client.reply.findMany({
-      where: {
-        bookId: bookId + '',
-        commentId: commentId + '',
-      },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
-    console.log(replies);
-
-    return res.status(200).send({ success: true, replies });
-  }
-
   if (req.method === 'POST') {
     const {
       body: { content },
@@ -40,4 +21,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   }
 }
 
-export default withHandler({ methods: ['GET', 'POST'], handler });
+export default withHandler({ methods: ['POST'], handler });

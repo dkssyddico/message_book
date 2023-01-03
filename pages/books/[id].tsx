@@ -1,4 +1,4 @@
-import { Book, Hashtag, Question } from '@prisma/client';
+import { Book, Comment, Hashtag, Question, Reply } from '@prisma/client';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -11,14 +11,22 @@ import CommentsContainer from '@components/bookDetail/comments/commentsContainer
 import Loading from '@components/loading';
 import { imageLoader } from '@libs/client/imageLoader';
 
-interface BookWithHashtags extends Book {
-  hashtags: Hashtag[];
+export interface CommentWithReply extends Comment {
+  replies: Reply[];
+  _count: {
+    replies: number;
+  }
 }
 
-interface BookDetailResponse {
-  success: boolean;
-  book: BookWithHashtags;
+interface BookWithDetails extends Book {
+  hashtags: Hashtag[];
+  comments: CommentWithReply[];
   questions: Question[];
+}
+
+export interface BookDetailResponse {
+  success: boolean;
+  book: BookWithDetails;
 }
 
 const BookDetail: NextPage = () => {
@@ -71,7 +79,7 @@ const BookDetail: NextPage = () => {
             <span>질문 목록</span>
           </div>
           <form className='flex flex-col space-y-8 rounded-bl-2xl rounded-br-2xl  border-2 border-t-0 p-8 '>
-            {data?.questions?.map((question) => (
+            {data?.book?.questions?.map((question) => (
               <div key={question.id} className='space-y-2'>
                 <label htmlFor={question.id + ''} className='flex items-center font-semibold'>
                   {question.required && (
@@ -105,7 +113,7 @@ const BookDetail: NextPage = () => {
             </button>
           </form>
         </section>
-        <CommentsContainer />
+        <CommentsContainer comments={data?.book?.comments} />
       </section>
     </Layout>
   );

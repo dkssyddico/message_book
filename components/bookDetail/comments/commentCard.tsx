@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import { formatAgo } from '@libs/client/time';
 import ReplyContainer from './reply/replyContainer';
+import { Reply } from '@prisma/client';
 
 interface CommentCardProps {
   commentId: string;
   time: Date;
   content: string;
+  replies: Reply[];
+  replyCount: number;
 }
 
-export default function CommentCard({ commentId, time, content }: CommentCardProps) {
+export default function CommentCard({
+  commentId,
+  time,
+  content,
+  replies,
+  replyCount,
+}: CommentCardProps) {
   const [openReply, setOpenReply] = useState(false);
 
   const handleClickLikes = () => {};
@@ -25,7 +34,7 @@ export default function CommentCard({ commentId, time, content }: CommentCardPro
         <span className='text-xs text-gray-400'>{formatAgo(time)}</span>
       </div>
       <p className='pl-10'>{content}</p>
-      <div className='flex gap-4 pl-10'>
+      <div className='flex gap-4 pl-10 text-gray-500'>
         <button onClick={handleClickLikes}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -42,7 +51,7 @@ export default function CommentCard({ commentId, time, content }: CommentCardPro
             <path d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'></path>
           </svg>
         </button>
-        <button onClick={handleReplyOpen}>
+        <button className='flex items-center gap-1' onClick={handleReplyOpen}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -57,10 +66,11 @@ export default function CommentCard({ commentId, time, content }: CommentCardPro
           >
             <path d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'></path>
           </svg>
+          <span>{replyCount}</span>
         </button>
       </div>
       {/* re-comments sections */}
-      {openReply && <ReplyContainer commentId={commentId} />}
+      {openReply && <ReplyContainer replies={replies} commentId={commentId} />}
     </li>
   );
 }
