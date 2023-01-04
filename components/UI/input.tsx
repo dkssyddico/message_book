@@ -19,7 +19,7 @@ export default function Input({ type, id, value, placeholder, onChange, register
       id={id}
       value={value}
       type={type}
-      className='w-full flex-1 rounded-full border-2 border-gray-300'
+      className='w-full flex-1 rounded-full border-2 border-gray-300 px-4 py-2'
     />
   );
 }

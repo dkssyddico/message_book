@@ -84,7 +84,7 @@ const NewBook: NextPage = () => {
             </label>
             <textarea
               {...register('description')}
-              className='w-full rounded-lg border-2 border-gray-300'
+              className='w-full rounded-lg border-2 border-gray-300 px-4 py-2'
               placeholder='메세지북에 대한 상세설명을 입력해주세요.'
             />
             <HashtagContainer />

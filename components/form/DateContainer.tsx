@@ -26,7 +26,7 @@ export default function DateContainer() {
           selectsStart
           minDate={today}
           endDate={endDate}
-          className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
+          className='w-full flex-1 rounded-full border-2 border-gray-300 p-2 text-center'
         />
       </div>
       <div className='space-y-2'>
@@ -40,7 +40,7 @@ export default function DateContainer() {
           endDate={endDate}
           minDate={startDate}
           selectsEnd
-          className='w-full flex-1 rounded-full border-2 border-gray-300 text-center'
+          className='w-full flex-1 rounded-full border-2 border-gray-300 p-2 text-center'
         />
       </div>
     </div>

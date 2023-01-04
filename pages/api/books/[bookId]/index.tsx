@@ -35,8 +35,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     });
 
-    console.log(book);
-
     const questions = await client.question.findMany({
       where: {
         bookId: book?.id,

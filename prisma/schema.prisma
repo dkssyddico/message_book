@@ -49,7 +49,7 @@ model Book {
 }
 
 model Question {
-  id       Int      @id @default(autoincrement())
+  id       String   @id @default(uuid())
   content  String
   required Boolean
   book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
@@ -65,7 +65,7 @@ model Answer {
   user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String?
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId Int
+  questionId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
