@@ -27,7 +27,7 @@ export default function DetailContainer({
       <div className='basis-1/2'>
         <Image
           className='h-[400px] w-full'
-          src={thumbnail ? thumbnail : LoadingImage}
+          src={thumbnail ? (thumbnail === 'no-thumbnail' ? LoadingImage : thumbnail) : LoadingImage}
           alt='thumbnail'
           width={240}
           height={160}

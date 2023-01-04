@@ -1,6 +1,7 @@
-import useMutation from '@libs/client/useMutation';
 import { Question } from '@prisma/client';
 import { useForm } from 'react-hook-form';
+import useMutation from '@libs/client/useMutation';
+import SubmitButton from '@components/UI/submitButton';
 
 interface QuestionsContainerProps {
   questions: Question[] | undefined;
@@ -71,12 +72,12 @@ export default function QuestionsContainer({ questions }: QuestionsContainerProp
             />
           </div>
         ))}
-        <button
+        <SubmitButton
           disabled={isSubmitting}
-          className='flex-auto rounded bg-orange-400 py-2 px-4 font-semibold text-white transition duration-300 ease-in-out hover:bg-orange-500'
-        >
-          제출하기
-        </button>
+          loading={loading}
+          submitMessage='답변 제출하기'
+          loadingMessage='답변 제출 중'
+        />
       </form>
     </section>
   );
