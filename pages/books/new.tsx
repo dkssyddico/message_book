@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Book } from '@prisma/client';
 import Layout from '@components/layout';
 import Input from '@components/UI/input';
@@ -33,16 +33,16 @@ interface UploadBookMutation {
 const NewBook: NextPage = () => {
   const { register, handleSubmit, reset } = useForm<BookForm>();
 
-  const startDate = useRecoilValue(startDateState);
-  const endDate = useRecoilValue(endDateState);
+  const [startDate, setStartDate] = useRecoilState(startDateState);
+  const [endDate, setEndDate] = useRecoilState(endDateState);
 
-  const thumbnail = useRecoilValue(thumbnailState);
+  const [thumbnail, setThumbnail] = useRecoilState(thumbnailState);
 
   // TODO: should register at least 1 hashtags
-  const hashtags = useRecoilValue(hashtagsState);
-  const questions = useRecoilValue(questionsState);
+  const [hashtags, setHashtags] = useRecoilState(hashtagsState);
+  const [questions, setQuestions] = useRecoilState(questionsState);
 
-  const [upload, { loading }] = useMutation<UploadBookMutation>('/api/books');
+  const [upload, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({ title, description, firstQuestion }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
@@ -56,6 +56,11 @@ const NewBook: NextPage = () => {
       hashtags: [...hashtags],
     });
     reset();
+    setStartDate(new Date());
+    setEndDate(new Date());
+    setThumbnail(null);
+    setHashtags([]);
+    setQuestions([]);
   };
 
   return (
@@ -89,7 +94,7 @@ const NewBook: NextPage = () => {
               className='w-full rounded-lg border-2 border-gray-300 px-4 py-2'
               placeholder='메세지북에 대한 상세설명을 입력해주세요.'
             />
-            <HashtagContainer />
+            <HashtagContainer submitSuccess={data?.success} />
             <label className='font-semibold' htmlFor='firstQuestion'>
               필수 질문
             </label>
@@ -99,7 +104,7 @@ const NewBook: NextPage = () => {
               placeholder='메세지북에 필요한 질문을 입력해주세요! (ex: 선수에게 응원메세지를 남겨주세요!)'
               type='text'
             />
-            <QuestionsContainer />
+            <QuestionsContainer submitSuccess={data?.success} />
             <SubmitButton
               loading={loading}
               loadingMessage='메세지북 등록 중'

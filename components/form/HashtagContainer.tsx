@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import Input from '@components/UI/input';
 import { hashtagsState } from 'state/form';
 
 const MAX_HASHTAGS = 5;
 
-function HashtagContainer() {
+interface HashtagContainerProps {
+  submitSuccess: boolean | undefined;
+}
+
+function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
   const [hashtag, setHashtag] = useState('');
   const [hashtags, setHashtags] = useRecoilState(hashtagsState);
 
@@ -27,6 +31,10 @@ function HashtagContainer() {
     setHashtags((prev) => [...prev, hashtag]);
     setHashtag('');
   };
+
+  useEffect(() => {
+    if (submitSuccess) setHashtag('');
+  }, [submitSuccess]);
 
   return (
     <div className='flex w-full flex-col space-y-4'>

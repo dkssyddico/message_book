@@ -1,12 +1,16 @@
 import Input from '@components/UI/input';
 import { Question } from '@libs/client/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { questionsState } from 'state/form';
 
 const MAX_QUESTIONS = 5;
 
-export default function QuestionsContainer() {
+interface QuestionsContainerProps {
+  submitSuccess: boolean | undefined;
+}
+
+export default function QuestionsContainer({ submitSuccess }: QuestionsContainerProps) {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [question, setQuestion] = useState('');
   const [required, setRequired] = useState(false);
@@ -36,6 +40,10 @@ export default function QuestionsContainer() {
     setQuestion('');
     setRequired(false);
   };
+
+  useEffect(() => {
+    if (submitSuccess) setQuestion('');
+  }, [submitSuccess]);
 
   return (
     <div className='flex w-full flex-col space-y-4'>
