@@ -35,7 +35,6 @@ const NewBook: NextPage = () => {
 
   const [startDate, setStartDate] = useRecoilState(startDateState);
   const [endDate, setEndDate] = useRecoilState(endDateState);
-
   const [thumbnail, setThumbnail] = useRecoilState(thumbnailState);
 
   // TODO: should register at least 1 hashtags
