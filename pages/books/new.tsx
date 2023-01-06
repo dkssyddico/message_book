@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
@@ -51,16 +52,22 @@ const NewBook: NextPage = () => {
       startDate,
       endDate,
       description,
-      questions: [{ content: firstQuestion, required: true }, ...questions],
+      questions: [{ content: firstQuestion, required: true, index: 0 }, ...questions],
       hashtags: [...hashtags],
     });
-    reset();
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setThumbnail(null);
-    setHashtags([]);
-    setQuestions([]);
+    console.log(questions);
   };
+
+  useEffect(() => {
+    if (data && data.success) {
+      reset();
+      setStartDate(new Date());
+      setEndDate(new Date());
+      setThumbnail(null);
+      setHashtags([]);
+      setQuestions([]);
+    }
+  }, [data, reset, setStartDate, setEndDate, setThumbnail, setHashtags, setQuestions]);
 
   return (
     <Layout title='New Book'>

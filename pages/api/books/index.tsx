@@ -35,10 +35,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           description,
           questions: {
             createMany: {
-              data: questions.map((question: Question) => ({
-                content: question.content,
-                required: question.required,
-              })),
+              data: questions,
             },
           },
           hashtags: {

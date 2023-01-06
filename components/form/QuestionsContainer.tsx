@@ -1,5 +1,4 @@
 import Input from '@components/UI/input';
-import { Question } from '@libs/client/types';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { questionsState } from 'state/form';
@@ -14,6 +13,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [question, setQuestion] = useState('');
   const [required, setRequired] = useState(false);
+  const [index, setIndex] = useState(1);
 
   const handleCheckRequired = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRequired((prev) => !prev);
@@ -25,6 +25,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
       (question) => question.content !== e.currentTarget.value
     );
     setQuestions(changedQuestions);
+    setIndex((prev) => (prev === 1 ? 1 : prev - 1));
   };
 
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,13 +37,17 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
     if (question.trim() === '') return;
     if (questions.filter((q) => q.content === question).length > 0) return;
     if (questions.length > MAX_QUESTIONS) return;
-    setQuestions((prev) => [...prev, { content: question, required }]);
+    setQuestions((prev) => [...prev, { content: question, required, index }]);
     setQuestion('');
+    setIndex((prev) => prev + 1);
     setRequired(false);
   };
 
   useEffect(() => {
-    if (submitSuccess) setQuestion('');
+    if (submitSuccess) {
+      setQuestion('');
+      setIndex(1);
+    }
   }, [submitSuccess]);
 
   return (
