@@ -1,9 +1,9 @@
 import useMutation from '@libs/client/useMutation';
-import { Book } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { BookDetailResponse, CommentWithReply } from 'pages/books/[id]';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { mutate } from 'swr';
+import useSWR from 'swr';
 
 interface Form {
   content: string;
@@ -25,29 +25,23 @@ export default function ReplyForm({ commentId }: ReplyFormProps) {
   } = router;
 
   const { register, handleSubmit, reset } = useForm<Form>();
-  const [submitReply, { loading }] = useMutation<SubmitReplyMutation>(
+  const [submitReply, { loading, data: replyData }] = useMutation<SubmitReplyMutation>(
     `/api/books/${bookId}/comments/${commentId}/replies`
   );
+
+  const { mutate } = useSWR<BookDetailResponse>(`/api/books/${bookId}`);
 
   const onValid = async ({ content }: Form) => {
     if (content === '') return;
     submitReply({ content, bookId });
-    mutate(
-      `/api/books/${bookId}`,
-      (prev: any) => {
-        const comments = prev.book.comments.map(
-          (comment: CommentWithReply) =>
-            comment.id === commentId && {
-              ...comment,
-              replies: [...comment.replies, { content, commentId, bookId }],
-            }
-        );
-        return { ...prev, book: { ...prev.book, comments } };
-      },
-      false
-    );
-    reset();
   };
+
+  useEffect(() => {
+    if (replyData && replyData.success) {
+      mutate();
+      reset();
+    }
+  }, [replyData, reset, mutate]);
 
   return (
     <form onSubmit={handleSubmit(onValid)} className='flex flex-col pl-10'>

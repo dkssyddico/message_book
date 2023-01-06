@@ -1,7 +1,9 @@
 import useMutation from '@libs/client/useMutation';
 import { Comment } from '@prisma/client';
+import { BookDetailResponse } from 'pages/books/[id]';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { mutate } from 'swr';
+import useSWR from 'swr';
 
 interface Form {
   content: string;
@@ -18,33 +20,30 @@ interface CommentFormProps {
 
 export default function CommentForm({ bookId }: CommentFormProps) {
   const { register, handleSubmit, reset } = useForm<Form>();
-  const [submitComment, { loading }] = useMutation<SubmitCommentMutation>(
+  const [submitComment, { loading, data: commentData }] = useMutation<SubmitCommentMutation>(
     `/api/books/${bookId}/comments`
   );
+
+  const { mutate } = useSWR<BookDetailResponse>(`/api/books/${bookId}`);
 
   const onValid = async ({ content }: Form) => {
     if (content === '') return;
     submitComment({ content, bookId });
-    mutate(
-      `/api/books/${bookId}`,
-      (prev: any) => ({
-        ...prev,
-        book: {
-          ...prev.book,
-          comments: [...prev.book.comments, { content, bookId }],
-        },
-      }),
-      false
-    );
-    reset();
   };
+
+  useEffect(() => {
+    if (commentData && commentData.success) {
+      mutate();
+      reset();
+    }
+  }, [commentData, reset, mutate]);
 
   return (
     <form onSubmit={handleSubmit(onValid)} className='flex flex-col'>
       <div className='relative'>
         <input
           {...register('content')}
-          className='w-full origin-center border-b-2 border-b-gray-200 pb-2 outline-none transition duration-300 ease-in-out focus:border-b-2 focus:border-orange-300'
+          className='w-full origin-center border-b-2 border-b-gray-200 bg-white pb-2 outline-none transition duration-300 ease-in-out  focus:border-b-2 focus:border-orange-300'
           type='text'
           placeholder='댓글 쓰기'
         />

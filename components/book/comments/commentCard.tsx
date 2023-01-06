@@ -1,22 +1,20 @@
 import { useState } from 'react';
 import { formatAgo } from '@libs/client/time';
 import ReplyContainer from './reply/replyContainer';
-import { Reply } from '@prisma/client';
+import { CommentWithReply } from 'pages/books/[id]';
 
 interface CommentCardProps {
-  commentId: string;
-  time: Date;
-  content: string;
-  replies: Reply[];
-  replyCount: number;
+  comment: CommentWithReply;
 }
 
 export default function CommentCard({
-  commentId,
-  time,
-  content,
-  replies,
-  replyCount,
+  comment: {
+    id,
+    content,
+    createdAt,
+    replies,
+    _count: { replies: replyCount },
+  },
 }: CommentCardProps) {
   const [openReply, setOpenReply] = useState(false);
 
@@ -27,11 +25,11 @@ export default function CommentCard({
   };
 
   return (
-    <li key={commentId} className='space-y-3'>
+    <li key={id} className='space-y-3'>
       <div className='flex items-center gap-2'>
         <div className='h-8 w-8 rounded-full bg-teal-400' />
         <span className='font-semibold'>User</span>
-        <span className='text-xs text-gray-400'>{formatAgo(time)}</span>
+        <span className='text-xs text-gray-400'>{formatAgo(createdAt)}</span>
       </div>
       <p className='pl-10'>{content}</p>
       <div className='flex gap-4 pl-10 text-gray-500'>
@@ -70,7 +68,7 @@ export default function CommentCard({
         </button>
       </div>
       {/* re-comments sections */}
-      {openReply && <ReplyContainer replies={replies} commentId={commentId} />}
+      {openReply && <ReplyContainer replies={replies} commentId={id} />}
     </li>
   );
 }
