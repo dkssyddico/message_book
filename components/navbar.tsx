@@ -52,6 +52,7 @@ export default function Navbar() {
           </button>
         </div>
       </header>
+      {/* TODO: 카카오톡 로그인 연결 */}
       <dialog className='h-80 w-3/4 rounded-lg p-0 md:w-[420px]' ref={dialogRef}>
         <div className='flex h-1/6 w-full items-center justify-end bg-yellow-400 px-4'>
           <button onClick={handleDialogClose}>
