@@ -15,6 +15,12 @@ export default function Navbar() {
     }
   };
 
+  const kakaoLogin = () => {
+    window.Kakao.Auth.authorize({
+      redirectUri: 'http://localhost:3000/kakao',
+    });
+  };
+
   return (
     <>
       <header className='fixed top-0 z-10 flex w-full items-center justify-between bg-white p-4 px-8'>
@@ -74,12 +80,15 @@ export default function Navbar() {
             </svg>
           </button>
         </div>
-        <div className='flex h-5/6 flex-col items-center space-y-10 p-6'>
+        <div className='flex h-5/6  flex-col items-center space-y-10 p-6'>
           <h3 className='text-2xl font-bold'>안녕하세요!</h3>
-          <section className='flex items-center gap-4'>
-            <div className='h-8 w-fit bg-teal-300'>Google</div>
-            <div className='h-8 w-fit bg-teal-300'>Naver</div>
-            <div className='h-8 w-fit bg-teal-300'>Kakao</div>
+          <section className='flex w-full flex-col items-center gap-4'>
+            <button
+              onClick={kakaoLogin}
+              className='flex w-full items-center justify-center rounded bg-yellow-300 p-2 transition duration-300 hover:bg-yellow-400'
+            >
+              <span className='font-semibold'>카카오톡으로 로그인</span>
+            </button>
           </section>
         </div>
       </dialog>
