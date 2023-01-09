@@ -12,20 +12,48 @@ datasource db {
   relationMode = "prisma"
 }
 
+model Account {
+  id                       String  @id @default(uuid())
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @map("refreshToken") @db.Text
+  access_token             String? @map("accessToken") @db.Text
+  expires_at               Int?    @map("expiresAt")
+  refresh_token_expires_in Int?    @map("refreshTokenExpiresIn")
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  expires      DateTime
+
+  @@index([userId])
+}
+
 model User {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  avatar    String
-  social    String
-  email     String
-  twitter   String?
-  instagram String?
-  books     Book[]
-  answers   Answer[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[]
-  replies   Reply[]
+  id            String    @id @default(uuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  books         Book[]
+  answers       Answer[]
+  comments      Comment[]
+  replies       Reply[]
 }
 
 // TODO: User 데이터 꼭 받는 것으로 바꾸기

@@ -1,8 +1,12 @@
+import { useSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function Navbar() {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { data: session } = useSession();
+
+  console.log(session);
 
   const handleLoginClick = () => {
     dialogRef.current?.showModal();
@@ -84,11 +88,12 @@ export default function Navbar() {
           <h3 className='text-2xl font-bold'>안녕하세요!</h3>
           <section className='flex w-full flex-col items-center gap-4'>
             <button
-              onClick={kakaoLogin}
+              onClick={() => signIn('kakao')}
               className='flex w-full items-center justify-center rounded bg-yellow-300 p-2 transition duration-300 hover:bg-yellow-400'
             >
               <span className='font-semibold'>카카오톡으로 로그인</span>
             </button>
+            <button onClick={() => signOut()}>카카오톡 로그아웃</button>
           </section>
         </div>
       </dialog>

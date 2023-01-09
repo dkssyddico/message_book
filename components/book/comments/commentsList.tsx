@@ -6,8 +6,6 @@ interface CommentsListProps {
 }
 
 export default function CommentsList({ comments }: CommentsListProps) {
-  console.log(comments);
-
   return (
     <ul className='space-y-4'>
       {comments && comments.length > 0 ? (
