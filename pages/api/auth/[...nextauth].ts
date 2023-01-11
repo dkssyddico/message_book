@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import KakaoProvider from 'next-auth/providers/kakao';
+import NaverProvider from 'next-auth/providers/naver';
 import client from '@libs/server/client';
 
 export default NextAuth({
@@ -9,6 +10,10 @@ export default NextAuth({
     KakaoProvider({
       clientId: process.env.KAKAO_ID!,
       clientSecret: process.env.KAKAO_SECRET!,
+    }),
+    NaverProvider({
+      clientId: process.env.NAVER_ID!,
+      clientSecret: process.env.NAVER_SECRET!,
     }),
   ],
   // session: {
