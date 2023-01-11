@@ -1,4 +1,5 @@
 import { RefObject } from 'react';
+import SocialLoginButton from './socialLoginButton';
 
 interface LoginModalProps {
   dialogRef: RefObject<HTMLDialogElement>;
@@ -32,18 +33,9 @@ export default function LoginModal({ dialogRef, handleDialogClose, signIn }: Log
       <div className='flex h-5/6  flex-col items-center space-y-10 p-6'>
         <h3 className='text-2xl font-bold'>안녕하세요!</h3>
         <section className='flex w-full flex-col items-center gap-4'>
-          <button
-            onClick={() => signIn('kakao')}
-            className='flex w-full items-center justify-center rounded-xl bg-kakao p-2'
-          >
-            <span className='font-semibold'>카카오톡 로그인</span>
-          </button>
-          <button
-            onClick={() => signIn('naver')}
-            className='flex w-full items-center justify-center rounded-xl bg-naver p-2'
-          >
-            <span className='font-semibold'>네이버 로그인</span>
-          </button>
+          <SocialLoginButton provider='kakao' />
+          <SocialLoginButton provider='naver' />
+          <SocialLoginButton provider='google' />
         </section>
       </div>
     </dialog>

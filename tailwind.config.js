@@ -8,6 +8,7 @@ module.exports = {
         lime: '#E2EE83',
         mint: '#b8fccc',
         naver: '#03C75A',
+        google: '#fff',
       },
     },
   },

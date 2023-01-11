@@ -1,4 +1,4 @@
-import { formatAgo } from '@libs/client/time';
+import { formatAgo } from '@libs/client/utils';
 import React from 'react';
 
 interface ReplyCardProp {

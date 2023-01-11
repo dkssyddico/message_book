@@ -1,7 +1,7 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRef } from 'react';
-import LoginModal from './modal/loginModal';
+import LoginModal from './modal/login/loginModal';
 
 export default function Navbar() {
   const dialogRef = useRef<HTMLDialogElement>(null);

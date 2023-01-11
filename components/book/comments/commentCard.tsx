@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatAgo } from '@libs/client/time';
+import { formatAgo } from '@libs/client/utils';
 import ReplyContainer from './reply/replyContainer';
 import { CommentWithReply } from 'pages/books/[id]';
 

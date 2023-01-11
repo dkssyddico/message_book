@@ -6,3 +6,7 @@ register('ko', koLocale);
 export function formatAgo(date: Date, lang = 'ko') {
   return format(date, lang);
 }
+
+export function cls(...classnames: string[]) {
+  return classnames.join(' ');
+}
