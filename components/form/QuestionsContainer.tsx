@@ -109,7 +109,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
           checked={required}
           name='checkRequired'
           id='checkRequired'
-          className='rounded border-2 border-gray-300'
+          className='h-5 w-5 rounded-lg border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
         />
         <label className='ml-2' htmlFor='checkRequired'>
           답변을 필수로 받을까요?

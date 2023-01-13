@@ -6,6 +6,8 @@ type Hashtag = string;
 
 type Thumbnail = File | null;
 
+type MinAmount = number;
+
 export const TodayState = atom<Date>({
   key: `todayState/${uuidv4()}`,
   default: new Date(),
@@ -34,4 +36,14 @@ export const questionsState = atom<Question[]>({
 export const thumbnailState = atom<Thumbnail>({
   key: `thumbnailState/${uuidv4()}`,
   default: null,
+});
+
+export const DropEndDateState = atom<Date>({
+  key: `dropEndDateState/${uuidv4()}`,
+  default: new Date(),
+});
+
+export const DropMinAmountState = atom<MinAmount>({
+  key: `dropMinAmountState/${uuidv4()}`,
+  default: 0,
 });

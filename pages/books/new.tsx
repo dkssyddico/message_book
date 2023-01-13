@@ -19,11 +19,14 @@ import HashtagContainer from '@components/form/hashtagContainer';
 import QuestionsContainer from '@components/form/questionsContainer';
 import DateContainer from '@components/form/dateContainer';
 import SubmitButton from '@components/UI/submitButton';
+import DropContainer from '@components/form/dropContainer';
 
 interface BookForm {
   title: string;
+  targetMessage: number;
   description: string;
   firstQuestion: string;
+  receiveFanArt: boolean;
 }
 
 interface UploadBookMutation {
@@ -44,7 +47,13 @@ const NewBook: NextPage = () => {
 
   const [upload, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
 
-  const onValid = async ({ title, description, firstQuestion }: BookForm) => {
+  const onValid = async ({
+    title,
+    targetMessage,
+    description,
+    firstQuestion,
+    receiveFanArt,
+  }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
     upload({
       thumbnail: thumbnail ? await imageUpload(thumbnail) : 'no-thumbnail',
@@ -75,7 +84,7 @@ const NewBook: NextPage = () => {
         <div className='w-1/2'>
           <form
             onSubmit={handleSubmit(onValid)}
-            className='flex w-full flex-col items-start space-y-4'
+            className='flex w-full flex-col items-start space-y-6'
           >
             <ThumbnailContainer />
             <label className='font-semibold' htmlFor='title'>
@@ -87,6 +96,11 @@ const NewBook: NextPage = () => {
               type='text'
               placeholder='메세지북 제목을 입력해주세요.'
             />
+
+            <label className='font-semibold' htmlFor='targetMessage'>
+              목표 메세지 수
+            </label>
+            <Input type='number' id='targetMessage' register={register('targetMessage')} />
             <div className='w-full'>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
               <DateContainer />
@@ -110,6 +124,22 @@ const NewBook: NextPage = () => {
               type='text'
             />
             <QuestionsContainer submitSuccess={data?.success} />
+            <DropContainer />
+            <div className='space-y-2'>
+              <h3 className='font-semibold'>추가 설정</h3>
+              <div className='flex items-center'>
+                <input
+                  {...register('receiveFanArt')}
+                  type='checkbox'
+                  id='receiveFanArt'
+                  className='h-5 w-5 rounded-lg border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
+                  name='receiveFanArt'
+                />
+                <label className='ml-2' htmlFor='receiveFanArt'>
+                  팬아트를 받겠습니까?
+                </label>
+              </div>
+            </div>
             <SubmitButton
               loading={loading}
               loadingMessage='메세지북 등록 중'
