@@ -4,10 +4,9 @@ import SocialLoginButton from './socialLoginButton';
 interface LoginModalProps {
   dialogRef: RefObject<HTMLDialogElement>;
   handleDialogClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  signIn: (provider: string) => void;
 }
 
-export default function LoginModal({ dialogRef, handleDialogClose, signIn }: LoginModalProps) {
+export default function LoginModal({ dialogRef, handleDialogClose }: LoginModalProps) {
   return (
     <dialog className='h-80 w-3/4 rounded-lg p-0 md:w-[420px]' ref={dialogRef}>
       <div className='flex h-1/6 w-full items-center justify-end bg-lime px-4'>

@@ -10,10 +10,25 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   }
 
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-    if (!session) {
+    const sessionToken = req.cookies['next-auth.session-token'];
+
+    if (!sessionToken) {
       return res.status(401).send({ success: false, message: 'Please log in' });
     }
+
+    const session = await client.session.findUnique({
+      where: {
+        sessionToken,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!session) {
+      return res.status(404).send({ success: false, message: 'user not found' });
+    }
+
     const {
       body: { thumbnail, title, startDate, endDate, description, questions, hashtags },
     } = req;
@@ -25,7 +40,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     });
 
     if (!titleExists) {
-      // TODO: should include User data
       const book = await client.book.create({
         data: {
           thumbnail,
@@ -46,7 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           },
           user: {
             connect: {
-              email: session.user?.email!,
+              id: session.user.id,
             },
           },
         },
