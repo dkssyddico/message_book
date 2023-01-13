@@ -30,7 +30,6 @@ export interface BookDetailResponse {
 const BookDetail: NextPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
 
   const { data, isLoading } = useSWR<BookDetailResponse>(
     router.query.id ? `/api/books/${router.query.id}` : null

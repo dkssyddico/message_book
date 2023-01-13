@@ -55,7 +55,6 @@ const NewBook: NextPage = () => {
       questions: [{ content: firstQuestion, required: true, index: 0 }, ...questions],
       hashtags: [...hashtags],
     });
-    console.log(questions);
   };
 
   useEffect(() => {
