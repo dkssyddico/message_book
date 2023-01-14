@@ -54,25 +54,76 @@ model User {
   answers       Answer[]
   comments      Comment[]
   replies       Reply[]
+  fanArts       FanArt[]
+  favs          BookFav[]
 }
 
-// TODO: User 데이터 꼭 받는 것으로 바꾸기
 model Book {
-  id          String     @id @default(uuid())
-  thumbnail   String
-  title       String     @unique
-  description String
-  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String?
-  startDate   DateTime
-  endDate     DateTime
-  questions   Question[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  hashtags    Hashtag[]
-  comments    Comment[]
-  replies     Reply[]
+  id            String     @id @default(uuid())
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  thumbnail     String
+  title         String     @unique
+  description   String
+  startDate     DateTime
+  endDate       DateTime
+  questions     Question[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  hashtags      Hashtag[]
+  comments      Comment[]
+  replies       Reply[]
+  receiveFanArt Boolean
+  fanArts       FanArt[]
+  favs          BookFav[]
+  doesDrop      Boolean
+  drop          Drop?
+  dropId        String?
 
+  @@index([userId])
+  @@index([dropId])
+}
+
+model Drop {
+  id             String   @id @default(uuid())
+  bankName       String
+  account        String
+  accountOwner   String
+  minAmount      Int
+  endDate        DateTime
+  book           Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId         String   @unique
+  checkedByAdmin Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([bookId])
+}
+
+model BookFav {
+  id        String   @id @default(uuid())
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bookId])
+  @@index([userId])
+}
+
+model FanArt {
+  id        String   @id @default(uuid())
+  image     String
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bookId])
   @@index([userId])
 }
 
