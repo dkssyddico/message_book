@@ -1,7 +1,6 @@
 import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === 'GET') {

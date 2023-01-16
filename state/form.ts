@@ -38,6 +38,11 @@ export const thumbnailState = atom<Thumbnail>({
   default: null,
 });
 
+export const dropState = atom<Boolean>({
+  key: `dropState/${uuidv4()}`,
+  default: false,
+});
+
 export const DropEndDateState = atom<Date>({
   key: `dropEndDateState/${uuidv4()}`,
   default: new Date(),

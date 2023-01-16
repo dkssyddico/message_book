@@ -12,6 +12,7 @@ import {
   hashtagsState,
   questionsState,
   thumbnailState,
+  dropState,
 } from 'state/form';
 import ThumbnailContainer from '@components/form/thumbnailContainer';
 import imageUpload from '@libs/client/imageUpload';
@@ -44,7 +45,7 @@ const NewBook: NextPage = () => {
   // TODO: should register at least 1 hashtags
   const [hashtags, setHashtags] = useRecoilState(hashtagsState);
   const [questions, setQuestions] = useRecoilState(questionsState);
-
+  const [dropStatus, setDropStatus] = useRecoilState(dropState);
   const [upload, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({
@@ -57,6 +58,8 @@ const NewBook: NextPage = () => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
     upload({
       thumbnail: thumbnail ? await imageUpload(thumbnail) : 'no-thumbnail',
+      targetMessage,
+      receiveFanArt,
       title,
       startDate,
       endDate,
@@ -74,8 +77,18 @@ const NewBook: NextPage = () => {
       setThumbnail(null);
       setHashtags([]);
       setQuestions([]);
+      setDropStatus(false);
     }
-  }, [data, reset, setStartDate, setEndDate, setThumbnail, setHashtags, setQuestions]);
+  }, [
+    data,
+    reset,
+    setStartDate,
+    setEndDate,
+    setDropStatus,
+    setThumbnail,
+    setHashtags,
+    setQuestions,
+  ]);
 
   return (
     <Layout title='New Book'>
@@ -100,7 +113,13 @@ const NewBook: NextPage = () => {
             <label className='font-semibold' htmlFor='targetMessage'>
               목표 메세지 수
             </label>
-            <Input type='number' id='targetMessage' register={register('targetMessage')} />
+            <Input
+              type='number'
+              id='targetMessage'
+              register={register('targetMessage', {
+                min: { value: 0, message: '0개 이상으로 설정해야합니다.' },
+              })}
+            />
             <div className='w-full'>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
               <DateContainer />

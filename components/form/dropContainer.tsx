@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import ToggleButton from '@components/UI/toggleButton';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useRecoilState } from 'recoil';
-import { DropEndDateState, DropMinAmountState } from 'state/form';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { DropEndDateState, DropMinAmountState, dropState } from 'state/form';
 
 export default function DropContainer() {
   const [open, setOpen] = useState(false);
+  const setDropStatus = useSetRecoilState(dropState);
   const [dropEndDate, setDropEndDate] = useRecoilState(DropEndDateState);
   const [minAmount, setMinAmount] = useRecoilState(DropMinAmountState);
 
@@ -15,11 +16,16 @@ export default function DropContainer() {
     setMinAmount(() => (+amount < 0 ? 0 : +amount));
   };
 
+  const handleDropStatus = () => {
+    setOpen((prev) => !prev);
+    setDropStatus((prev) => !prev);
+  };
+
   return (
     <section className='w-full space-y-2'>
       <header className='flex items-center justify-between'>
         <h3 className='font-semibold'>드랍도 함께 진행하시겠습니까?</h3>
-        <ToggleButton open={open} handleOpen={() => setOpen((prev) => !prev)} />
+        <ToggleButton open={open} handleOpen={handleDropStatus} />
       </header>
       {open && (
         <section className='space-y-2'>
