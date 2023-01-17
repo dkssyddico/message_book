@@ -116,7 +116,7 @@ const NewBook: NextPage = () => {
 
   return (
     <Layout title='New Book'>
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-col items-center p-8'>
         <h2 className='mb-8 text-2xl font-bold'>새로운 메세지북 제작하기!</h2>
         <form
           onSubmit={handleSubmit(onValid)}

@@ -14,7 +14,7 @@ export default function Layout({ children, title }: LayoutProps) {
         <title>{title ? title : 'Message Book'}</title>
       </Head>
       <Navbar />
-      <main className='min-h-screen p-8 pt-24'>{children}</main>
+      <main className='min-h-screen pt-16'>{children}</main>
       <footer>footer</footer>
     </>
   );
