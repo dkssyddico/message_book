@@ -6,7 +6,12 @@ type Hashtag = string;
 
 type Thumbnail = File | null;
 
-type MinAmount = number;
+type DropInfo = {
+  account: string;
+  accountOwner: string;
+  minAmount: number;
+  bank: string;
+};
 
 export const TodayState = atom<Date>({
   key: `todayState/${uuidv4()}`,
@@ -38,17 +43,22 @@ export const thumbnailState = atom<Thumbnail>({
   default: null,
 });
 
-export const dropState = atom<Boolean>({
-  key: `dropState/${uuidv4()}`,
+export const dropStatusState = atom<Boolean>({
+  key: `dropStatusState/${uuidv4()}`,
   default: false,
 });
 
-export const DropEndDateState = atom<Date>({
-  key: `dropEndDateState/${uuidv4()}`,
-  default: new Date(),
+export const dropInfoState = atom<DropInfo>({
+  key: `dropInfoState/${uuidv4()}`,
+  default: {
+    account: '',
+    accountOwner: '',
+    minAmount: 0,
+    bank: '',
+  },
 });
 
-export const DropMinAmountState = atom<MinAmount>({
-  key: `dropMinAmountState/${uuidv4()}`,
-  default: 0,
+export const dropEndDateState = atom<Date>({
+  key: `dropEndDateState/${uuidv4()}`,
+  default: new Date(),
 });

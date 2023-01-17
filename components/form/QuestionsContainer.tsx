@@ -47,6 +47,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
     if (submitSuccess) {
       setQuestion('');
       setIndex(1);
+      setRequired(false);
     }
   }, [submitSuccess]);
 

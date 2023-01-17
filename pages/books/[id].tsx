@@ -7,7 +7,6 @@ import CommentsContainer from '@components/book/comments/commentsContainer';
 import Loading from '@components/loading';
 import DetailContainer from '@components/book/detailContainer';
 import QuestionsContainer from '@components/book/questionsContainer';
-import { useSession } from 'next-auth/react';
 
 export interface CommentWithReply extends Comment {
   replies: Reply[];
@@ -29,7 +28,6 @@ export interface BookDetailResponse {
 
 const BookDetail: NextPage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const { data, isLoading } = useSWR<BookDetailResponse>(
     router.query.id ? `/api/books/${router.query.id}` : null

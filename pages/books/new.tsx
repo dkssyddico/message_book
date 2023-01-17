@@ -12,7 +12,9 @@ import {
   hashtagsState,
   questionsState,
   thumbnailState,
-  dropState,
+  dropStatusState,
+  dropInfoState,
+  dropEndDateState,
 } from 'state/form';
 import ThumbnailContainer from '@components/form/thumbnailContainer';
 import imageUpload from '@libs/client/imageUpload';
@@ -21,6 +23,7 @@ import QuestionsContainer from '@components/form/questionsContainer';
 import DateContainer from '@components/form/dateContainer';
 import SubmitButton from '@components/UI/submitButton';
 import DropContainer from '@components/form/dropContainer';
+import { useRouter } from 'next/router';
 
 interface BookForm {
   title: string;
@@ -36,17 +39,23 @@ interface UploadBookMutation {
 }
 
 const NewBook: NextPage = () => {
-  const { register, handleSubmit, reset } = useForm<BookForm>();
+  const router = useRouter();
+  const { register, handleSubmit, reset } = useForm<BookForm>({
+    defaultValues: {
+      targetMessage: 0,
+    },
+  });
 
   const [startDate, setStartDate] = useRecoilState(startDateState);
   const [endDate, setEndDate] = useRecoilState(endDateState);
   const [thumbnail, setThumbnail] = useRecoilState(thumbnailState);
-
   // TODO: should register at least 1 hashtags
   const [hashtags, setHashtags] = useRecoilState(hashtagsState);
   const [questions, setQuestions] = useRecoilState(questionsState);
-  const [dropStatus, setDropStatus] = useRecoilState(dropState);
-  const [upload, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
+  const [dropStatus, setDropStatus] = useRecoilState(dropStatusState);
+  const [dropInfo, setDropInfo] = useRecoilState(dropInfoState);
+  const [dropEndDate, setDropEndDate] = useRecoilState(dropEndDateState);
+  const [uploadNewBook, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({
     title,
@@ -56,7 +65,7 @@ const NewBook: NextPage = () => {
     receiveFanArt,
   }: BookForm) => {
     // TODO: title이 이미 있을 때, 성공했을 때 메세지 보여줄 방법.
-    upload({
+    uploadNewBook({
       thumbnail: thumbnail ? await imageUpload(thumbnail) : 'no-thumbnail',
       targetMessage,
       receiveFanArt,
@@ -66,6 +75,9 @@ const NewBook: NextPage = () => {
       description,
       questions: [{ content: firstQuestion, required: true, index: 0 }, ...questions],
       hashtags: [...hashtags],
+      dropStatus,
+      dropInfo,
+      dropEndDate,
     });
   };
 
@@ -78,9 +90,18 @@ const NewBook: NextPage = () => {
       setHashtags([]);
       setQuestions([]);
       setDropStatus(false);
+      setDropInfo({
+        account: '',
+        accountOwner: '',
+        bank: '',
+        minAmount: 0,
+      });
+      setDropEndDate(new Date());
+      router.push('/');
     }
   }, [
     data,
+    router,
     reset,
     setStartDate,
     setEndDate,
@@ -88,6 +109,8 @@ const NewBook: NextPage = () => {
     setThumbnail,
     setHashtags,
     setQuestions,
+    setDropInfo,
+    setDropEndDate,
   ]);
 
   return (
@@ -109,17 +132,10 @@ const NewBook: NextPage = () => {
               type='text'
               placeholder='메세지북 제목을 입력해주세요.'
             />
-
             <label className='font-semibold' htmlFor='targetMessage'>
               목표 메세지 수
             </label>
-            <Input
-              type='number'
-              id='targetMessage'
-              register={register('targetMessage', {
-                min: { value: 0, message: '0개 이상으로 설정해야합니다.' },
-              })}
-            />
+            <Input type='number' id='targetMessage' min='0' register={register('targetMessage')} />
             <div className='w-full'>
               <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
               <DateContainer />
@@ -143,7 +159,7 @@ const NewBook: NextPage = () => {
               type='text'
             />
             <QuestionsContainer submitSuccess={data?.success} />
-            <DropContainer />
+            <DropContainer submitSuccess={data?.success} />
             <div className='space-y-2'>
               <h3 className='font-semibold'>추가 설정</h3>
               <div className='flex items-center'>

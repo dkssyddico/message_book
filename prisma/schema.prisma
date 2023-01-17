@@ -65,6 +65,7 @@ model Book {
   thumbnail     String
   title         String     @unique
   description   String
+  targetMessage Int
   startDate     DateTime
   endDate       DateTime
   questions     Question[]
@@ -78,24 +79,21 @@ model Book {
   favs          BookFav[]
   doesDrop      Boolean
   drop          Drop?
-  dropId        String?
 
   @@index([userId])
-  @@index([dropId])
 }
 
 model Drop {
-  id             String   @id @default(uuid())
-  bankName       String
-  account        String
-  accountOwner   String
-  minAmount      Int
-  endDate        DateTime
-  book           Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  bookId         String   @unique
-  checkedByAdmin Boolean
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String   @id @default(uuid())
+  bank         String
+  account      String
+  accountOwner String
+  minAmount    Int
+  endDate      DateTime
+  book         Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId       String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([bookId])
 }

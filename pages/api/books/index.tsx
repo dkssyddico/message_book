@@ -2,6 +2,34 @@ import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+type Question = {
+  content: string;
+  required: boolean;
+  index: number;
+};
+
+type DropInfo = {
+  account: string;
+  accountOwner: string;
+  minAmount: string;
+  bank: string;
+};
+
+type NewBookData = {
+  thumbnail: string;
+  targetMessage: string;
+  receiveFanArt: boolean;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  description: string;
+  questions: Question[];
+  hashtags: string[];
+  dropStatus: boolean;
+  dropInfo: DropInfo;
+  dropEndDate: Date;
+};
+
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === 'GET') {
     const books = await client.book.findMany();
@@ -29,8 +57,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     }
 
     const {
-      body: { thumbnail, title, startDate, endDate, description, questions, hashtags },
-    } = req;
+      thumbnail,
+      targetMessage,
+      receiveFanArt,
+      title,
+      startDate,
+      endDate,
+      description,
+      questions,
+      hashtags,
+      dropStatus,
+      dropInfo: { account, accountOwner, minAmount, bank },
+      dropEndDate,
+    }: NewBookData = req.body;
+
+    console.log(req.body);
 
     const titleExists = await client.book.findUnique({
       where: {
@@ -43,6 +84,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         data: {
           thumbnail,
           title,
+          targetMessage: +targetMessage,
           startDate,
           endDate,
           description,
@@ -51,6 +93,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
               data: questions,
             },
           },
+          receiveFanArt,
+          doesDrop: dropStatus,
           hashtags: {
             connectOrCreate: hashtags.map((tag: string) => ({
               create: { name: tag },
@@ -64,6 +108,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           },
         },
       });
+
+      if (dropStatus) {
+        await client.drop.create({
+          data: {
+            account,
+            accountOwner,
+            minAmount: +minAmount,
+            bank,
+            endDate: dropEndDate,
+            book: {
+              connect: {
+                id: book.id,
+              },
+            },
+          },
+        });
+      }
       return res.status(201).send({ success: true, book });
     } else {
       return res.status(400).send({ success: false, message: 'Title already exists' });
