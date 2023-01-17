@@ -37,7 +37,7 @@ function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
   }, [submitSuccess]);
 
   return (
-    <div className='flex w-full flex-col space-y-4'>
+    <div className='flex w-full flex-col space-y-2'>
       <label className='font-semibold' htmlFor='hashtag'>
         해시태그 {hashtags.length}/5
       </label>
@@ -76,7 +76,7 @@ function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
       />
       <button
         onClick={handleAddHashtag}
-        className='self-end rounded-full bg-black px-4  py-2 font-semibold text-white'
+        className='self-end rounded-full bg-black px-4 py-2 text-sm font-semibold text-white'
       >
         추가하기
       </button>

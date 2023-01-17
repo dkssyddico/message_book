@@ -14,9 +14,9 @@ export default function DateContainer() {
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='space-y-2'>
-        <label className='mb-10'>메세지북 시작일</label>
+    <div className='flex w-full flex-col gap-4 md:flex-row'>
+      <div className='space-y-1'>
+        <label className='text-sm text-gray-500'>메세지북 시작일</label>
         <DatePicker
           showPopperArrow={false}
           dateFormat='yyyy년 MM월 dd일'
@@ -29,8 +29,8 @@ export default function DateContainer() {
           className='w-full flex-1 rounded-full border-2 border-gray-300 p-2 text-center'
         />
       </div>
-      <div className='space-y-2'>
-        <label>메세지북 종료일</label>
+      <div className='space-y-1'>
+        <label className='text-sm text-gray-500'>메세지북 종료일</label>
         <DatePicker
           showPopperArrow={false}
           dateFormat='yyyy년 MM월 dd일'

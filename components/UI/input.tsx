@@ -14,7 +14,7 @@ export default function Input({
     <input
       {...register}
       {...inputAttributes}
-      className='w-full flex-1 rounded-full border-2 border-gray-300 px-4 py-2'
+      className='w-full rounded-full border-2 border-gray-300 px-4 py-2'
     />
   );
 }

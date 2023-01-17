@@ -24,6 +24,7 @@ import DateContainer from '@components/form/dateContainer';
 import SubmitButton from '@components/UI/submitButton';
 import DropContainer from '@components/form/dropContainer';
 import { useRouter } from 'next/router';
+import InputBox from '@components/new/inputBox';
 
 interface BookForm {
   title: string;
@@ -115,14 +116,14 @@ const NewBook: NextPage = () => {
 
   return (
     <Layout title='New Book'>
-      <div className='flex flex-col items-center p-8'>
+      <div className='flex flex-col items-center'>
         <h2 className='mb-8 text-2xl font-bold'>새로운 메세지북 제작하기!</h2>
-        <div className='w-1/2'>
-          <form
-            onSubmit={handleSubmit(onValid)}
-            className='flex w-full flex-col items-start space-y-6'
-          >
-            <ThumbnailContainer />
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className='flex w-full flex-col items-center space-y-6 md:w-2/3 lg:w-1/2'
+        >
+          <ThumbnailContainer />
+          <InputBox>
             <label className='font-semibold' htmlFor='title'>
               메세지북 제목
             </label>
@@ -132,14 +133,18 @@ const NewBook: NextPage = () => {
               type='text'
               placeholder='메세지북 제목을 입력해주세요.'
             />
+          </InputBox>
+          <InputBox>
             <label className='font-semibold' htmlFor='targetMessage'>
               목표 메세지 수
             </label>
             <Input type='number' id='targetMessage' min='0' register={register('targetMessage')} />
-            <div className='w-full'>
-              <h3 className='mb-4 font-semibold'>메세지북 기간</h3>
-              <DateContainer />
-            </div>
+          </InputBox>
+          <InputBox>
+            <h3 className='font-semibold'>메세지북 기한</h3>
+            <DateContainer />
+          </InputBox>
+          <InputBox>
             <label className='font-semibold' htmlFor='description'>
               상세 설명
             </label>
@@ -148,7 +153,9 @@ const NewBook: NextPage = () => {
               className='w-full rounded-lg border-2 border-gray-300 px-4 py-2'
               placeholder='메세지북에 대한 상세설명을 입력해주세요.'
             />
-            <HashtagContainer submitSuccess={data?.success} />
+          </InputBox>
+          <HashtagContainer submitSuccess={data?.success} />
+          <InputBox>
             <label className='font-semibold' htmlFor='firstQuestion'>
               필수 질문
             </label>
@@ -158,30 +165,30 @@ const NewBook: NextPage = () => {
               placeholder='메세지북에 필요한 질문을 입력해주세요! (ex: 선수에게 응원메세지를 남겨주세요!)'
               type='text'
             />
-            <QuestionsContainer submitSuccess={data?.success} />
-            <DropContainer submitSuccess={data?.success} />
-            <div className='space-y-2'>
-              <h3 className='font-semibold'>추가 설정</h3>
-              <div className='flex items-center'>
-                <input
-                  {...register('receiveFanArt')}
-                  type='checkbox'
-                  id='receiveFanArt'
-                  className='h-5 w-5 rounded-lg border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
-                  name='receiveFanArt'
-                />
-                <label className='ml-2' htmlFor='receiveFanArt'>
-                  팬아트를 받겠습니까?
-                </label>
-              </div>
+          </InputBox>
+          <QuestionsContainer submitSuccess={data?.success} />
+          <DropContainer submitSuccess={data?.success} />
+          <InputBox>
+            <h3 className='font-semibold'>추가 설정</h3>
+            <div className='flex items-center'>
+              <input
+                {...register('receiveFanArt')}
+                type='checkbox'
+                id='receiveFanArt'
+                className='h-4 w-4 rounded border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
+                name='receiveFanArt'
+              />
+              <label className='ml-2' htmlFor='receiveFanArt'>
+                팬아트를 받겠습니까?
+              </label>
             </div>
-            <SubmitButton
-              loading={loading}
-              loadingMessage='메세지북 등록 중'
-              submitMessage='새로운 메세지북 등록하기'
-            />
-          </form>
-        </div>
+          </InputBox>
+          <SubmitButton
+            loading={loading}
+            loadingMessage='메세지북 등록 중'
+            submitMessage='새로운 메세지북 등록하기'
+          />
+        </form>
       </div>
     </Layout>
   );

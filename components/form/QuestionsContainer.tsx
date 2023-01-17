@@ -52,7 +52,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
   }, [submitSuccess]);
 
   return (
-    <div className='flex w-full flex-col space-y-4'>
+    <div className='flex w-full flex-col space-y-2'>
       <label className='font-semibold' htmlFor='otherQuestion'>
         추가 질문(선택) {questions.length}/5
       </label>
@@ -110,9 +110,9 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
           checked={required}
           name='checkRequired'
           id='checkRequired'
-          className='h-5 w-5 rounded-lg border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
+          className='h-4 w-4 rounded border-2 border-indigo-200 text-indigo-300 focus:ring-0 focus:ring-offset-0'
         />
-        <label className='ml-2' htmlFor='checkRequired'>
+        <label className='ml-2 text-sm' htmlFor='checkRequired'>
           답변을 필수로 받을까요?
         </label>
       </div>
@@ -125,7 +125,7 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
       />
       <button
         onClick={handleAddQuestion}
-        className='self-end rounded-full bg-black px-4  py-2 font-semibold text-white'
+        className='self-end rounded-full bg-black px-4 py-2 text-sm font-semibold text-white'
       >
         추가하기
       </button>

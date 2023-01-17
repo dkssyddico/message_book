@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import { thumbnailState } from 'state/form';
+import { cls } from '@libs/client/utils';
 
 export default function ThumbnailContainer() {
   // TODO: should warn when no image file exists
@@ -34,9 +35,10 @@ export default function ThumbnailContainer() {
         <div className='h-60 w-80 bg-orange-100'></div>
       )}
       <button
-        className={`absolute rounded-full bg-black px-4  py-2 font-semibold text-white ${
+        className={cls(
+          'absolute rounded-full bg-black px-4 py-2  text-sm font-semibold text-white',
           file ? 'right-5 bottom-5 ' : 'mx-auto'
-        }`}
+        )}
         onClick={handleUpdateThumbnail}
       >
         {file ? '썸네일 변경' : '썸네일 등록'}
