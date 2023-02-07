@@ -48,7 +48,7 @@ export default function ThumbnailContainer() {
         accept='image/*'
         name='file'
         className='hidden'
-        ref={thumbnailInputRef}
+        // ref={thumbnailInputRef}
         onChange={handleThumbnailChange}
       />
     </div>

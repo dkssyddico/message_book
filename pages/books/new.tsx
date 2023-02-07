@@ -56,7 +56,9 @@ const NewBook: NextPage = () => {
   const [dropStatus, setDropStatus] = useRecoilState(dropStatusState);
   const [dropInfo, setDropInfo] = useRecoilState(dropInfoState);
   const [dropEndDate, setDropEndDate] = useRecoilState(dropEndDateState);
-  const [uploadNewBook, { loading, data }] = useMutation<UploadBookMutation>('/api/books');
+
+  const [uploadNewBook, { loading, data }] =
+    useMutation<UploadBookMutation>('/api/books');
 
   const onValid = async ({
     title,
@@ -74,7 +76,10 @@ const NewBook: NextPage = () => {
       startDate,
       endDate,
       description,
-      questions: [{ content: firstQuestion, required: true, index: 0 }, ...questions],
+      questions: [
+        { content: firstQuestion, required: true, index: 0 },
+        ...questions,
+      ],
       hashtags: [...hashtags],
       dropStatus,
       dropInfo,
@@ -138,7 +143,12 @@ const NewBook: NextPage = () => {
             <label className='font-semibold' htmlFor='targetMessage'>
               목표 메세지 수
             </label>
-            <Input type='number' id='targetMessage' min='0' register={register('targetMessage')} />
+            <Input
+              type='number'
+              id='targetMessage'
+              min='0'
+              register={register('targetMessage')}
+            />
           </InputBox>
           <InputBox>
             <h3 className='font-semibold'>메세지북 기한</h3>

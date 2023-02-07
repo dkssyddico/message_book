@@ -1,5 +1,4 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { DefaultSession } from 'next-auth';
 import Link from 'next/link';
 import { useRef } from 'react';
 import LoginModal from './modal/login/loginModal';
@@ -68,7 +67,9 @@ export default function Navbar() {
           )}
         </div>
       </header>
-      {!session && <LoginModal dialogRef={dialogRef} handleDialogClose={handleDialogClose} />}
+      {!session && (
+        <LoginModal ref={dialogRef} handleDialogClose={handleDialogClose} />
+      )}
     </>
   );
 }

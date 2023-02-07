@@ -7,6 +7,7 @@ import CommentsContainer from '@components/book/comments/commentsContainer';
 import Loading from '@components/loading';
 import DetailContainer from '@components/book/detailContainer';
 import QuestionsContainer from '@components/book/questionsContainer';
+import FanArtSubmitContainer from '@components/book/fanartSubmitContainer';
 
 export interface CommentWithReply extends Comment {
   replies: Reply[];
@@ -49,6 +50,7 @@ const BookDetail: NextPage = () => {
           hashtags={data?.book?.hashtags}
         />
         <QuestionsContainer questions={data?.book?.questions} />
+        {data?.book?.receiveFanArt && <FanArtSubmitContainer />}
         <CommentsContainer comments={data?.book?.comments} />
       </section>
     </Layout>

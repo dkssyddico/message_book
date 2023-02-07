@@ -25,9 +25,10 @@ export default function ReplyForm({ commentId }: ReplyFormProps) {
   } = router;
 
   const { register, handleSubmit, reset } = useForm<Form>();
-  const [submitReply, { loading, data: replyData }] = useMutation<SubmitReplyMutation>(
-    `/api/books/${bookId}/comments/${commentId}/replies`
-  );
+  const [submitReply, { loading, data: replyData }] =
+    useMutation<SubmitReplyMutation>(
+      `/api/books/${bookId}/comments/${commentId}/replies`
+    );
 
   const { mutate } = useSWR<BookDetailResponse>(`/api/books/${bookId}`);
 
@@ -48,12 +49,12 @@ export default function ReplyForm({ commentId }: ReplyFormProps) {
       <div className='relative'>
         <input
           {...register('content')}
-          className='w-full origin-center rounded-full border-2 border-b-gray-200 py-2 px-3 outline-none transition duration-300 ease-in-out focus:border-2 focus:border-orange-300'
+          className='w-full origin-center rounded-lg border-2 border-gray-200 py-2 px-3 outline-none transition duration-300 ease-in-out focus:border-2 focus:border-orange-300'
           type='text'
           placeholder='답글 쓰기'
         />
         <button
-          className='absolute bottom-1 right-[6px] rounded-full bg-orange-500 p-2 transition duration-300 ease-in-out hover:bg-orange-600'
+          className='absolute bottom-2 right-2 rounded-full bg-orange-500 p-1 transition duration-300 ease-in-out hover:bg-orange-600'
           type='submit'
         >
           {loading ? (
