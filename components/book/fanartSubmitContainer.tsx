@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import imageUpload from '@libs/client/imageUpload';
 import { useRouter } from 'next/router';
+import Container from './container';
 
 interface FanArtForm {
   fanArt: File;
@@ -38,10 +39,7 @@ export default function FanArtSubmitContainer() {
   };
 
   return (
-    <section className='w-full overflow-hidden md:w-3/4'>
-      <div className='flex h-10 items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-yellow-400 font-semibold'>
-        <span>팬아트 제출</span>
-      </div>
+    <Container title='팬아트 제출'>
       {/* TODO: JPEG, PNG 이런 형식만 받는다고 써놓기 */}
       <form
         onSubmit={handleSubmit(onValid)}
@@ -61,6 +59,6 @@ export default function FanArtSubmitContainer() {
           loadingMessage='팬아트 제출 중'
         />
       </form>
-    </section>
+    </Container>
   );
 }
