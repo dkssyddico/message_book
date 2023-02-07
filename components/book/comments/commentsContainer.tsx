@@ -7,7 +7,9 @@ export interface CommentsContainerProps {
   comments: CommentWithReply[] | undefined;
 }
 
-export default function CommentsContainer({ comments }: CommentsContainerProps) {
+export default function CommentsContainer({
+  comments,
+}: CommentsContainerProps) {
   const router = useRouter();
   const {
     query: { id: bookId },

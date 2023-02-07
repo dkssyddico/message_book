@@ -20,9 +20,8 @@ interface CommentFormProps {
 
 export default function CommentForm({ bookId }: CommentFormProps) {
   const { register, handleSubmit, reset } = useForm<Form>();
-  const [submitComment, { loading, data: commentData }] = useMutation<SubmitCommentMutation>(
-    `/api/books/${bookId}/comments`
-  );
+  const [submitComment, { loading, data: commentData }] =
+    useMutation<SubmitCommentMutation>(`/api/books/${bookId}/comments`);
 
   const { mutate } = useSWR<BookDetailResponse>(`/api/books/${bookId}`);
 
@@ -43,12 +42,12 @@ export default function CommentForm({ bookId }: CommentFormProps) {
       <div className='relative'>
         <input
           {...register('content')}
-          className='w-full origin-center border-b-2 border-b-gray-200 bg-white pb-2 outline-none transition duration-300 ease-in-out  focus:border-b-2 focus:border-orange-300'
+          className='w-full origin-center rounded-lg border-2 border-gray-200 bg-white pb-2 outline-none transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
           type='text'
           placeholder='댓글 쓰기'
         />
         <button
-          className='absolute bottom-2 -right-1 rounded-full bg-orange-500 p-2 transition duration-300 ease-in-out hover:bg-orange-600'
+          className='absolute bottom-2 right-2 rounded-full bg-orange-500 p-1 transition duration-300 ease-in-out hover:bg-orange-600'
           type='submit'
         >
           {loading ? (
