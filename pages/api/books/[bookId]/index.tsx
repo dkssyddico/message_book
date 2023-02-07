@@ -2,7 +2,10 @@ import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
   if (req.method === 'GET') {
     const {
       query: { bookId },
@@ -15,6 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       include: {
         questions: true,
         hashtags: true,
+        drop: true,
         comments: {
           orderBy: {
             createdAt: 'asc',

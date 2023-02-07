@@ -41,10 +41,7 @@ export default function QuestionsContainer({
 
   return (
     <Container title='질문 목록'>
-      <form
-        onSubmit={handleSubmit(onValid)}
-        className='flex flex-col space-y-8 rounded-bl-2xl rounded-br-2xl  border-2 border-t-0 p-8 '
-      >
+      <form onSubmit={handleSubmit(onValid)} className='space-y-8'>
         {questions
           ?.sort((a, b) => a.index - b.index)
           .map((question) => (

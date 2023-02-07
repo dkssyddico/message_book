@@ -18,7 +18,7 @@ export default function CommentsContainer({
 
   return (
     <Container title='댓글'>
-      <div className='space-y-8 rounded-bl-2xl rounded-br-2xl border-2 border-t-0 p-8 '>
+      <div className='space-y-8'>
         <CommentsList comments={comments} />
         <CommentForm bookId={bookId + ''} />
       </div>

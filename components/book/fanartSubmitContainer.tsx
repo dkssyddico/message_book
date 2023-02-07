@@ -41,10 +41,7 @@ export default function FanArtSubmitContainer() {
   return (
     <Container title='팬아트 제출'>
       {/* TODO: JPEG, PNG 이런 형식만 받는다고 써놓기 */}
-      <form
-        onSubmit={handleSubmit(onValid)}
-        className='flex flex-col space-y-8 rounded-bl-2xl rounded-br-2xl  border-2 border-t-0 p-8 '
-      >
+      <form className='space-y-8' onSubmit={handleSubmit(onValid)}>
         <input
           {...register('fanArt')}
           type='file'
