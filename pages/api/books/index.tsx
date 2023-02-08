@@ -30,7 +30,10 @@ type NewBookData = {
   dropEndDate: Date;
 };
 
-async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
   if (req.method === 'GET') {
     const books = await client.book.findMany();
     return res.status(200).send({ success: true, books });
@@ -53,7 +56,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     });
 
     if (!session) {
-      return res.status(404).send({ success: false, message: 'user not found' });
+      return res
+        .status(404)
+        .send({ success: false, message: 'user not found' });
     }
 
     const {
@@ -70,8 +75,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       dropInfo: { account, accountOwner, minAmount, bank },
       dropEndDate,
     }: NewBookData = req.body;
-
-    console.log(req.body);
 
     const titleExists = await client.book.findUnique({
       where: {
@@ -127,7 +130,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       }
       return res.status(201).send({ success: true, book });
     } else {
-      return res.status(400).send({ success: false, message: 'Title already exists' });
+      return res
+        .status(400)
+        .send({ success: false, message: 'Title already exists' });
     }
   }
 }

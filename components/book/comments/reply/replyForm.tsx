@@ -49,7 +49,7 @@ export default function ReplyForm({ commentId }: ReplyFormProps) {
       <div className='relative'>
         <input
           {...register('content')}
-          className='w-full origin-center rounded-lg border-2 border-gray-200 py-2 px-3 outline-none transition duration-300 ease-in-out focus:border-2 focus:border-orange-300'
+          className='w-full origin-center rounded-lg border-2 border-gray-200 py-2 px-3 outline-none transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
           type='text'
           placeholder='답글 쓰기'
         />

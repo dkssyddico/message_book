@@ -7,6 +7,27 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === 'GET') {
+    const sessionToken = req.cookies['next-auth.session-token'];
+
+    if (!sessionToken) {
+      return res.status(401).send({ success: false, message: 'Please log in' });
+    }
+
+    const session = await client.session.findUnique({
+      where: {
+        sessionToken,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!session) {
+      return res
+        .status(404)
+        .send({ success: false, message: 'user not found' });
+    }
+
     const {
       query: { bookId },
     } = req;
@@ -27,6 +48,7 @@ async function handler(
             _count: {
               select: {
                 replies: true,
+                likes: true,
               },
             },
             replies: {
@@ -34,18 +56,20 @@ async function handler(
                 createdAt: 'asc',
               },
             },
+            likes: true,
           },
         },
       },
     });
 
-    const questions = await client.question.findMany({
+    const likedComments = await client.commentLike.findMany({
       where: {
-        bookId: book?.id,
+        userId: session.user.id,
+        bookId: bookId + '',
       },
     });
 
-    return res.status(200).send({ success: true, book, questions });
+    return res.status(200).send({ success: true, book, likedComments });
   }
 }
 

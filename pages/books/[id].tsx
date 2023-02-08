@@ -1,4 +1,12 @@
-import { Book, Comment, Drop, Hashtag, Question, Reply } from '@prisma/client';
+import {
+  Book,
+  Comment,
+  CommentLike,
+  Drop,
+  Hashtag,
+  Question,
+  Reply,
+} from '@prisma/client';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -12,8 +20,10 @@ import DropContainer from '@components/book/dropContainer';
 
 export interface CommentWithReply extends Comment {
   replies: Reply[];
+  likes: CommentLike[];
   _count: {
     replies: number;
+    likes: number;
   };
 }
 
@@ -27,6 +37,7 @@ interface BookWithDetails extends Book {
 export interface BookDetailResponse {
   success: boolean;
   book: BookWithDetails;
+  likedComments: CommentLike[];
 }
 
 const BookDetail: NextPage = () => {
@@ -53,7 +64,10 @@ const BookDetail: NextPage = () => {
         <QuestionsContainer questions={data?.book?.questions} />
         {data?.book?.receiveFanArt && <FanArtSubmitContainer />}
         {data?.book?.doesDrop && <DropContainer drop={data?.book?.drop} />}
-        <CommentsContainer comments={data?.book?.comments} />
+        <CommentsContainer
+          likedComments={data?.likedComments}
+          comments={data?.book?.comments}
+        />
       </section>
     </Layout>
   );
