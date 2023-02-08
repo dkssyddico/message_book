@@ -55,6 +55,13 @@ async function handler(
               orderBy: {
                 createdAt: 'asc',
               },
+              include: {
+                _count: {
+                  select: {
+                    likes: true,
+                  },
+                },
+              },
             },
             likes: true,
           },
@@ -69,7 +76,18 @@ async function handler(
       },
     });
 
-    return res.status(200).send({ success: true, book, likedComments });
+    const likedReplies = await client.replyLike.findMany({
+      where: {
+        userId: session.user.id,
+        bookId: bookId + '',
+      },
+    });
+
+    console.log(likedReplies);
+
+    return res
+      .status(200)
+      .send({ success: true, book, likedComments, likedReplies });
   }
 }
 

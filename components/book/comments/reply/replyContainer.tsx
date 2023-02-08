@@ -1,19 +1,23 @@
 import React from 'react';
-import useSWR from 'swr';
-import { Reply } from '@prisma/client';
-import { useRouter } from 'next/router';
 import ReplyForm from './replyForm';
 import ReplyList from './replyList';
+import { ReplyWithLikes } from 'pages/books/[id]';
+import { ReplyLike } from '@prisma/client';
 
 interface ReplyContainerProps {
   commentId: string;
-  replies: Reply[];
+  replies: ReplyWithLikes[];
+  likedReplies: ReplyLike[] | undefined;
 }
 
-export default function ReplyContainer({ commentId, replies }: ReplyContainerProps) {
+export default function ReplyContainer({
+  commentId,
+  replies,
+  likedReplies,
+}: ReplyContainerProps) {
   return (
     <div className='space-y-4 pl-10'>
-      <ReplyList replies={replies} />
+      <ReplyList likedReplies={likedReplies} replies={replies} />
       <ReplyForm commentId={commentId} />
     </div>
   );

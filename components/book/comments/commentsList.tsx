@@ -1,15 +1,17 @@
-import { CommentLike } from '@prisma/client';
+import { CommentLike, ReplyLike } from '@prisma/client';
 import { CommentWithReply } from 'pages/books/[id]';
 import CommentCard from './commentCard';
 
 interface CommentsListProps {
   comments: CommentWithReply[] | undefined;
   likedComments: CommentLike[] | undefined;
+  likedReplies: ReplyLike[] | undefined;
 }
 
 export default function CommentsList({
   comments,
   likedComments,
+  likedReplies,
 }: CommentsListProps) {
   const likedCommentsIDArray = likedComments?.map(
     (comment) => comment.commentId
@@ -25,6 +27,7 @@ export default function CommentsList({
                 ? likedCommentsIDArray?.includes(comment.id)
                 : false
             }
+            likedReplies={likedReplies}
             key={comment.id}
             comment={comment}
           />

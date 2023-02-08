@@ -6,6 +6,7 @@ import {
   Hashtag,
   Question,
   Reply,
+  ReplyLike,
 } from '@prisma/client';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -18,8 +19,14 @@ import QuestionsContainer from '@components/book/questionsContainer';
 import FanArtSubmitContainer from '@components/book/fanArtSubmitContainer';
 import DropContainer from '@components/book/dropContainer';
 
+export interface ReplyWithLikes extends Reply {
+  _count: {
+    likes: number;
+  };
+}
+
 export interface CommentWithReply extends Comment {
-  replies: Reply[];
+  replies: ReplyWithLikes[];
   likes: CommentLike[];
   _count: {
     replies: number;
@@ -38,6 +45,7 @@ export interface BookDetailResponse {
   success: boolean;
   book: BookWithDetails;
   likedComments: CommentLike[];
+  likedReplies: ReplyLike[];
 }
 
 const BookDetail: NextPage = () => {
@@ -65,6 +73,7 @@ const BookDetail: NextPage = () => {
         {data?.book?.receiveFanArt && <FanArtSubmitContainer />}
         {data?.book?.doesDrop && <DropContainer drop={data?.book?.drop} />}
         <CommentsContainer
+          likedReplies={data?.likedReplies}
           likedComments={data?.likedComments}
           comments={data?.book?.comments}
         />

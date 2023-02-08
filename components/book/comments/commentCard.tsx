@@ -6,10 +6,12 @@ import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
 import { BookDetailResponse } from 'pages/books/[id]';
 import useSWR from 'swr';
+import { ReplyLike } from '@prisma/client';
 
 interface CommentCardProps {
   comment: CommentWithReply;
   isLiked: boolean;
+  likedReplies: ReplyLike[] | undefined;
 }
 
 interface toggleLikeMutation {
@@ -24,6 +26,7 @@ export default function CommentCard({
     replies,
     _count: { replies: replyCount, likes: likesCount },
   },
+  likedReplies,
   isLiked,
 }: CommentCardProps) {
   const router = useRouter();
@@ -99,7 +102,13 @@ export default function CommentCard({
         </button>
       </div>
       {/* re-comments sections */}
-      {openReply && <ReplyContainer replies={replies} commentId={id} />}
+      {openReply && (
+        <ReplyContainer
+          likedReplies={likedReplies}
+          replies={replies}
+          commentId={id}
+        />
+      )}
     </li>
   );
 }

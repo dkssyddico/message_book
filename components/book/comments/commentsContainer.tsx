@@ -1,4 +1,4 @@
-import { CommentLike } from '@prisma/client';
+import { CommentLike, ReplyLike } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { CommentWithReply } from 'pages/books/[id]';
 import Container from '../container';
@@ -8,11 +8,13 @@ import CommentsList from './commentsList';
 export interface CommentsContainerProps {
   comments: CommentWithReply[] | undefined;
   likedComments: CommentLike[] | undefined;
+  likedReplies: ReplyLike[] | undefined;
 }
 
 export default function CommentsContainer({
   comments,
   likedComments,
+  likedReplies,
 }: CommentsContainerProps) {
   const router = useRouter();
   const {
@@ -22,7 +24,11 @@ export default function CommentsContainer({
   return (
     <Container title='댓글'>
       <div className='space-y-8'>
-        <CommentsList likedComments={likedComments} comments={comments} />
+        <CommentsList
+          likedReplies={likedReplies}
+          likedComments={likedComments}
+          comments={comments}
+        />
         <CommentForm bookId={bookId + ''} />
       </div>
     </Container>

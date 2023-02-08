@@ -81,7 +81,8 @@ model Book {
   favs          BookFav[]
   doesDrop      Boolean
   drop          Drop?
-  CommentLike   CommentLike[]
+  commentLikes  CommentLike[]
+  replyLikes    ReplyLike[]
 
   @@index([userId])
 }
@@ -197,13 +198,12 @@ model Reply {
 }
 
 model CommentLike {
-  id        String  @id @default(uuid())
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId String
-  book      Book    @relation(fields: [bookId], references: [id], onDelete: Cascade)
-
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   bookId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -221,7 +221,10 @@ model ReplyLike {
   replyId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
 
   @@index([userId])
+  @@index([bookId])
   @@index([replyId])
 }
