@@ -1,13 +1,12 @@
-import { ResponseType } from '@libs/client/withHandler';
+import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-auth';
 
-export default async function getSession(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     const sessionToken = req.cookies['next-auth.session-token'];
 
     if (!sessionToken) {
@@ -29,6 +28,8 @@ export default async function getSession(
         .send({ success: false, message: 'user not found' });
     }
 
-    return session;
+    return res.status(201).send({ success: true, userId: session.userId });
   }
 }
+
+export default withHandler({ methods: ['GET'], handler });

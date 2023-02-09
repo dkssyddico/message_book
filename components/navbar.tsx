@@ -1,6 +1,6 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { useRef } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import Link from 'next/link';
 import LoginModal from './modal/login/loginModal';
 
 export default function Navbar() {
