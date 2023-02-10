@@ -56,6 +56,7 @@ async function handler(
                 createdAt: 'asc',
               },
               include: {
+                likes: true,
                 _count: {
                   select: {
                     likes: true,
@@ -69,25 +70,7 @@ async function handler(
       },
     });
 
-    const likedComments = await client.commentLike.findMany({
-      where: {
-        userId: session.user.id,
-        bookId: bookId + '',
-      },
-    });
-
-    const likedReplies = await client.replyLike.findMany({
-      where: {
-        userId: session.user.id,
-        bookId: bookId + '',
-      },
-    });
-
-    console.log(likedReplies);
-
-    return res
-      .status(200)
-      .send({ success: true, book, likedComments, likedReplies });
+    return res.status(200).send({ success: true, book });
   }
 }
 

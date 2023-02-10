@@ -7,7 +7,6 @@ import { cls, formatAgo } from '@libs/client/utils';
 import ReplyContainer from './reply/replyContainer';
 import { CommentWithReply } from 'pages/books/[id]';
 import { BookDetailResponse } from 'pages/books/[id]';
-import { ReplyLike } from '@prisma/client';
 
 interface CommentCardProps {
   comment: CommentWithReply;

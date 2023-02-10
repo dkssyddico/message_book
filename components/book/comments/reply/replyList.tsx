@@ -1,4 +1,3 @@
-import { ReplyLike } from '@prisma/client';
 import { ReplyWithLikes } from 'pages/books/[id]';
 import ReplyCard from './replyCard';
 
@@ -7,6 +6,8 @@ interface ReplyListProps {
 }
 
 export default function ReplyList({ replies }: ReplyListProps) {
+  console.log(replies);
+
   return (
     <ul className='space-y-2'>
       {replies &&

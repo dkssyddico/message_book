@@ -20,6 +20,7 @@ import FanArtSubmitContainer from '@components/book/fanArtSubmitContainer';
 import DropContainer from '@components/book/dropContainer';
 
 export interface ReplyWithLikes extends Reply {
+  likes: ReplyLike[];
   _count: {
     likes: number;
   };
@@ -44,8 +45,6 @@ interface BookWithDetails extends Book {
 export interface BookDetailResponse {
   success: boolean;
   book: BookWithDetails;
-  likedComments: CommentLike[];
-  likedReplies: ReplyLike[];
 }
 
 const BookDetail: NextPage = () => {
@@ -72,11 +71,7 @@ const BookDetail: NextPage = () => {
         <QuestionsContainer questions={data?.book?.questions} />
         {data?.book?.receiveFanArt && <FanArtSubmitContainer />}
         {data?.book?.doesDrop && <DropContainer drop={data?.book?.drop} />}
-        <CommentsContainer
-          likedReplies={data?.likedReplies}
-          likedComments={data?.likedComments}
-          comments={data?.book?.comments}
-        />
+        <CommentsContainer comments={data?.book?.comments} />
       </section>
     </Layout>
   );

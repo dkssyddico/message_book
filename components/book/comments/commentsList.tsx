@@ -1,16 +1,11 @@
-import { CommentLike, ReplyLike } from '@prisma/client';
 import { CommentWithReply } from 'pages/books/[id]';
 import CommentCard from './commentCard';
 
 interface CommentsListProps {
   comments: CommentWithReply[] | undefined;
-  likedReplies: ReplyLike[] | undefined;
 }
 
-export default function CommentsList({
-  comments,
-  likedReplies,
-}: CommentsListProps) {
+export default function CommentsList({ comments }: CommentsListProps) {
   console.log(comments);
 
   return (
