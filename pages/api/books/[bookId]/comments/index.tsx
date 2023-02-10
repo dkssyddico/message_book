@@ -1,8 +1,18 @@
 import withHandler, { ResponseType } from '@libs/client/withHandler';
 import client from '@libs/server/client';
+import getSession from '@libs/server/getSession';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
+  const session = await getSession(req, res);
+
+  if (!session) {
+    return res.status(404).send({ success: false, message: 'user not found' });
+  }
+
   if (req.method === 'POST') {
     const {
       body: { content, bookId },
@@ -10,6 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
 
     const comment = await client.comment.create({
       data: {
+        userId: session.user.id,
         content,
         bookId: bookId + '',
       },

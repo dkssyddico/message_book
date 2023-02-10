@@ -17,6 +17,8 @@ export default function CommentsList({
     (comment) => comment.commentId
   );
 
+  console.log(comments);
+
   return (
     <ul className='space-y-4'>
       {comments && comments.length > 0 ? (
