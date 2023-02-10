@@ -4,35 +4,20 @@ import CommentCard from './commentCard';
 
 interface CommentsListProps {
   comments: CommentWithReply[] | undefined;
-  likedComments: CommentLike[] | undefined;
   likedReplies: ReplyLike[] | undefined;
 }
 
 export default function CommentsList({
   comments,
-  likedComments,
   likedReplies,
 }: CommentsListProps) {
-  const likedCommentsIDArray = likedComments?.map(
-    (comment) => comment.commentId
-  );
-
   console.log(comments);
 
   return (
     <ul className='space-y-4'>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
-          <CommentCard
-            isLiked={
-              likedCommentsIDArray
-                ? likedCommentsIDArray?.includes(comment.id)
-                : false
-            }
-            likedReplies={likedReplies}
-            key={comment.id}
-            comment={comment}
-          />
+          <CommentCard key={comment.id} comment={comment} />
         ))
       ) : (
         <p>아직 등록된 댓글이 없습니다!</p>

@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import useMutation from '@libs/client/useMutation';
+import useUser from '@libs/client/useUser';
 import { cls, formatAgo } from '@libs/client/utils';
 import ReplyContainer from './reply/replyContainer';
 import { CommentWithReply } from 'pages/books/[id]';
-import useMutation from '@libs/client/useMutation';
-import { useRouter } from 'next/router';
 import { BookDetailResponse } from 'pages/books/[id]';
-import useSWR from 'swr';
 import { ReplyLike } from '@prisma/client';
 
 interface CommentCardProps {
   comment: CommentWithReply;
-  isLiked: boolean;
-  likedReplies: ReplyLike[] | undefined;
 }
 
 interface toggleLikeMutation {
@@ -24,12 +23,16 @@ export default function CommentCard({
     content,
     createdAt,
     replies,
+    userId,
+    likes,
     _count: { replies: replyCount, likes: likesCount },
   },
-  likedReplies,
-  isLiked,
 }: CommentCardProps) {
   const router = useRouter();
+  const loggedInUser = useUser();
+
+  const likesArr = likes.map((like) => like.userId);
+
   const [openReply, setOpenReply] = useState(false);
 
   const [toggleLike, { data }] = useMutation<toggleLikeMutation>(
@@ -47,6 +50,8 @@ export default function CommentCard({
   const handleReplyOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
     setOpenReply((prev) => !prev);
   };
+
+  const handleCommentDelete = () => {};
 
   useEffect(() => {
     if (data && data.success) {
@@ -76,7 +81,9 @@ export default function CommentCard({
             strokeLinejoin='round'
             className={cls(
               'feather feather-thumbs-up h-4 w-4',
-              isLiked ? 'fill-orange-400 text-yellow-400' : ''
+              likesArr.includes(loggedInUser.userId)
+                ? 'fill-orange-400 text-yellow-400'
+                : ''
             )}
           >
             <path d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'></path>
@@ -100,15 +107,30 @@ export default function CommentCard({
           </svg>
           <span>{replyCount}</span>
         </button>
+        {userId === loggedInUser.userId && (
+          <button>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              className='feather feather-trash-2 h-4 w-4'
+            >
+              <polyline points='3 6 5 6 21 6'></polyline>
+              <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path>
+              <line x1='10' y1='11' x2='10' y2='17'></line>
+              <line x1='14' y1='11' x2='14' y2='17'></line>
+            </svg>
+          </button>
+        )}
       </div>
       {/* re-comments sections */}
-      {openReply && (
-        <ReplyContainer
-          likedReplies={likedReplies}
-          replies={replies}
-          commentId={id}
-        />
-      )}
+      {openReply && <ReplyContainer replies={replies} commentId={id} />}
     </li>
   );
 }

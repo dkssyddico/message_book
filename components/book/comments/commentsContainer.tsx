@@ -7,13 +7,11 @@ import CommentsList from './commentsList';
 
 export interface CommentsContainerProps {
   comments: CommentWithReply[] | undefined;
-  likedComments: CommentLike[] | undefined;
   likedReplies: ReplyLike[] | undefined;
 }
 
 export default function CommentsContainer({
   comments,
-  likedComments,
   likedReplies,
 }: CommentsContainerProps) {
   const router = useRouter();
@@ -24,11 +22,7 @@ export default function CommentsContainer({
   return (
     <Container title='댓글'>
       <div className='space-y-8'>
-        <CommentsList
-          likedReplies={likedReplies}
-          likedComments={likedComments}
-          comments={comments}
-        />
+        <CommentsList likedReplies={likedReplies} comments={comments} />
         <CommentForm bookId={bookId + ''} />
       </div>
     </Container>

@@ -8,7 +8,6 @@ import useSWR from 'swr';
 
 interface ReplyCardProp {
   reply: ReplyWithLikes;
-  isLiked: boolean;
 }
 
 interface toggleLikeMutation {
@@ -22,7 +21,6 @@ export default function ReplyCard({
     createdAt,
     _count: { likes: likesCount },
   },
-  isLiked,
 }: ReplyCardProp) {
   const router = useRouter();
 
@@ -69,8 +67,8 @@ export default function ReplyCard({
               strokeLinecap='round'
               strokeLinejoin='round'
               className={cls(
-                'feather feather-thumbs-up h-4 w-4',
-                isLiked ? 'fill-orange-400 text-yellow-400' : ''
+                'feather feather-thumbs-up h-4 w-4'
+                // isLiked ? 'fill-orange-400 text-yellow-400' : ''
               )}
             >
               <path d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'></path>

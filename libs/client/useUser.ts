@@ -9,5 +9,5 @@ interface UserResponse {
 export default function useUser() {
   const { data, error } = useSWR<UserResponse>('/api/users/me');
 
-  return { userId: data?.userId };
+  return data ? { userId: data.userId } : { userId: '' };
 }
