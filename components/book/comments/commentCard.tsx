@@ -11,7 +11,11 @@ interface CommentCardProps {
   comment: CommentWithReply;
 }
 
-interface toggleLikeMutation {
+interface ToggleLikeMutation {
+  success: boolean;
+}
+
+interface DeleteCommentMutation {
   success: boolean;
 }
 
@@ -21,9 +25,14 @@ export default function CommentCard({
   const router = useRouter();
   const [openReply, setOpenReply] = useState(false);
 
-  const [toggleLike, { data }] = useMutation<toggleLikeMutation>(
+  const [toggleLike, { data }] = useMutation<ToggleLikeMutation>(
     `/api/comments/${id}/like`
   );
+
+  const [deleteComment, { data: deleteData }] =
+    useMutation<DeleteCommentMutation>(`
+    /api/comments/${id}
+  `);
 
   const { mutate } = useSWR<BookDetailResponse>(
     `/api/books/${router.query.id}`
@@ -37,13 +46,21 @@ export default function CommentCard({
     setOpenReply((prev) => !prev);
   };
 
-  const handleCommentDelete = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const handleCommentDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    deleteComment({});
+  };
 
   useEffect(() => {
     if (data && data.success) {
       mutate();
     }
   }, [data, mutate]);
+
+  useEffect(() => {
+    if (deleteData && deleteData.success) {
+      mutate();
+    }
+  });
 
   return (
     <Comment

@@ -30,6 +30,7 @@ export default function Comment({
   children,
   handleClickLike,
   handleReplyOpen,
+  handleCommentDelete,
   openReply,
   count: { replies: repliesCount, likes: likesCount },
 }: CommentProps) {
@@ -87,7 +88,7 @@ export default function Comment({
           </button>
         )}
         {userId === loggedInUser.userId && (
-          <button>
+          <button onClick={handleCommentDelete}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'

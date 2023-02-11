@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
-import useUser from '@libs/client/useUser';
-import { cls, formatAgo } from '@libs/client/utils';
 import { ReplyWithLikes } from 'pages/books/[id]';
 import { BookDetailResponse } from 'pages/books/[id]';
 import Comment from '@components/UI/comment';
@@ -12,7 +10,11 @@ interface ReplyCardProp {
   reply: ReplyWithLikes;
 }
 
-interface toggleLikeMutation {
+interface ToggleLikeMutation {
+  success: boolean;
+}
+
+interface DeleteReplyMutation {
   success: boolean;
 }
 
@@ -25,21 +27,33 @@ export default function ReplyCard({
     `/api/books/${router.query.id}`
   );
 
-  const [toggleLike, { data }] = useMutation<toggleLikeMutation>(
+  const [toggleLike, { data }] = useMutation<ToggleLikeMutation>(
     `/api/replies/${id}/like`
   );
+
+  const [deleteReply, { data: deleteData }] = useMutation<DeleteReplyMutation>(`
+  /api/replies/${id}
+`);
 
   const handleClickLike = () => {
     toggleLike({ bookId: router.query.id });
   };
 
-  const handleCommentDelete = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const handleReplyDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    deleteReply({});
+  };
 
   useEffect(() => {
     if (data && data.success) {
       mutate();
     }
   }, [data, mutate]);
+
+  useEffect(() => {
+    if (deleteData && deleteData.success) {
+      mutate();
+    }
+  });
 
   return (
     <Comment
@@ -50,7 +64,7 @@ export default function ReplyCard({
       content={content}
       createdAt={createdAt}
       handleClickLike={handleClickLike}
-      handleCommentDelete={handleCommentDelete}
+      handleCommentDelete={handleReplyDelete}
       count={count}
     />
   );
