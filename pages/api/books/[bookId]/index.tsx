@@ -40,6 +40,7 @@ async function handler(
         questions: true,
         hashtags: true,
         drop: true,
+        favs: true,
         comments: {
           orderBy: {
             createdAt: 'asc',

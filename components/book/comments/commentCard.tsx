@@ -25,9 +25,8 @@ export default function CommentCard({
   const router = useRouter();
   const [openReply, setOpenReply] = useState(false);
 
-  const [toggleLike, { data }] = useMutation<ToggleLikeMutation>(
-    `/api/comments/${id}/like`
-  );
+  const [toggleLike, { data: toggleLikeData }] =
+    useMutation<ToggleLikeMutation>(`/api/comments/${id}/like`);
 
   const [deleteComment, { data: deleteData }] =
     useMutation<DeleteCommentMutation>(`
@@ -51,10 +50,10 @@ export default function CommentCard({
   };
 
   useEffect(() => {
-    if (data && data.success) {
+    if (toggleLikeData && toggleLikeData.success) {
       mutate();
     }
-  }, [data, mutate]);
+  }, [toggleLikeData, mutate]);
 
   useEffect(() => {
     if (deleteData && deleteData.success) {

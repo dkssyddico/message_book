@@ -1,5 +1,6 @@
 import {
   Book,
+  BookFav,
   Comment,
   CommentLike,
   Drop,
@@ -40,6 +41,7 @@ interface BookWithDetails extends Book {
   comments: CommentWithReply[];
   questions: Question[];
   drop: Drop;
+  favs: BookFav[];
 }
 
 export interface BookDetailResponse {
@@ -54,27 +56,33 @@ const BookDetail: NextPage = () => {
     router.query.id ? `/api/books/${router.query.id}` : null
   );
 
-  if (isLoading) return <Loading />;
+  console.log(data);
 
-  return (
-    <Layout title={data?.book?.title!}>
-      <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
-        {/* TODO: 1:1 문의 -> floating button으로 처리 */}
-        <DetailContainer
-          thumbnail={data?.book?.thumbnail}
-          title={data?.book?.title}
-          startDate={data?.book?.startDate}
-          endDate={data?.book?.endDate}
-          description={data?.book?.description}
-          hashtags={data?.book?.hashtags}
-        />
-        <QuestionsContainer questions={data?.book?.questions} />
-        {data?.book?.receiveFanArt && <FanArtSubmitContainer />}
-        {data?.book?.doesDrop && <DropContainer drop={data?.book?.drop} />}
-        <CommentsContainer comments={data?.book?.comments} />
-      </section>
-    </Layout>
-  );
+  if (!data) {
+    // TODO: 에러처리 if(error) return <Error />
+    return <Loading />;
+  } else {
+    return (
+      <Layout title={data?.book?.title!}>
+        <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
+          {/* TODO: 1:1 문의 -> floating button으로 처리 */}
+          <DetailContainer
+            thumbnail={data.book.thumbnail}
+            title={data.book.title}
+            startDate={data.book.startDate}
+            endDate={data.book.endDate}
+            description={data.book.description}
+            hashtags={data.book.hashtags}
+            favs={data.book.favs}
+          />
+          <QuestionsContainer questions={data.book.questions} />
+          {data.book.receiveFanArt && <FanArtSubmitContainer />}
+          {data.book.doesDrop && <DropContainer drop={data.book.drop} />}
+          <CommentsContainer comments={data.book.comments} />
+        </section>
+      </Layout>
+    );
+  }
 };
 
 export default BookDetail;

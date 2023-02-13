@@ -1,24 +1,76 @@
-export default function LikeAndShare() {
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import useSWR from 'swr';
+import useMutation from '@libs/client/useMutation';
+import { BookDetailResponse } from 'pages/books/[id]';
+import { cls } from '@libs/client/utils';
+import { BookFav } from '@prisma/client';
+import useUser from '@libs/client/useUser';
+
+interface ToggleFavMutation {
+  success: boolean;
+}
+
+interface LikeAndShareProps {
+  favs: BookFav[];
+}
+
+export default function LikeAndShare({ favs }: LikeAndShareProps) {
+  const user = useUser();
+  const favsUserArr = favs?.map((fav) => fav.userId);
+
+  console.log(favsUserArr?.includes(user.userId));
+
+  const router = useRouter();
+
+  const { mutate } = useSWR<BookDetailResponse>(
+    `/api/books/${router.query.id}`
+  );
+
+  const [toggleFav, { data }] = useMutation<ToggleFavMutation>(`
+  /api/books/${router.query.id}/favs
+`);
+
+  const handleFavClick = () => {
+    toggleFav({ bookId: router.query.id });
+  };
+
+  useEffect(() => {
+    if (data && data.success) {
+      mutate();
+    }
+  }, [data, mutate]);
+
   return (
     <div className='flex items-center gap-4'>
-      <button className='rounded-full bg-red-400 p-2 transition ease-in-out hover:bg-red-500'>
+      <button
+        className={cls(
+          'rounded-full border border-red-500 p-2 transition ease-in-out',
+          favsUserArr?.includes(user.userId) ? '' : 'bg-red-500'
+        )}
+        onClick={handleFavClick}
+      >
         <svg
-          className='h-4 w-4 text-white'
           xmlns='http://www.w3.org/2000/svg'
-          fill='none'
+          width='16'
+          height='16'
           viewBox='0 0 24 24'
+          fill='none'
           stroke='currentColor'
-          aria-hidden='true'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          className={cls(
+            'feather feather-heart ',
+            favsUserArr?.includes(user.userId)
+              ? 'fill-red-500 text-red-500'
+              : 'fill-white text-white'
+          )}
         >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-          />
+          <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'></path>
         </svg>
       </button>
-      <button className='rounded-full  bg-blue-500 p-2 transition ease-in-out hover:bg-blue-600'>
+      <button className='rounded-full bg-blue-500 p-2 transition ease-in-out hover:bg-blue-600'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='16'
