@@ -1,4 +1,6 @@
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
+import { modalState } from 'state/modal';
 
 interface ShareProps {
   title: string;
@@ -6,6 +8,8 @@ interface ShareProps {
 
 export default function Share({ title }: ShareProps) {
   const router = useRouter();
+  const setModal = useSetRecoilState(modalState);
+
   const handleClickTwitterShare = () => {
     const text = encodeURIComponent(title);
     const url = encodeURIComponent(
@@ -17,7 +21,18 @@ export default function Share({ title }: ShareProps) {
 
   const handleClickKakaoShare = () => {};
 
-  const handleClickLinkCopy = () => {};
+  const handleClickLinkCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `http://localhost:3000/books/${router.query.id}`
+      );
+      setModal({
+        open: true,
+        message: '링크가 복사되었습니다!',
+        status: 'success',
+      });
+    } catch (error) {}
+  };
 
   return (
     <div className='flex items-center gap-4'>

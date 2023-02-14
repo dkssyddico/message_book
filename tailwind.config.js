@@ -14,6 +14,19 @@ module.exports = {
         google: '#fff',
         twitter: '#0083DB',
       },
+      keyframes: {
+        down: {
+          '0%': {
+            transform: 'translateX(-50%) translateY(-40px)',
+          },
+          '100%': {
+            transform: '',
+          },
+        },
+      },
+      animation: {
+        down: 'down 500ms linear',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
