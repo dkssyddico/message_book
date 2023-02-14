@@ -16,12 +16,9 @@ interface LikeAndShareProps {
 }
 
 export default function LikeAndShare({ favs }: LikeAndShareProps) {
+  const router = useRouter();
   const user = useUser();
   const favsUserArr = favs?.map((fav) => fav.userId);
-
-  console.log(favsUserArr?.includes(user.userId));
-
-  const router = useRouter();
 
   const { mutate } = useSWR<BookDetailResponse>(
     `/api/books/${router.query.id}`

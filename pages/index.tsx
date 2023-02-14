@@ -2,12 +2,16 @@ import type { NextPage } from 'next';
 import useSWR from 'swr';
 import Banner from '@components/banner';
 import Layout from '@components/layout';
-import { Book } from '@prisma/client';
+import { Book, BookFav } from '@prisma/client';
 import MainBookCard from '@components/mainBookCard';
 
-interface BookResponse {
+interface BookWithFavs extends Book {
+  favs: BookFav[];
+}
+
+export interface BookResponse {
   success: boolean;
-  books: Book[];
+  books: BookWithFavs[];
 }
 
 const Home: NextPage = () => {
@@ -29,6 +33,7 @@ const Home: NextPage = () => {
                   startDate={book.startDate}
                   endDate={book.endDate}
                   thumbnail={book.thumbnail}
+                  favs={book.favs}
                 />
               ))}
             </section>

@@ -1,6 +1,11 @@
-import { imageLoader } from '@libs/client/imageLoader';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useSWRConfig } from 'swr';
+import useMutation from '@libs/client/useMutation';
+import { BookFav } from '@prisma/client';
+import useUser from '@libs/client/useUser';
+import { cls } from '@libs/client/utils';
 
 interface MainBookCardProps {
   id: string;
@@ -8,6 +13,11 @@ interface MainBookCardProps {
   startDate: Date;
   endDate: Date;
   thumbnail: string;
+  favs: BookFav[];
+}
+
+interface ToggleFavMutation {
+  success: boolean;
 }
 
 // TODO: should make no-thumbnail image when thumbnail is 'no-thumbnail'
@@ -17,27 +27,56 @@ export default function MainBookCard({
   startDate,
   endDate,
   thumbnail,
+  favs,
 }: MainBookCardProps) {
+  const { mutate } = useSWRConfig();
+  const user = useUser();
+  const favsUserArr = favs?.map((fav) => fav.userId);
+
+  const [toggleFav, { data }] = useMutation<ToggleFavMutation>(`
+  /api/books/${id}/favs
+`);
+
+  const handleFavClick = () => {
+    toggleFav({ bookId: id });
+  };
+
+  useEffect(() => {
+    if (data && data.success) {
+      mutate('/api/books');
+    }
+  }, [data, mutate]);
+
   return (
     <div
       className='relative flex w-full flex-col items-center overflow-hidden rounded-lg border shadow-md'
       key={id}
     >
-      <button className='absolute top-3 right-3 z-10 rounded-full bg-teal-500 p-2'>
+      <button
+        className={cls(
+          'absolute top-3 right-3 z-10 rounded-full  p-2 transition ease-in-out',
+          favsUserArr?.includes(user.userId) ? 'bg-white' : 'bg-red-500'
+        )}
+        onClick={handleFavClick}
+      >
         <svg
-          className='h-6 w-6 text-white'
           xmlns='http://www.w3.org/2000/svg'
-          fill='none'
+          width='16'
+          height='16'
           viewBox='0 0 24 24'
+          fill='none'
           stroke='currentColor'
-          aria-hidden='true'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          className={cls(
+            'feather feather-heart ',
+            favsUserArr?.includes(user.userId)
+              ? 'fill-red-500 text-red-500'
+              : 'fill-white text-white'
+          )}
         >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-          />
+          <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'></path>
         </svg>
       </button>
       <Link className='w-full' href={`/books/${id}`}>

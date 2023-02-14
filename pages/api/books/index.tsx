@@ -35,7 +35,11 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === 'GET') {
-    const books = await client.book.findMany();
+    const books = await client.book.findMany({
+      include: {
+        favs: true,
+      },
+    });
     return res.status(200).send({ success: true, books });
   }
 
