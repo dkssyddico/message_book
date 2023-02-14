@@ -1,24 +1,28 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import useMutation from '@libs/client/useMutation';
 import { BookDetailResponse } from 'pages/books/[id]';
 import { cls } from '@libs/client/utils';
 import { BookFav } from '@prisma/client';
 import useUser from '@libs/client/useUser';
+import Share from '@components/share';
 
 interface ToggleFavMutation {
   success: boolean;
 }
 
 interface LikeAndShareProps {
+  title: string;
   favs: BookFav[];
 }
 
-export default function LikeAndShare({ favs }: LikeAndShareProps) {
+export default function LikeAndShare({ title, favs }: LikeAndShareProps) {
   const router = useRouter();
   const user = useUser();
   const favsUserArr = favs?.map((fav) => fav.userId);
+
+  const [openShare, setOpenShare] = useState(false);
 
   const { mutate } = useSWR<BookDetailResponse>(
     `/api/books/${router.query.id}`
@@ -30,6 +34,10 @@ export default function LikeAndShare({ favs }: LikeAndShareProps) {
 
   const handleFavClick = () => {
     toggleFav({ bookId: router.query.id });
+  };
+
+  const handleShareOpen = () => {
+    setOpenShare((prev) => !prev);
   };
 
   useEffect(() => {
@@ -67,7 +75,10 @@ export default function LikeAndShare({ favs }: LikeAndShareProps) {
           <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'></path>
         </svg>
       </button>
-      <button className='rounded-full bg-blue-500 p-2 transition ease-in-out hover:bg-blue-600'>
+      <button
+        onClick={handleShareOpen}
+        className='rounded-full bg-blue-500 p-2 transition ease-in-out hover:bg-blue-600'
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='16'
@@ -87,6 +98,7 @@ export default function LikeAndShare({ favs }: LikeAndShareProps) {
           <line x1='15.41' y1='6.51' x2='8.59' y2='10.49'></line>
         </svg>
       </button>
+      {openShare && <Share title={title} />}
     </div>
   );
 }

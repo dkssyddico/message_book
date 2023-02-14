@@ -45,7 +45,7 @@ export default function DetailContainer({
         />
       </div>
       <div className='grid min-h-[400px] w-full basis-1/2 grid-flow-row gap-4 rounded-lg border-2 p-4'>
-        <LikeAndShare favs={favs} />
+        <LikeAndShare title={title} favs={favs} />
         <div className='flex items-center'>
           <h2 className='text-xl font-bold'>{title} 0/150</h2>
         </div>

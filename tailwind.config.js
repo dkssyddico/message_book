@@ -12,6 +12,7 @@ module.exports = {
         mint: '#b8fccc',
         naver: '#03C75A',
         google: '#fff',
+        twitter: '#0083DB',
       },
     },
   },
