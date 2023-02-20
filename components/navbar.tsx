@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className='fixed top-0 z-10 flex w-full items-center justify-between bg-white p-4 px-8'>
+      <header className='fixed top-0 z-50 flex w-full items-center justify-between bg-white p-4 px-8'>
         <Link href='/'>
           <h1 className='text-lg font-bold'>Message Book</h1>
         </Link>

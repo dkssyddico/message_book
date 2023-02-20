@@ -1,7 +1,14 @@
 import { NextPage } from 'next';
+import Layout from '@components/layout';
+import MainBookCard from '@components/mainBookCard';
 
-// TODO: Books Page
-// TODO: 카테고리 만들 것인가
+// TODO: 검색된 결과만 보여주는 것으로 활용
 const Books: NextPage = () => {
-  return <div></div>;
+  return (
+    <Layout title='Books'>
+      <div>Searched book</div>
+    </Layout>
+  );
 };
+
+export default Books;
