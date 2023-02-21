@@ -1,11 +1,22 @@
-import { useRef } from 'react';
+import { SyntheticEvent, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import LoginModal from './modal/login/loginModal';
+import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+import { searchWordState } from 'state/search';
+import { useRouter } from 'next/router';
+
+interface Form {
+  word: string;
+}
 
 export default function Navbar() {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
   const { data: session } = useSession();
+  const { register, handleSubmit, reset } = useForm<Form>();
+  const [searchWord, setSearchWord] = useRecoilState(searchWordState);
 
   const handleLoginClick = () => {
     dialogRef.current?.showModal();
@@ -18,16 +29,45 @@ export default function Navbar() {
     }
   };
 
+  const onValid = ({ word }: Form) => {
+    router.push(`/books?searchWord=${word}`);
+  };
+
   return (
     <>
       <header className='fixed top-0 z-50 flex w-full items-center justify-between bg-white p-4 px-8'>
         <Link href='/'>
           <h1 className='text-lg font-bold'>Message Book</h1>
         </Link>
+        <form onSubmit={handleSubmit(onValid)} className='relative'>
+          <input
+            {...register('word', {
+              value: searchWord,
+              onChange: (e) => setSearchWord(e.target.value),
+            })}
+            type='text'
+            placeholder='메세지북을 검색해보세요!'
+            className='w-80 rounded-full border-2 border-gray-200 px-4 transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
+          />
+          <button type='submit'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              className='feather feather-search absolute top-3 right-3 h-5 w-5 bg-white text-gray-500'
+            >
+              <circle cx='11' cy='11' r='8'></circle>
+              <line x1='21' y1='21' x2='16.65' y2='16.65'></line>
+            </svg>
+          </button>
+        </form>
         <div className='flex items-center gap-8'>
-          <Link className='font-semibold' href='/books'>
-            메세지북
-          </Link>
           {session ? (
             <>
               <Link href='/books/new'>

@@ -30,17 +30,56 @@ type NewBookData = {
   dropEndDate: Date;
 };
 
+interface SearchWordData {
+  searchWord: string;
+}
+
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === 'GET') {
-    const books = await client.book.findMany({
-      include: {
-        favs: true,
-      },
-    });
-    return res.status(200).send({ success: true, books });
+    const searchWord: string = req.query.searchWord as string;
+
+    if (searchWord) {
+      const searchedBooks = await client.book.findMany({
+        where: {
+          OR: [
+            {
+              title: {
+                contains: searchWord,
+              },
+            },
+            {
+              hashtags: {
+                some: {
+                  name: searchWord,
+                },
+              },
+            },
+            {
+              description: {
+                contains: searchWord,
+              },
+            },
+          ],
+        },
+        include: {
+          favs: true,
+        },
+      });
+
+      console.log(searchedBooks);
+
+      return res.status(200).send({ success: true, books: searchedBooks });
+    } else {
+      const books = await client.book.findMany({
+        include: {
+          favs: true,
+        },
+      });
+      return res.status(200).send({ success: true, books });
+    }
   }
 
   if (req.method === 'POST') {

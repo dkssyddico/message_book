@@ -15,12 +15,14 @@ function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
 
   const handleHashtagDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const changedHashtags = [...hashtags].filter((hashtag) => hashtag !== e.currentTarget.value);
+    const changedHashtags = [...hashtags].filter(
+      (hashtag) => hashtag !== e.currentTarget.value
+    );
     setHashtags(changedHashtags);
   };
 
   const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHashtag(e.currentTarget.value.trim());
+    setHashtag(e.currentTarget.value.toLocaleLowerCase().trim());
   };
 
   const handleAddHashtag = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,9 +46,16 @@ function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
       {hashtags.length > 0 && (
         <div className='flex flex-wrap items-center gap-4'>
           {hashtags.map((hashtag) => (
-            <div className='flex items-center rounded-full bg-gray-100 py-2 px-4' key={hashtag}>
+            <div
+              className='flex items-center rounded-full bg-gray-100 py-2 px-4'
+              key={hashtag}
+            >
               <span>#{hashtag}</span>
-              <button value={hashtag} type='button' onClick={handleHashtagDelete}>
+              <button
+                value={hashtag}
+                type='button'
+                onClick={handleHashtagDelete}
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   width='20'
