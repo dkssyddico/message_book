@@ -54,15 +54,14 @@ export default function MainBookCard({
     >
       <button
         className={cls(
-          'absolute top-3 right-3 z-10 rounded-full  p-2 transition ease-in-out',
-          favsUserArr?.includes(user.userId) ? 'bg-white' : 'bg-red-500'
+          'absolute top-2 right-2 z-10 rounded-full  p-2 transition ease-in-out'
         )}
         onClick={handleFavClick}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
-          width='16'
-          height='16'
+          width='24'
+          height='24'
           viewBox='0 0 24 24'
           fill='none'
           stroke='currentColor'
@@ -72,8 +71,8 @@ export default function MainBookCard({
           className={cls(
             'feather feather-heart ',
             favsUserArr?.includes(user.userId)
-              ? 'fill-red-500 text-red-500'
-              : 'fill-white text-white'
+              ? 'fill-red-500 text-white'
+              : 'fill-white text-red-500'
           )}
         >
           <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'></path>
