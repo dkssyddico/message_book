@@ -35,8 +35,8 @@ export default function Navbar() {
 
   return (
     <>
-      <header className='fixed top-0 z-50 flex w-full items-center justify-between bg-white p-4 px-8'>
-        <Link href='/'>
+      <header className='fixed top-0 z-50 grid w-full grid-cols-3 bg-white p-4 px-8'>
+        <Link className='flex items-center' href='/'>
           <h1 className='text-lg font-bold'>Message Book</h1>
         </Link>
         <form onSubmit={handleSubmit(onValid)} className='relative'>
@@ -47,9 +47,9 @@ export default function Navbar() {
             })}
             type='text'
             placeholder='메세지북을 검색해보세요!'
-            className='w-80 rounded-full border-2 border-gray-200 px-4 transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
+            className='w-full rounded-full border-2 border-gray-200 px-4 transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
           />
-          <button type='submit'>
+          <button className='absolute top-3 right-3 bg-gray-500' type='submit'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -60,14 +60,14 @@ export default function Navbar() {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='feather feather-search absolute top-3 right-3 h-5 w-5 bg-white text-gray-500'
+              className='feather feather-search h-5 w-5 bg-white text-gray-500'
             >
               <circle cx='11' cy='11' r='8'></circle>
               <line x1='21' y1='21' x2='16.65' y2='16.65'></line>
             </svg>
           </button>
         </form>
-        <div className='flex items-center gap-8'>
+        <div className='flex items-center justify-end gap-8'>
           {session ? (
             <>
               <Link href='/books/new'>
