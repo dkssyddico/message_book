@@ -4,6 +4,7 @@ import Layout from '@components/layout';
 
 // TODO: 내가 참여한 메세지북 내가 만든 메세지북..
 // TODO: 내가 쓴 댓글..
+// TODO: 마이페이지 내일 완성할 것
 const MyPage: NextPage = () => {
   const { data } = useSWR('/api/me');
 
