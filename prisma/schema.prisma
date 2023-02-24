@@ -143,6 +143,7 @@ model Question {
   @@index([bookId])
 }
 
+// TODO: Book 정보 추가할 것. 
 model Answer {
   id         String   @id @default(uuid())
   content    String
