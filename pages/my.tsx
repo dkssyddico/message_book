@@ -78,11 +78,20 @@ const MyPage: NextPage = () => {
           </div>
         </section>
         <section>
-          <h2 className='text-2xl font-bold'>내가 참여한 메세지북</h2>
+          <h2 className='mb-8 text-2xl font-bold'>
+            내가 참여한 메세지북(메세지)
+          </h2>
           <div className='grid w-full grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4'></div>
         </section>
         <section>
-          <h2 className='text-2xl font-bold'>내가 쓴 댓글</h2>
+          <h2 className='mb-8 text-2xl font-bold'>
+            내가 참여한 메세지북(팬아트)
+          </h2>
+          <div className='grid w-full grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4'></div>
+        </section>
+        <section>
+          <h2 className='mb-8 text-2xl font-bold'>내가 쓴 댓글</h2>
+          <div></div>
         </section>
       </main>
     </Layout>

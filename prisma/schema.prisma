@@ -147,8 +147,8 @@ model Question {
 model Answer {
   id         String   @id @default(uuid())
   content    String
-  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String?
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
   createdAt  DateTime @default(now())
