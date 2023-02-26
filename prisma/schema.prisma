@@ -83,6 +83,7 @@ model Book {
   drop          Drop?
   commentLikes  CommentLike[]
   replyLikes    ReplyLike[]
+  Answer        Answer[]
 
   @@index([userId])
 }
@@ -143,12 +144,13 @@ model Question {
   @@index([bookId])
 }
 
-// TODO: Book 정보 추가할 것. 
 model Answer {
   id         String   @id @default(uuid())
   content    String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId     String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
   createdAt  DateTime @default(now())
@@ -156,6 +158,7 @@ model Answer {
 
   @@index([questionId])
   @@index([userId])
+  @@index([bookId])
 }
 
 model Hashtag {

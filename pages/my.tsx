@@ -1,18 +1,24 @@
 import { NextPage } from 'next';
 import useSWR from 'swr';
 import Layout from '@components/layout';
-import { Account, Answer, Book, BookFav, User } from '@prisma/client';
+import { Account, Answer, Book, BookFav, Question, User } from '@prisma/client';
 import Image from 'next/image';
 import MainBookCard from '@components/mainBookCard';
+import Link from 'next/link';
 
 interface BookWithFavs extends Book {
   favs: BookFav[];
 }
 
+interface AnswerWithQuestionBooks extends Answer {
+  question: Question;
+  book: Book;
+}
+
 interface UserInfoWithAccounts extends User {
   accounts: Account[];
   books: BookWithFavs[];
-  answers: Answer[];
+  answers: AnswerWithQuestionBooks[];
 }
 
 interface MyResponse {
@@ -22,6 +28,8 @@ interface MyResponse {
 
 const MyPage: NextPage = () => {
   const { data } = useSWR<MyResponse>('/api/me');
+
+  console.log(data);
 
   return (
     <Layout title='My page'>
@@ -76,11 +84,34 @@ const MyPage: NextPage = () => {
             ))}
           </div>
         </section>
-        <section>
+        <section className='w-full'>
           <h2 className='mb-8 text-2xl font-bold'>
             내가 참여한 메세지북(메세지)
           </h2>
-          <div className='grid w-full grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4'></div>
+          <section className=''>
+            <div className='grid grid-cols-4 rounded-lg bg-lime p-4 text-center font-semibold'>
+              <h4>메세지북</h4>
+              <h4>질문</h4>
+              <h4>내 답변</h4>
+              <h4>수정 / 삭제</h4>
+            </div>
+            <div>
+              {data?.user.answers.map((answer: AnswerWithQuestionBooks) => (
+                <div
+                  className='grid grid-cols-4 rounded-lg border-b p-4 text-center font-semibold'
+                  key={answer.id}
+                >
+                  <h4>
+                    <Link href={`/books/${answer.bookId}`}>
+                      {answer.book.title}
+                    </Link>
+                  </h4>
+                  <p>{answer.question.content}</p>
+                  <p>{answer.content}</p>
+                </div>
+              ))}
+            </div>
+          </section>
         </section>
         <section>
           <h2 className='mb-8 text-2xl font-bold'>

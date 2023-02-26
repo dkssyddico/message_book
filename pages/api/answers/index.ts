@@ -7,6 +7,11 @@ interface Answer {
   [questionId: string]: string;
 }
 
+interface ReqBody {
+  bookId: string;
+  answers: Answer;
+}
+
 interface AnswerData {
   questionId: string;
   content: string;
@@ -46,7 +51,7 @@ async function handler(
         .send({ success: false, message: 'user not found' });
     }
 
-    const answers: Answer = req.body;
+    const { answers, bookId }: ReqBody = req.body;
     const answersKeysArr: string[] = Object.keys(answers);
 
     answersKeysArr.forEach(async (questionId) => {
@@ -56,6 +61,7 @@ async function handler(
           where: {
             userId: session.user.id,
             questionId: questionId,
+            bookId,
           },
         });
         if (alreadyAnswered) {
@@ -73,6 +79,7 @@ async function handler(
             data: {
               userId: session.user.id,
               questionId,
+              bookId,
               content: actualAnswer,
             },
           });

@@ -5,6 +5,7 @@ import useMutation from '@libs/client/useMutation';
 import SubmitButton from '@components/UI/submitButton';
 import QuestionCard from '@components/question/questionCard';
 import Container from './container';
+import { useRouter } from 'next/router';
 
 interface QuestionsContainerProps {
   questions: Question[] | undefined;
@@ -30,6 +31,9 @@ interface AnswersResponse {
 export default function QuestionsContainer({
   questions,
 }: QuestionsContainerProps) {
+  const router = useRouter();
+
+  console.log(router);
   const {
     register,
     handleSubmit,
@@ -39,11 +43,11 @@ export default function QuestionsContainer({
   const { data: answersData, isLoading } =
     useSWR<AnswersResponse>('/api/answers');
 
-  const [upload, { loading, data }] =
+  const [upload, { loading }] =
     useMutation<UploadAnswerMutation>('/api/answers');
 
   const onValid = (answers: AnswersForm) => {
-    upload(answers);
+    upload({ answers, bookId: router.query.id });
   };
 
   const findAnswer = (questionId: string): string => {

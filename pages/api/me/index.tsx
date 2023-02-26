@@ -26,12 +26,11 @@ async function handler(
         answers: {
           include: {
             question: true,
+            book: true,
           },
         },
       },
     });
-
-    console.log(user);
 
     return res.status(200).send({ success: true, user });
   }
