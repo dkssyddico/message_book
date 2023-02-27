@@ -23,9 +23,15 @@ async function handler(
       include: {
         accounts: true,
         books: true,
-        answers: true,
+        answers: {
+          include: {
+            question: true,
+          },
+        },
       },
     });
+
+    console.log(user);
 
     return res.status(200).send({ success: true, user });
   }

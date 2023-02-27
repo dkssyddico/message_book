@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 
 type Status = 'inform' | 'warning' | 'success';
 
@@ -9,7 +10,7 @@ interface ModalInfo {
 }
 
 export const modalState = atom<ModalInfo>({
-  key: 'modal',
+  key: `modalState/${uuidv4()}`,
   default: {
     open: false,
     message: '',

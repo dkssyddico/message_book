@@ -1,8 +1,8 @@
-import { Question } from '@prisma/client';
+import useSWR from 'swr';
+import { Answer, Question } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
 import SubmitButton from '@components/UI/submitButton';
-import { useEffect } from 'react';
 import QuestionCard from '@components/question/questionCard';
 import Container from './container';
 
@@ -18,6 +18,15 @@ interface UploadAnswerMutation {
   success: boolean;
 }
 
+interface AnswerWithQuestion extends Answer {
+  question: Question;
+}
+
+interface AnswersResponse {
+  success: boolean;
+  answers: AnswerWithQuestion[];
+}
+
 export default function QuestionsContainer({
   questions,
 }: QuestionsContainerProps) {
@@ -25,8 +34,10 @@ export default function QuestionsContainer({
     register,
     handleSubmit,
     formState: { isSubmitting },
-    reset,
   } = useForm<AnswersForm>();
+
+  const { data: answersData, isLoading } =
+    useSWR<AnswersResponse>('/api/answers');
 
   const [upload, { loading, data }] =
     useMutation<UploadAnswerMutation>('/api/answers');
@@ -35,31 +46,47 @@ export default function QuestionsContainer({
     upload(answers);
   };
 
-  useEffect(() => {
-    if (data && data.success) reset();
-  }, [data, reset]);
+  const findAnswer = (questionId: string): string => {
+    if (!answersData) {
+      return '';
+    }
+    const answer = answersData.answers.find(
+      (answer) => answer.questionId === questionId
+    );
+    if (!answer) {
+      return '';
+    } else {
+      return answer.content;
+    }
+  };
 
   return (
     <Container title='질문 목록'>
-      <form onSubmit={handleSubmit(onValid)} className='space-y-8'>
-        {questions
-          ?.sort((a, b) => a.index - b.index)
-          .map((question) => (
-            <QuestionCard
-              key={question.id}
-              id={question.id}
-              content={question.content}
-              required={question.required}
-              register={register}
-            />
-          ))}
-        <SubmitButton
-          disabled={isSubmitting}
-          loading={loading}
-          submitMessage='답변 제출하기'
-          loadingMessage='답변 제출 중'
-        />
-      </form>
+      {/* TODO: Loading bar 예쁘게.. 회색 처리 */}
+      {isLoading ? (
+        <div>loading</div>
+      ) : (
+        <form onSubmit={handleSubmit(onValid)} className='space-y-8'>
+          {questions
+            ?.sort((a, b) => a.index - b.index)
+            .map((question) => (
+              <QuestionCard
+                key={question.id}
+                id={question.id}
+                content={question.content}
+                required={question.required}
+                register={register}
+                answer={findAnswer(question.id)}
+              />
+            ))}
+          <SubmitButton
+            disabled={isSubmitting}
+            loading={loading}
+            submitMessage='답변 제출하기'
+            loadingMessage='답변 제출 중'
+          />
+        </form>
+      )}
     </Container>
   );
 }

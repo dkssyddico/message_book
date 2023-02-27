@@ -22,7 +22,6 @@ interface MyResponse {
 
 const MyPage: NextPage = () => {
   const { data } = useSWR<MyResponse>('/api/me');
-  console.log(data);
 
   return (
     <Layout title='My page'>
