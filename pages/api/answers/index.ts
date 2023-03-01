@@ -12,24 +12,16 @@ interface ReqBody {
   answers: Answer;
 }
 
-interface AnswerData {
-  questionId: string;
-  content: string;
-}
-
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
+  const session = await getSession(req, res);
+  if (!session) {
+    return res.status(404).send({ success: false, message: 'user not found' });
+  }
+
   if (req.method === 'GET') {
-    const session = await getSession(req, res);
-
-    if (!session) {
-      return res
-        .status(404)
-        .send({ success: false, message: 'user not found' });
-    }
-
     const answers = await client.answer.findMany({
       where: {
         userId: session.user.id,
@@ -43,14 +35,6 @@ async function handler(
   }
 
   if (req.method === 'POST') {
-    const session = await getSession(req, res);
-
-    if (!session) {
-      return res
-        .status(404)
-        .send({ success: false, message: 'user not found' });
-    }
-
     const { answers, bookId }: ReqBody = req.body;
     const answersKeysArr: string[] = Object.keys(answers);
 
@@ -90,4 +74,4 @@ async function handler(
   }
 }
 
-export default withHandler({ methods: ['GET', 'POST'], handler });
+export default withHandler({ methods: ['GET', 'POST', 'DELETE'], handler });

@@ -13,7 +13,11 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <RecoilRoot>
-        <SWRConfig value={{ fetcher: (url: string) => axios.get(url).then((res) => res.data) }}>
+        <SWRConfig
+          value={{
+            fetcher: (url: string) => axios.get(url).then((res) => res.data),
+          }}
+        >
           <Component {...pageProps} />
         </SWRConfig>
       </RecoilRoot>
