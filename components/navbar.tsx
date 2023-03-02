@@ -1,11 +1,13 @@
-import { SyntheticEvent, useRef } from 'react';
-import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useRef } from 'react';
 import LoginModal from './modal/login/loginModal';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { searchWordState } from 'state/search';
 import { useRouter } from 'next/router';
+import { modalState } from 'state/modal';
+import Modal from './modal';
 
 interface Form {
   word: string;
@@ -13,6 +15,7 @@ interface Form {
 
 export default function Navbar() {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const modalInfo = useRecoilValue(modalState);
   const router = useRouter();
   const { data: session } = useSession();
   const { register, handleSubmit, reset } = useForm<Form>();
@@ -35,7 +38,8 @@ export default function Navbar() {
 
   return (
     <>
-      <header className='fixed top-0 z-50 grid w-full grid-cols-3 bg-white p-4 px-8'>
+      <header className='fixed top-0 z-30 grid w-full grid-cols-3 bg-white p-4 px-8'>
+        {modalInfo.open && <Modal />}
         <Link className='flex items-center' href='/'>
           <h1 className='text-lg font-bold'>Message Book</h1>
         </Link>

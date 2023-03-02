@@ -1,17 +1,16 @@
 import { NextPage } from 'next';
 import useSWR from 'swr';
+import Image from 'next/image';
 import Layout from '@components/layout';
 import { Account, Answer, Book, BookFav, Question, User } from '@prisma/client';
-import Image from 'next/image';
 import MainBookCard from '@components/mainBookCard';
-import Link from 'next/link';
-import axios from 'axios';
+import AnswerCard from '@components/answerCard';
 
 interface BookWithFavs extends Book {
   favs: BookFav[];
 }
 
-interface AnswerWithQuestionBooks extends Answer {
+export interface AnswerWithQuestionBooks extends Answer {
   question: Question;
   book: Book;
 }
@@ -22,21 +21,13 @@ interface UserInfoWithAccounts extends User {
   answers: AnswerWithQuestionBooks[];
 }
 
-interface MyResponse {
+export interface MyResponse {
   success: boolean;
   user: UserInfoWithAccounts;
 }
 
 const MyPage: NextPage = () => {
   const { data, mutate } = useSWR<MyResponse>('/api/me');
-
-  // TODO: Required 메세지인 경우 못 지우게 or 수정만 가능하도록 만들기
-  const handleAnswerDelete = async (answerId: string) => {
-    const result = await axios.delete(`/api/answers/${answerId}`);
-    if (result.data.success) {
-      mutate();
-    }
-  };
 
   return (
     <Layout title='My page'>
@@ -103,56 +94,7 @@ const MyPage: NextPage = () => {
               <h4>수정 / 삭제</h4>
             </div>
             {data?.user.answers.map((answer: AnswerWithQuestionBooks) => (
-              <div
-                className='grid grid-cols-4 items-center rounded-lg border-b p-4 text-center font-semibold'
-                key={answer.id}
-              >
-                <h4>
-                  <Link href={`/books/${answer.bookId}`}>
-                    {answer.book.title}
-                  </Link>
-                </h4>
-                <p>{answer.question.content}</p>
-                <p>{answer.content}</p>
-                <div className='flex justify-center gap-4'>
-                  <button>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      className='feather feather-edit text-gray-400 transition ease-linear hover:text-gray-500'
-                    >
-                      <path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'></path>
-                      <path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'></path>
-                    </svg>
-                  </button>
-                  <button onClick={() => handleAnswerDelete(answer.id)}>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      className='feather feather-trash-2 text-gray-400 transition ease-linear hover:text-gray-500'
-                    >
-                      <polyline points='3 6 5 6 21 6'></polyline>
-                      <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path>
-                      <line x1='10' y1='11' x2='10' y2='17'></line>
-                      <line x1='14' y1='11' x2='14' y2='17'></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+              <AnswerCard key={answer.id} answer={answer} />
             ))}
           </section>
         </section>

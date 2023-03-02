@@ -17,7 +17,7 @@ export default function Modal() {
   return (
     <div
       className={cls(
-        'transform: fixed left-1/2 top-10 z-20 -translate-x-1/2 animate-down rounded-lg bg-orange-300 py-2 px-4 font-semibold tracking-wider text-white',
+        'absolute top-20 left-1/2 z-50 -translate-x-1/2 animate-down rounded-lg bg-orange-300 py-2 px-4 font-semibold tracking-wider text-white',
         modalInfo.status === 'inform'
           ? 'bg-blue-500'
           : modalInfo.status === 'warning'

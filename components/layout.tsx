@@ -11,16 +11,16 @@ interface LayoutProps {
 }
 
 export default function Layout({ children, title }: LayoutProps) {
-  const modalInfo = useRecoilValue(modalState);
   return (
     <>
       <Head>
         <title>{title ? title : 'Message Book'}</title>
       </Head>
-      {modalInfo.open && <Modal />}
-      <Navbar />
-      <main className='min-h-screen pt-16'>{children}</main>
-      <footer>footer</footer>
+      <div className='relative'>
+        <Navbar />
+        <main className='relative min-h-screen pt-16'>{children}</main>
+        <footer>footer</footer>
+      </div>
     </>
   );
 }

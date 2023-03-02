@@ -21,6 +21,24 @@ async function handler(
     return res.status(404).send({ success: false, message: 'user not found' });
   }
 
+  if (req.method === 'POST') {
+    const {
+      body: { answer },
+      query: { id },
+    } = req;
+
+    const result = await client.answer.update({
+      where: {
+        id: id + '',
+      },
+      data: {
+        content: answer,
+      },
+    });
+
+    return res.status(200).send({ success: true });
+  }
+
   if (req.method === 'DELETE') {
     const { id } = req.query;
 
