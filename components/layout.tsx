@@ -1,8 +1,5 @@
 import Head from 'next/head';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { modalState } from 'state/modal';
-import Modal from './modal';
 import Navbar from './navbar';
 
 interface LayoutProps {

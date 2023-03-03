@@ -2,12 +2,25 @@ import { NextPage } from 'next';
 import useSWR from 'swr';
 import Image from 'next/image';
 import Layout from '@components/layout';
-import { Account, Answer, Book, BookFav, Question, User } from '@prisma/client';
+import {
+  Account,
+  Answer,
+  Book,
+  BookFav,
+  FanArt,
+  Question,
+  User,
+} from '@prisma/client';
 import MainBookCard from '@components/mainBookCard';
 import AnswerCard from '@components/answerCard';
+import Link from 'next/link';
 
 interface BookWithFavs extends Book {
   favs: BookFav[];
+}
+
+interface FanArtWithBook extends FanArt {
+  book: Book;
 }
 
 export interface AnswerWithQuestionBooks extends Answer {
@@ -19,6 +32,7 @@ interface UserInfoWithAccounts extends User {
   accounts: Account[];
   books: BookWithFavs[];
   answers: AnswerWithQuestionBooks[];
+  fanArts: FanArtWithBook[];
 }
 
 export interface MyResponse {
@@ -27,7 +41,8 @@ export interface MyResponse {
 }
 
 const MyPage: NextPage = () => {
-  const { data, mutate } = useSWR<MyResponse>('/api/me');
+  const { data } = useSWR<MyResponse>('/api/me');
+  console.log(data);
 
   return (
     <Layout title='My page'>
@@ -98,11 +113,25 @@ const MyPage: NextPage = () => {
             ))}
           </section>
         </section>
-        <section>
+        <section className='w-full'>
           <h2 className='mb-8 text-2xl font-bold'>
             내가 참여한 메세지북(팬아트)
           </h2>
-          <div className='grid w-full grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4'></div>
+          {/* TODO: 팬아트 프리뷰 */}
+          <section className='grid w-full grid-cols-3 gap-x-5'>
+            {data?.user.fanArts.map((fanArt: FanArtWithBook) => (
+              <div key={fanArt.id} className='h-60 w-full'>
+                <h4>{fanArt.book.title}</h4>
+                <Image
+                  width={100}
+                  height={100}
+                  src={fanArt.image}
+                  alt='fanArt'
+                  className='w-full'
+                />
+              </div>
+            ))}
+          </section>
         </section>
         <section>
           <h2 className='mb-8 text-2xl font-bold'>내가 쓴 댓글</h2>

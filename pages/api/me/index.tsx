@@ -29,6 +29,11 @@ async function handler(
             book: true,
           },
         },
+        fanArts: {
+          include: {
+            book: true,
+          },
+        },
       },
     });
 
