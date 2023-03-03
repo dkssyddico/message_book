@@ -14,12 +14,13 @@ import {
 import MainBookCard from '@components/mainBookCard';
 import AnswerCard from '@components/answerCard';
 import Link from 'next/link';
+import FanArtCard from '@components/fanArtCard';
 
 interface BookWithFavs extends Book {
   favs: BookFav[];
 }
 
-interface FanArtWithBook extends FanArt {
+export interface FanArtWithBook extends FanArt {
   book: Book;
 }
 
@@ -120,16 +121,7 @@ const MyPage: NextPage = () => {
           {/* TODO: 팬아트 프리뷰 */}
           <section className='grid w-full grid-cols-3 gap-x-5'>
             {data?.user.fanArts.map((fanArt: FanArtWithBook) => (
-              <div key={fanArt.id} className='h-60 w-full'>
-                <h4>{fanArt.book.title}</h4>
-                <Image
-                  width={100}
-                  height={100}
-                  src={fanArt.image}
-                  alt='fanArt'
-                  className='w-full'
-                />
-              </div>
+              <FanArtCard key={fanArt.id} fanArt={fanArt} />
             ))}
           </section>
         </section>
