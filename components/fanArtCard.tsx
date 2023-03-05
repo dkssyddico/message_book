@@ -4,6 +4,7 @@ import { FanArtWithBook, MyResponse } from 'pages/my';
 import { modalState } from 'state/modal';
 import Image from 'next/image';
 import Link from 'next/link';
+import axios from 'axios';
 
 interface FanArtProps {
   fanArt: FanArtWithBook;
@@ -12,6 +13,13 @@ interface FanArtProps {
 export default function FanArtCard({ fanArt }: FanArtProps) {
   const { mutate } = useSWR<MyResponse>('/api/me');
   const setModal = useSetRecoilState(modalState);
+
+  const handleFanArtDelete = async () => {
+    const result = await axios.delete(`/api/fanArts/${fanArt.id}`);
+    if (result.data.success) {
+      mutate();
+    }
+  };
 
   return (
     <div
@@ -31,7 +39,7 @@ export default function FanArtCard({ fanArt }: FanArtProps) {
       </div>
       <div className='flex h-20 flex-col items-center justify-center gap-y-2'>
         <h4 className='text-lg font-semibold'> {fanArt.book.title}</h4>
-        <button>
+        <button onClick={handleFanArtDelete}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='20'
