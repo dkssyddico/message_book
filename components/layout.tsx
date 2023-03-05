@@ -13,9 +13,9 @@ export default function Layout({ children, title }: LayoutProps) {
       <Head>
         <title>{title ? title : 'Message Book'}</title>
       </Head>
-      <div className='relative'>
+      <div className=''>
         <Navbar />
-        <main className='relative min-h-screen pt-16'>{children}</main>
+        <main className='min-h-screen pt-16'>{children}</main>
         <footer>footer</footer>
       </div>
     </>
