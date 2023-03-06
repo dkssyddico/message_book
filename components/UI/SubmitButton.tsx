@@ -14,7 +14,7 @@ function SubmitButton({
   return (
     <button
       disabled={disabled}
-      className='flex w-full justify-center rounded-lg bg-orange-400 py-2 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500'
+      className='flex w-full justify-center rounded-lg bg-orange-400 py-2 font-semibold text-white transition duration-150 ease-linear hover:bg-orange-500 disabled:bg-gray-400'
     >
       {loading ? (
         <span className='flex items-center'>

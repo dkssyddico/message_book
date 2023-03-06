@@ -6,7 +6,6 @@ interface QuestionCardProps {
   required: boolean;
   content: string;
   register: UseFormRegister<AnswersForm>;
-  answer: string;
 }
 
 export default function QuestionCard({
@@ -14,7 +13,6 @@ export default function QuestionCard({
   required,
   content,
   register,
-  answer,
 }: QuestionCardProps) {
   return (
     <div key={id} className='space-y-2'>
@@ -45,7 +43,6 @@ export default function QuestionCard({
               if (required) return value.trim().length !== 0;
             },
           },
-          value: answer,
         })}
         className='w-full origin-center rounded-lg border-2 border-gray-200 p-2 transition duration-300 ease-in-out focus:border-orange-300 focus:ring-0'
         type='text'

@@ -56,8 +56,6 @@ const BookDetail: NextPage = () => {
     router.query.id ? `/api/books/${router.query.id}` : null
   );
 
-  console.log(data);
-
   if (!data) {
     // TODO: 에러처리 if(error) return <Error />
     return <Loading />;

@@ -27,10 +27,12 @@ export default function FanArtSubmitContainer() {
     useMutation<UploadFanArtMutation>('/api/fanArts');
 
   const onValid = async () => {
-    uploadFanArt({
-      fanArt: fanArt && (await imageUpload(fanArt)),
-      bookId: router.query.id,
-    });
+    if (fanArt) {
+      uploadFanArt({
+        fanArt: fanArt && (await imageUpload(fanArt)),
+        bookId: router.query.id,
+      });
+    }
   };
 
   const handleFanArtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +52,7 @@ export default function FanArtSubmitContainer() {
           onChange={handleFanArtChange}
         />
         <SubmitButton
-          disabled={isSubmitting}
+          disabled={isSubmitting || !fanArt}
           loading={loading}
           submitMessage='팬아트 제출하기'
           loadingMessage='팬아트 제출 중'

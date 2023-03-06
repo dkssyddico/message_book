@@ -6,6 +6,7 @@ import SubmitButton from '@components/UI/submitButton';
 import QuestionCard from '@components/question/questionCard';
 import Container from './container';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 interface QuestionsContainerProps {
   questions: Question[] | undefined;
@@ -28,41 +29,43 @@ interface AnswersResponse {
   answers: AnswerWithQuestion[];
 }
 
+interface DefaultValues {
+  [questionId: string]: string;
+}
+
 export default function QuestionsContainer({
   questions,
 }: QuestionsContainerProps) {
   const router = useRouter();
 
-  console.log(router);
+  const { data: answersData, isLoading } =
+    useSWR<AnswersResponse>('/api/answers');
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = useForm<AnswersForm>();
-
-  const { data: answersData, isLoading } =
-    useSWR<AnswersResponse>('/api/answers');
 
   const [upload, { loading }] =
     useMutation<UploadAnswerMutation>('/api/answers');
 
   const onValid = (answers: AnswersForm) => {
-    upload({ answers, bookId: router.query.id });
+    if (answers) {
+      upload({ answers, bookId: router.query.id });
+    }
   };
 
-  const findAnswer = (questionId: string): string => {
-    if (!answersData) {
-      return '';
+  useEffect(() => {
+    let defaultValues: DefaultValues = {};
+    if (answersData) {
+      answersData.answers.forEach(
+        (answer) => (defaultValues[answer.questionId] = answer.content)
+      );
+      reset({ ...defaultValues });
     }
-    const answer = answersData.answers.find(
-      (answer) => answer.questionId === questionId
-    );
-    if (!answer) {
-      return '';
-    } else {
-      return answer.content;
-    }
-  };
+  }, [answersData, reset]);
 
   return (
     <Container title='질문 목록'>
@@ -80,7 +83,6 @@ export default function QuestionsContainer({
                 content={question.content}
                 required={question.required}
                 register={register}
-                answer={findAnswer(question.id)}
               />
             ))}
           <SubmitButton
