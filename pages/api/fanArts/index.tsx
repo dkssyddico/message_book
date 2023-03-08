@@ -35,7 +35,19 @@ async function handler(
         .send({ success: false, message: 'user not found' });
     }
 
-    const { fanArt: image, bookId } = req.body;
+    const { fanArt: image, bookId, fanArtId } = req.body;
+
+    if (fanArtId) {
+      const updatedFanArt = await client.fanArt.update({
+        where: {
+          id: fanArtId,
+        },
+        data: {
+          image,
+        },
+      });
+      return res.status(201).send({ success: true });
+    }
 
     const fanArt = await client.fanArt.create({
       data: {
