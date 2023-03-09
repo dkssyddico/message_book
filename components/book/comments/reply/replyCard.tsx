@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import useSWR from 'swr';
-import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
-import { ReplyWithLikes } from 'pages/books/[id]';
-import { BookDetailResponse } from 'pages/books/[id]';
+import useMutation from '@libs/client/useMutation';
 import Comment from '@components/UI/comment';
+import { BookDetailResponse, ReplyWithLikes } from '@libs/client/types';
 
 interface ReplyCardProp {
   reply: ReplyWithLikes;

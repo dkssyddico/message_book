@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import useMutation from '@libs/client/useMutation';
-import { BookDetailResponse } from 'pages/books/[id]';
 import { cls } from '@libs/client/utils';
 import { BookFav } from '@prisma/client';
 import useUser from '@libs/client/useUser';
 import Share from '@components/share';
+import { BookDetailResponse } from '@libs/client/types';
 
 interface ToggleFavMutation {
   success: boolean;

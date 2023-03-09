@@ -2,44 +2,14 @@ import { NextPage } from 'next';
 import useSWR from 'swr';
 import Image from 'next/image';
 import Layout from '@components/layout';
-import {
-  Account,
-  Answer,
-  Book,
-  BookFav,
-  FanArt,
-  Question,
-  User,
-} from '@prisma/client';
 import MainBookCard from '@components/mainBookCard';
 import AnswerCard from '@components/answerCard';
-import Link from 'next/link';
 import FanArtCard from '@components/fanArtCard';
-
-interface BookWithFavs extends Book {
-  favs: BookFav[];
-}
-
-export interface FanArtWithBook extends FanArt {
-  book: Book;
-}
-
-export interface AnswerWithQuestionBooks extends Answer {
-  question: Question;
-  book: Book;
-}
-
-interface UserInfoWithAccounts extends User {
-  accounts: Account[];
-  books: BookWithFavs[];
-  answers: AnswerWithQuestionBooks[];
-  fanArts: FanArtWithBook[];
-}
-
-export interface MyResponse {
-  success: boolean;
-  user: UserInfoWithAccounts;
-}
+import {
+  AnswerWithQuestionBooks,
+  FanArtWithBook,
+  MyResponse,
+} from '@libs/client/types';
 
 const MyPage: NextPage = () => {
   const { data } = useSWR<MyResponse>('/api/me');

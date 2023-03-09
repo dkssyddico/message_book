@@ -1,14 +1,3 @@
-import {
-  Book,
-  BookFav,
-  Comment,
-  CommentLike,
-  Drop,
-  Hashtag,
-  Question,
-  Reply,
-  ReplyLike,
-} from '@prisma/client';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -19,35 +8,7 @@ import DetailContainer from '@components/book/detailContainer';
 import QuestionsContainer from '@components/book/questionsContainer';
 import FanArtSubmitContainer from '@components/book/fanArtSubmitContainer';
 import DropContainer from '@components/book/dropContainer';
-
-export interface ReplyWithLikes extends Reply {
-  likes: ReplyLike[];
-  _count: {
-    likes: number;
-  };
-}
-
-export interface CommentWithReply extends Comment {
-  replies: ReplyWithLikes[];
-  likes: CommentLike[];
-  _count: {
-    replies: number;
-    likes: number;
-  };
-}
-
-interface BookWithDetails extends Book {
-  hashtags: Hashtag[];
-  comments: CommentWithReply[];
-  questions: Question[];
-  drop: Drop;
-  favs: BookFav[];
-}
-
-export interface BookDetailResponse {
-  success: boolean;
-  book: BookWithDetails;
-}
+import { BookDetailResponse } from '@libs/client/types';
 
 const BookDetail: NextPage = () => {
   const router = useRouter();
@@ -61,7 +22,7 @@ const BookDetail: NextPage = () => {
     return <Loading />;
   } else {
     return (
-      <Layout title={data?.book?.title!}>
+      <Layout title={data.book.title!}>
         <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
           {/* TODO: 1:1 문의 -> floating button으로 처리 */}
           <DetailContainer

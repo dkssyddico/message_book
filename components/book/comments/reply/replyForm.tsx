@@ -1,9 +1,9 @@
-import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
-import { BookDetailResponse, CommentWithReply } from 'pages/books/[id]';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
+import useMutation from '@libs/client/useMutation';
+import { BookDetailResponse } from '@libs/client/types';
 
 interface Form {
   content: string;

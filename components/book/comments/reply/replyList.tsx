@@ -1,4 +1,4 @@
-import { ReplyWithLikes } from 'pages/books/[id]';
+import { ReplyWithLikes } from '@libs/client/types';
 import ReplyCard from './replyCard';
 
 interface ReplyListProps {
@@ -6,8 +6,6 @@ interface ReplyListProps {
 }
 
 export default function ReplyList({ replies }: ReplyListProps) {
-  console.log(replies);
-
   return (
     <ul className='space-y-2'>
       {replies &&

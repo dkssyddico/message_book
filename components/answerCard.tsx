@@ -5,8 +5,8 @@ import useSWR from 'swr';
 import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
-import { AnswerWithQuestionBooks, MyResponse } from 'pages/my';
 import { modalState } from 'state/modal';
+import { AnswerWithQuestionBooks, MyResponse } from '@libs/client/types';
 
 interface Form {
   answer: string;

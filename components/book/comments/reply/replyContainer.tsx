@@ -1,8 +1,7 @@
+import { ReplyWithLikes } from '@libs/client/types';
 import React from 'react';
 import ReplyForm from './replyForm';
 import ReplyList from './replyList';
-import { ReplyWithLikes } from 'pages/books/[id]';
-import { ReplyLike } from '@prisma/client';
 
 interface ReplyContainerProps {
   commentId: string;

@@ -2,17 +2,8 @@ import { NextPage } from 'next';
 import useSWR from 'swr';
 import Layout from '@components/layout';
 import { useRouter } from 'next/router';
-import { Book, BookFav } from '@prisma/client';
 import MainBookCard from '@components/mainBookCard';
-
-interface BookWithFavs extends Book {
-  favs: BookFav[];
-}
-
-export interface BookResponse {
-  success: boolean;
-  books: BookWithFavs[];
-}
+import { BookResponse } from '@libs/client/types';
 
 // TODO: 검색된 결과만 보여주는 것으로 활용
 const Books: NextPage = () => {

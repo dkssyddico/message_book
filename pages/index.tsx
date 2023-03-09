@@ -1,19 +1,10 @@
 import type { NextPage } from 'next';
+import { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 import Banner from '@components/banner';
 import Layout from '@components/layout';
-import { Book, BookFav } from '@prisma/client';
 import MainBookCard from '@components/mainBookCard';
-import { useCallback, useEffect, useState } from 'react';
-
-interface BookWithFavs extends Book {
-  favs: BookFav[];
-}
-
-export interface BookResponse {
-  success: boolean;
-  books: BookWithFavs[];
-}
+import { BookResponse, BookWithFavs } from '@libs/client/types';
 
 const Home: NextPage = () => {
   const [dueCloseBooks, setDueCloseBooks] = useState<BookWithFavs[]>([]);

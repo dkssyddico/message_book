@@ -5,11 +5,11 @@ import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import useMutation from '@libs/client/useMutation';
-import { FanArtWithBook, MyResponse } from 'pages/my';
 import { modalState } from 'state/modal';
 import SubmitButton from '@components/UI/submitButton';
 import { useForm } from 'react-hook-form';
 import imageUpload from '@libs/client/imageUpload';
+import { FanArtWithBook, MyResponse } from '@libs/client/types';
 
 interface FanArtProps {
   fanArt: FanArtWithBook;

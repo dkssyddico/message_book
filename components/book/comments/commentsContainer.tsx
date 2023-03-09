@@ -1,11 +1,11 @@
+import { CommentWithReply } from '@libs/client/types';
 import { useRouter } from 'next/router';
-import { CommentWithReply } from 'pages/books/[id]';
 import Container from '../container';
 import CommentForm from './commentForm';
 import CommentsList from './commentsList';
 
 export interface CommentsContainerProps {
-  comments: CommentWithReply[] | undefined;
+  comments: CommentWithReply[];
 }
 
 export default function CommentsContainer({

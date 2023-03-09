@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Answer, Question } from '@prisma/client';
+import { Question } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
 import SubmitButton from '@components/UI/submitButton';
@@ -7,6 +7,7 @@ import QuestionCard from '@components/question/questionCard';
 import Container from './container';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { AnswersResponse, UploadAnswerMutation } from '@libs/client/types';
 
 interface QuestionsContainerProps {
   questions: Question[] | undefined;
@@ -14,19 +15,6 @@ interface QuestionsContainerProps {
 
 export interface AnswersForm {
   [questionId: string]: string;
-}
-
-interface UploadAnswerMutation {
-  success: boolean;
-}
-
-interface AnswerWithQuestion extends Answer {
-  question: Question;
-}
-
-interface AnswersResponse {
-  success: boolean;
-  answers: AnswerWithQuestion[];
 }
 
 interface DefaultValues {

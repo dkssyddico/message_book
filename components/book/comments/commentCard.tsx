@@ -3,9 +3,8 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import useMutation from '@libs/client/useMutation';
 import ReplyContainer from './reply/replyContainer';
-import { CommentWithReply } from 'pages/books/[id]';
-import { BookDetailResponse } from 'pages/books/[id]';
 import Comment from '@components/UI/comment';
+import { BookDetailResponse, CommentWithReply } from '@libs/client/types';
 
 interface CommentCardProps {
   comment: CommentWithReply;
@@ -20,7 +19,7 @@ interface DeleteCommentMutation {
 }
 
 export default function CommentCard({
-  comment: { id, content, createdAt, replies, userId, likes, _count: count },
+  comment: { id, userId, likes, content, createdAt, _count: count, replies },
 }: CommentCardProps) {
   const router = useRouter();
   const [openReply, setOpenReply] = useState(false);

@@ -1,17 +1,15 @@
-import { CommentWithReply } from 'pages/books/[id]';
+import { CommentWithReply } from '@libs/client/types';
 import CommentCard from './commentCard';
 
 interface CommentsListProps {
-  comments: CommentWithReply[] | undefined;
+  comments: CommentWithReply[];
 }
 
 export default function CommentsList({ comments }: CommentsListProps) {
-  console.log(comments);
-
   return (
     <ul className='space-y-4'>
       {comments && comments.length > 0 ? (
-        comments.map((comment) => (
+        comments.map((comment: CommentWithReply) => (
           <CommentCard key={comment.id} comment={comment} />
         ))
       ) : (
