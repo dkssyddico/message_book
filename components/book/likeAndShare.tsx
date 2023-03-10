@@ -20,7 +20,8 @@ interface LikeAndShareProps {
 export default function LikeAndShare({ title, favs }: LikeAndShareProps) {
   const router = useRouter();
   const user = useUser();
-  const favsUserArr = favs?.map((fav) => fav.userId);
+
+  const favsUserArr = favs.map((fav) => fav.userId);
 
   const [openShare, setOpenShare] = useState(false);
 
@@ -51,7 +52,7 @@ export default function LikeAndShare({ title, favs }: LikeAndShareProps) {
       <button
         className={cls(
           'rounded-full border border-red-500 p-2 transition ease-in-out',
-          favsUserArr?.includes(user.userId) ? '' : 'bg-red-500'
+          favsUserArr?.includes(user.userId) ? 'bg-white' : 'bg-red-500'
         )}
         onClick={handleFavClick}
       >
@@ -66,10 +67,9 @@ export default function LikeAndShare({ title, favs }: LikeAndShareProps) {
           strokeLinecap='round'
           strokeLinejoin='round'
           className={cls(
-            'feather feather-heart ',
             favsUserArr?.includes(user.userId)
-              ? 'fill-red-500 text-red-500'
-              : 'fill-white text-white'
+              ? 'fill-red-500 text-white'
+              : 'fill-white text-red-500'
           )}
         >
           <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'></path>
