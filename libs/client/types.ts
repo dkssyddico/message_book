@@ -36,6 +36,9 @@ export interface BookWithDetails extends Book {
   questions: Question[];
   drop: Drop;
   favs: BookFav[];
+  _count: {
+    answers: number;
+  };
 }
 
 export interface BookDetailResponse {

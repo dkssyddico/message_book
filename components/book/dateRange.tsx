@@ -23,12 +23,11 @@ export default function DateRange({ startDate, endDate }: DateRangeProps) {
         <line x1='8' y1='2' x2='8' y2='6'></line>
         <line x1='3' y1='10' x2='21' y2='10'></line>
       </svg>
-      <p className=''>{`${startDate?.toString().slice(0, 10)} ~ ${endDate
+      <p className='font-semibold'>{`${startDate
         ?.toString()
-        .slice(0, 10)}`}</p>
-
-      <span className='ml-2 animate-bounce rounded-xl bg-gray-100 px-2 py-1 font-bold text-red-500'>
-        D - 3
+        .slice(0, 10)} ~ ${endDate?.toString().slice(0, 10)}`}</p>
+      <span className='ml-2  rounded-xl bg-gray-100 px-2 py-1 text-sm font-bold text-red-500'>
+        3일 남음
       </span>
     </div>
   );

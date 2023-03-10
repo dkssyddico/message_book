@@ -1,31 +1,27 @@
 import { LoadingImage } from '@libs/client/imageLoader';
-import { BookFav, Hashtag } from '@prisma/client';
 import Image from 'next/image';
+import { BookWithDetails } from '@libs/client/types';
 import DateRange from './dateRange';
 import LikeAndShare from './likeAndShare';
 import UserInfo from './userInfo';
 
 interface DetailProps {
-  thumbnail: string;
-  title: string;
-  startDate: Date;
-  endDate: Date;
-  description: string;
-  hashtags: Hashtag[];
-  favs: BookFav[];
+  book: BookWithDetails;
 }
 
 export default function DetailContainer({
-  thumbnail,
-  title,
-  startDate,
-  endDate,
-  description,
-  hashtags,
-  favs,
+  book: {
+    thumbnail,
+    title,
+    startDate,
+    endDate,
+    description,
+    hashtags,
+    favs,
+    targetMessage,
+    _count: { answers: answersCount },
+  },
 }: DetailProps) {
-  console.log(favs);
-
   return (
     <section className='flex min-h-fit flex-col items-center justify-center gap-8 md:w-3/4 lg:flex-row'>
       <div className='basis-1/2'>
@@ -46,8 +42,15 @@ export default function DetailContainer({
       </div>
       <div className='grid min-h-[400px] w-full basis-1/2 grid-flow-row gap-4 rounded-lg border-2 p-4'>
         <LikeAndShare title={title} favs={favs} />
+        <h2 className='text-xl font-bold'>{title}</h2>
         <div className='flex items-center'>
-          <h2 className='text-xl font-bold'>{title} 0/150</h2>
+          <p>
+            <span className='mr-1 text-xl font-bold'>{answersCount}</span>명
+            참여 / <span className='text-xl font-bold'>{targetMessage}</span>
+          </p>
+          <div className='ml-2 rounded-xl bg-gray-100 px-2 py-1 text-sm font-bold text-red-500'>
+            {`${Math.floor(answersCount / targetMessage) * 100}% 달성 `}
+          </div>
         </div>
         <DateRange startDate={startDate} endDate={endDate} />
         <div>

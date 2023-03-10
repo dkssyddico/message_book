@@ -83,7 +83,7 @@ model Book {
   drop          Drop?
   commentLikes  CommentLike[]
   replyLikes    ReplyLike[]
-  Answer        Answer[]
+  answers       Answer[]
 
   @@index([userId])
 }
