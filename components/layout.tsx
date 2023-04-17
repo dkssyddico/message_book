@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import Navbar from './navbar';
+import Footer from './footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ export default function Layout({ children, title }: LayoutProps) {
       <div className=''>
         <Navbar />
         <main className='min-h-screen pt-16'>{children}</main>
-        <footer>footer</footer>
+        <Footer />
       </div>
     </>
   );

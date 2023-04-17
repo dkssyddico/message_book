@@ -38,7 +38,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className='fixed top-0 left-0 z-30 grid h-16 w-full grid-cols-3 items-center bg-white px-8'>
+      <header className='fixed top-0 left-0 z-30 mx-auto grid h-16 w-full grid-cols-3 items-center bg-white px-8'>
         {modalInfo.open && <Modal />}
         <Link className='flex items-center' href='/'>
           <h1 className='text-lg font-bold'>Message Book</h1>
