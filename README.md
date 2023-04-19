@@ -1,34 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 1. Message book
 
-## Getting Started
+누군가를 응원하는 메세지북을 만들고 관리하기 위한 웹 어플리케이션입니다.
+NextJS와 TypeScript를 사용하고 싶어서 만든 프로젝트이기도 합니다.
 
-First, run the development server:
+# 2. 기술 스택
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- NextJS
+  - Next Auth
+- TailwindCSS
+- Recoil
+- Prisma
+- TypeScript
+- Pscale
+- SWR
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# 3. 핵심 기능
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- 로그인 모달을 통한 소셜 로그인 기능
+- 본인이 만든 메세지북 CRUD 가능
+- 팬아트 수정 및 삭제
+- 댓글 및 대댓글 기능
+- 댓글 수정 및 삭제
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# 4. What I learnt
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- NextJS
+- Next Auth
+- Recoil
+- Prisma
+- Pscale
+- SWR
 
-## Learn More
+# 5. 회고
 
-To learn more about Next.js, take a look at the following resources:
+보통 메세지북을 만드실 때 구글 폼이나 네이버 폼을 통해 메세지들을 받곤 하는데, 아예 메세지북만을 위한 웹 어플리케이션이 있으면 좋지 않을까 하고 만들기 시작한 프로젝트입니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+React를 공부하다보니 자연스럽게 React Framework인 NextJS에도 관심을 가지게 되어 공부를 목적으로 만들었습니다. 이전에 React + Node.js + MongoDB + Express를 이용한 풀스택 어플리케이션을 만들 때는 따로 서버도 만들어줘야하고, 서버에 대한 배포도 함께 진행해야해서 일이 2배인 느낌이었는데, NextJS에서는 서버를 따로 만들지 않아도 풀스택 어플리케이션을 만들 수 있다는 점이 가장 마음에 들었습니다. 물론 배포도 vercel을 통해 훨씬 간편하게 할 수 있어서 좋았습니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+예전에는 Redux를 사용해 전역 상태 관리를 했었는데 이번에 Recoil을 쓰면서 훨씬 더 사용하기 쉽다는 것을 알게되어서 앞으로 개인 프로젝트를 한다면 Recoil을 쓸 거 같습니다.
 
-## Deploy on Vercel
+요즘 웹사이트에서는 따로 회원가입이나 로그인에 페이지를 만들지 않고 빠른 사용자 경험을 위해서 모달을 통해 소셜 로그인으로 회원가입이나 로그인을 하는 경우가 많아 보여서 이 프로젝트에서도 그 추세에 따라 만들었습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+그리고 SWR을 이용해서 빠르게 즐겨찾기를 설정하고 해제하거나 댓글이 바로 달리는 변화를 볼 수 있는 실시간 경험은 매우 새로운 경험이었습니다. SWR는 Next.js를 만든 팀에서 만든 유용한 라이브러리인데, NextJS 생태계가 정말 넓다는 것을 느낄 수 있었습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+NextAuth.js 역시 마찬가지였습니다. 아직 개발 단계에 있는 Next.js를 위한 인증 서비스인데 NextAuth.js를 통해 원하는 소셜 로그인 서비스를 생각보다 쉽게 구현할 수 있었습니다. 다만 아직 개발 단계에 있어서 공식 문서가 통일되지 않은 점은 아쉬웠습니다.
+
+TypeScript를 많이 사용해보고 싶었는데 아직까지 개인 프로젝트에서는 props에 대한 타입을 설정하는 정도에 그치는 것 같아서 조금 아쉽습니다. 현업에 있다면 어떤 식으로 TypesScript를 사용하게 되는지 매우 궁금해졌습니다.
