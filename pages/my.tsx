@@ -54,7 +54,7 @@ const MyPage: NextPage = () => {
             <div>접속 경로 {data?.user.accounts[0].provider}</div>
           </div>
         </section>
-        <section>
+        <section className='w-full'>
           <h2 className='mb-8 text-2xl font-bold'>내가 만든 메세지북</h2>
           <div className='grid w-full grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4'>
             {data?.user.books.map((book) => (

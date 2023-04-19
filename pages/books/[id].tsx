@@ -24,7 +24,6 @@ const BookDetail: NextPage = () => {
     return (
       <Layout title={data.book.title!}>
         <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
-          {/* TODO: 1:1 문의 -> floating button으로 처리 */}
           <DetailContainer book={data.book} />
           <QuestionsContainer questions={data.book.questions} />
           {data.book.receiveFanArt && <FanArtSubmitContainer />}
