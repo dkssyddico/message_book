@@ -1,4 +1,3 @@
-import { Question } from '@prisma/client';
 import { atom } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,6 +10,12 @@ type DropInfo = {
   accountOwner: string;
   minAmount: number;
   bank: string;
+};
+
+type Question = {
+  content: string;
+  required: boolean;
+  index: number;
 };
 
 export const TodayState = atom<Date>({
