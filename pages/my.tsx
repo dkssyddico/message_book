@@ -7,9 +7,11 @@ import AnswerCard from '@components/answerCard';
 import FanArtCard from '@components/fanArtCard';
 import {
   AnswerWithQuestionBooks,
+  CommentWithBook,
   FanArtWithBook,
   MyResponse,
 } from '@libs/client/types';
+import CommentCard from '@components/my/commentCard';
 
 const MyPage: NextPage = () => {
   const { data } = useSWR<MyResponse>('/api/me');
@@ -95,9 +97,20 @@ const MyPage: NextPage = () => {
             ))}
           </section>
         </section>
-        <section>
+        <section className='w-full'>
           <h2 className='mb-8 text-2xl font-bold'>내가 쓴 댓글</h2>
-          <div></div>
+          <section className=''>
+            <div className='grid grid-cols-3 rounded-lg bg-lime p-4 text-center font-semibold'>
+              <h4>메세지북</h4>
+              <h4>댓글</h4>
+              <h4>수정 / 삭제</h4>
+            </div>
+          </section>
+          <div>
+            {data?.user.comments.map((comment: CommentWithBook) => (
+              <CommentCard key={comment.id} comment={comment} />
+            ))}
+          </div>
         </section>
       </main>
     </Layout>

@@ -7,22 +7,23 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
+  const session = await getSession(req, res);
+  if (!session) {
+    return res.status(404).send({ success: false, message: 'user not found' });
+  }
+
   if (req.method === 'POST') {
-    const session = await getSession(req, res);
-
-    if (!session) {
-      return res
-        .status(404)
-        .send({ success: false, message: 'user not found' });
-    }
-
     const {
       query: { id },
+      body: { comment },
     } = req;
 
-    const comment = await client.comment.findUnique({
+    const result = await client.comment.update({
       where: {
         id: id + '',
+      },
+      data: {
+        content: comment,
       },
     });
 
@@ -44,6 +45,17 @@ async function handler(
 
     return res.status(201).send({ success: true });
   }
+
+  if (req.method === 'DELETE') {
+    const { id } = req.query;
+
+    await client.comment.delete({
+      where: {
+        id: id + '',
+      },
+    });
+    return res.status(201).send({ success: true });
+  }
 }
 
-export default withHandler({ methods: ['POST'], handler });
+export default withHandler({ methods: ['POST', 'DELETE'], handler });

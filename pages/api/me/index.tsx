@@ -29,6 +29,11 @@ async function handler(
             book: true,
           },
         },
+        comments: {
+          include: {
+            book: true,
+          },
+        },
         fanArts: {
           include: {
             book: true,

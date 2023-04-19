@@ -1,9 +1,9 @@
-import useMutation from '@libs/client/useMutation';
-import { Comment } from '@prisma/client';
-import { BookDetailResponse } from 'pages/books/[id]';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
+import { BookDetailResponse } from '@libs/client/types';
+import { Comment } from '@prisma/client';
+import useMutation from '@libs/client/useMutation';
 
 interface Form {
   content: string;

@@ -21,6 +21,10 @@ export interface ReplyWithLikes extends Reply {
   };
 }
 
+export interface CommentWithBook extends Comment {
+  book: Book;
+}
+
 export interface CommentWithReply extends Comment {
   replies: ReplyWithLikes[];
   likes: CommentLike[];
@@ -69,6 +73,7 @@ interface UserInfoWithAccounts extends User {
   books: BookWithFavs[];
   answers: AnswerWithQuestionBooks[];
   fanArts: FanArtWithBook[];
+  comments: CommentWithBook[];
 }
 
 export interface MyResponse {

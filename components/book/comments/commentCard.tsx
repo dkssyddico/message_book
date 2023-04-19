@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -14,10 +15,6 @@ interface ToggleLikeMutation {
   success: boolean;
 }
 
-interface DeleteCommentMutation {
-  success: boolean;
-}
-
 export default function CommentCard({
   comment: { id, userId, likes, content, createdAt, _count: count, replies },
 }: CommentCardProps) {
@@ -26,11 +23,6 @@ export default function CommentCard({
 
   const [toggleLike, { data: toggleLikeData }] =
     useMutation<ToggleLikeMutation>(`/api/comments/${id}/like`);
-
-  const [deleteComment, { data: deleteData }] =
-    useMutation<DeleteCommentMutation>(`
-    /api/comments/${id}
-  `);
 
   const { mutate } = useSWR<BookDetailResponse>(
     `/api/books/${router.query.id}`
@@ -44,8 +36,15 @@ export default function CommentCard({
     setOpenReply((prev) => !prev);
   };
 
+  const deleteComment = async () => {
+    const result = await axios.delete(`/api/comments/${id}`);
+    if (result.data.success) {
+      mutate();
+    }
+  };
+
   const handleCommentDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
-    deleteComment({});
+    deleteComment();
   };
 
   useEffect(() => {
@@ -53,12 +52,6 @@ export default function CommentCard({
       mutate();
     }
   }, [toggleLikeData, mutate]);
-
-  useEffect(() => {
-    if (deleteData && deleteData.success) {
-      mutate();
-    }
-  });
 
   return (
     <Comment
