@@ -19,12 +19,12 @@ import {
 } from 'state/form';
 import ThumbnailContainer from '@components/form/thumbnailContainer';
 import imageUpload from '@libs/client/imageUpload';
-import HashtagContainer from '@components/form/hashtagContainer';
 import QuestionsContainer from '@components/form/questionsContainer';
 import DateContainer from '@components/form/dateContainer';
 import SubmitButton from '@components/common/submitButton';
 import DropContainer from '@components/form/dropContainer';
 import InputBox from '@components/new/inputBox';
+import HashtagContainer from '@components/form/hashtagContainer';
 
 interface BookForm {
   title: string;

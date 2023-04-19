@@ -9,7 +9,9 @@ interface HashtagContainerProps {
   submitSuccess: boolean | undefined;
 }
 
-function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
+export default function HashtagContainer({
+  submitSuccess,
+}: HashtagContainerProps) {
   const [hashtag, setHashtag] = useState('');
   const [hashtags, setHashtags] = useRecoilState(hashtagsState);
 
@@ -92,5 +94,3 @@ function HashtagContainer({ submitSuccess }: HashtagContainerProps) {
     </div>
   );
 }
-
-export default HashtagContainer;
