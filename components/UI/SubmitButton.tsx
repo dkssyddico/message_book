@@ -5,7 +5,7 @@ interface SubmitButtonProps {
   submitMessage: string;
 }
 
-function SubmitButton({
+export default function SubmitButton({
   disabled,
   loading,
   loadingMessage,
@@ -46,5 +46,3 @@ function SubmitButton({
     </button>
   );
 }
-
-export default SubmitButton;
