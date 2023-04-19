@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import useMutation from '@libs/client/useMutation';
 import imageUpload from '@libs/client/imageUpload';
 import Container from './container';
-import SubmitButton from '@components/UI/submitButton';
 
 interface FanArtForm {
   fanArt: File;
