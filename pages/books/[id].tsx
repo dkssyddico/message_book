@@ -6,9 +6,9 @@ import CommentsContainer from '@components/book/comments/commentsContainer';
 import Loading from '@components/loading';
 import DetailContainer from '@components/book/detailContainer';
 import QuestionsContainer from '@components/book/questionsContainer';
-import FanArtSubmitContainer from '@components/book/fanArtSubmitContainer';
 import DropContainer from '@components/book/dropContainer';
 import { BookDetailResponse } from '@libs/client/types';
+import FanArtContainer from '@components/book/fanArtContainer';
 
 const BookDetail: NextPage = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const BookDetail: NextPage = () => {
         <section className='flex flex-col items-center space-y-12 py-10 px-6 md:px-16'>
           <DetailContainer book={data.book} />
           <QuestionsContainer questions={data.book.questions} />
-          {data.book.receiveFanArt && <FanArtSubmitContainer />}
+          {data.book.receiveFanArt && <FanArtContainer />}
           {data.book.doesDrop && <DropContainer drop={data.book.drop} />}
           <CommentsContainer comments={data.book.comments} />
         </section>

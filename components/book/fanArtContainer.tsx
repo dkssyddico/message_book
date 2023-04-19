@@ -14,7 +14,7 @@ interface UploadFanArtMutation {
   success: boolean;
 }
 
-export default function FanArtSubmitContainer() {
+export default function FanArtContainer() {
   const router = useRouter();
   const [fanArt, setFanArt] = useState<File | null>(null);
   const {
@@ -42,7 +42,6 @@ export default function FanArtSubmitContainer() {
 
   return (
     <Container title='팬아트 제출'>
-      {/* TODO: JPEG, PNG 이런 형식만 받는다고 써놓기 */}
       <form className='space-y-8' onSubmit={handleSubmit(onValid)}>
         <input
           {...register('fanArt')}
