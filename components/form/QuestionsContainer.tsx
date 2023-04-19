@@ -1,4 +1,4 @@
-import Input from '@components/UI/input';
+import Input from '@components/common/input';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { questionsState } from 'state/form';
@@ -9,7 +9,9 @@ interface QuestionsContainerProps {
   submitSuccess: boolean | undefined;
 }
 
-export default function QuestionsContainer({ submitSuccess }: QuestionsContainerProps) {
+export default function QuestionsContainer({
+  submitSuccess,
+}: QuestionsContainerProps) {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [question, setQuestion] = useState('');
   const [required, setRequired] = useState(false);
@@ -82,7 +84,11 @@ export default function QuestionsContainer({ submitSuccess }: QuestionsContainer
                 </span>
               )}
               <span>{question.content}</span>
-              <button value={question.content} type='button' onClick={handleQuestionDelete}>
+              <button
+                value={question.content}
+                type='button'
+                onClick={handleQuestionDelete}
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   width='20'

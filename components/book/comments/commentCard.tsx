@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import useMutation from '@libs/client/useMutation';
 import ReplyContainer from './reply/replyContainer';
-import Comment from '@components/UI/comment';
+import Comment from '@components/common/comment';
 import { BookDetailResponse, CommentWithReply } from '@libs/client/types';
 
 interface CommentCardProps {

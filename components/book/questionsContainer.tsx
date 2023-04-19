@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { Question } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
-import SubmitButton from '@components/UI/submitButton';
+import SubmitButton from '@components/common/submitButton';
 import QuestionCard from '@components/question/questionCard';
 import Container from './container';
 import { useRouter } from 'next/router';

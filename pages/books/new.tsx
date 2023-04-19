@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { Book } from '@prisma/client';
 import Layout from '@components/layout';
-import Input from '@components/UI/input';
+import Input from '@components/common/input';
 import useMutation from '@libs/client/useMutation';
 import {
   startDateState,
@@ -22,7 +22,7 @@ import imageUpload from '@libs/client/imageUpload';
 import HashtagContainer from '@components/form/hashtagContainer';
 import QuestionsContainer from '@components/form/questionsContainer';
 import DateContainer from '@components/form/dateContainer';
-import SubmitButton from '@components/UI/submitButton';
+import SubmitButton from '@components/common/submitButton';
 import DropContainer from '@components/form/dropContainer';
 import InputBox from '@components/new/inputBox';
 

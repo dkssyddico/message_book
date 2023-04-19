@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import useMutation from '@libs/client/useMutation';
-import Comment from '@components/UI/comment';
+import Comment from '@components/common/comment';
 import { BookDetailResponse, ReplyWithLikes } from '@libs/client/types';
 
 interface ReplyCardProp {

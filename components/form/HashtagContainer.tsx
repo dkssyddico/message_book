@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import Input from '@components/UI/input';
+import Input from '@components/common/input';
 import { hashtagsState } from 'state/form';
 
 const MAX_HASHTAGS = 5;

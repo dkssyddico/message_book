@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import ToggleButton from '@components/UI/toggleButton';
+import ToggleButton from '@components/common/toggleButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { dropEndDateState, dropInfoState, dropStatusState } from 'state/form';
 import InputBox from '@components/new/inputBox';
-import Input from '@components/UI/input';
+import Input from '@components/common/input';
 
 type DropContainerProps = {
   submitSuccess: boolean | undefined;
@@ -15,7 +15,8 @@ export default function DropContainer({ submitSuccess }: DropContainerProps) {
   const [open, setOpen] = useState(false);
   const setDropStatus = useSetRecoilState(dropStatusState);
   const [dropEndDate, setDropEndDate] = useRecoilState(dropEndDateState);
-  const [{ account, accountOwner, minAmount }, setDropInfo] = useRecoilState(dropInfoState);
+  const [{ account, accountOwner, minAmount }, setDropInfo] =
+    useRecoilState(dropInfoState);
 
   const handleDropStatus = () => {
     setOpen((prev) => !prev);
@@ -23,7 +24,9 @@ export default function DropContainer({ submitSuccess }: DropContainerProps) {
   };
 
   // TODO: 계좌번호 - 안들어가게 체크해야함, 아니면 어떻게 받을지 고민.
-  const handleDropInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleDropInfoChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (open) {
       const { name, value } = e.currentTarget;
       setDropInfo((prev) => ({ ...prev, [name]: value }));
