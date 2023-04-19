@@ -1,6 +1,6 @@
+import { Question } from '@prisma/client';
 import { atom } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { Question } from '@libs/client/types';
 
 type Hashtag = string;
 
