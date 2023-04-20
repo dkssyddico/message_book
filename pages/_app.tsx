@@ -6,6 +6,12 @@ import { RecoilRoot } from 'recoil';
 import { SWRConfig } from 'swr';
 import '../styles/globals.css';
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
