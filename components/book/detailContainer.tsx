@@ -4,6 +4,7 @@ import { BookWithDetails } from '@libs/client/types';
 import DateRange from './dateRange';
 import LikeAndShare from './likeAndShare';
 import UserInfo from './userInfo';
+import Hashtag from './hashtag';
 
 interface DetailProps {
   book: BookWithDetails;
@@ -62,12 +63,7 @@ export default function DetailContainer({
         </div>
         <div className='flex flex-wrap items-center gap-3'>
           {hashtags?.map((hashtag) => (
-            <span
-              className='rounded bg-gray-200 px-2 py-1 font-semibold text-blue-600'
-              key={hashtag.id}
-            >
-              #{hashtag.name}
-            </span>
+            <Hashtag name={hashtag.name} id={hashtag.id} key={hashtag.id} />
           ))}
         </div>
         <UserInfo />
